@@ -9,31 +9,31 @@ import javax.persistence.Id;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int account_id;
+    private int idaccount;
 
     private String email;
     private String password;
-    private String recoveryQuestion;
-    private String recoveryAnswer;
+    private Byte is_verificated;
+    private String recovery_question;
+    private String recovery_answer;
+    private Byte is_lecturer;
 
     public Account() {
     }
 
-    public Account(int account_id, String email, String password, String recoveryQuestion, String recoveryAnswer) {
-        this.account_id = account_id;
+    public Account(int idaccount, String email, String password, Byte is_verificated, String recovery_question, String recovery_answer, Byte is_lecturer) {
+        this.idaccount = idaccount;
         this.email = email;
         this.password = password;
-        this.recoveryQuestion = recoveryQuestion;
-        this.recoveryAnswer = recoveryAnswer;
+        this.is_verificated = is_verificated;
+        this.recovery_question = recovery_question;
+        this.recovery_answer = recovery_answer;
+        this.is_lecturer = is_lecturer;
     }
 
-    public int getAccount_id() {
-        return account_id;
-    }
+    public int getIdaccount() { return idaccount; }
 
-    public void setAccount_id(int account_id) {
-        this.account_id = account_id;
-    }
+    public void setIdaccount(int idaccount) { this.idaccount = idaccount; }
 
     public String getEmail() {
         return email;
@@ -51,30 +51,32 @@ public class Account {
         this.password = password;
     }
 
-    public String getRecoveryQuestion() {
-        return recoveryQuestion;
-    }
+    public Byte getIs_verificated() { return is_verificated; }
 
-    public void setRecoveryQuestion(String recoveryQuestion) {
-        this.recoveryQuestion = recoveryQuestion;
-    }
+    public void setIs_verificated(Byte is_verificated) { this.is_verificated = is_verificated; }
 
-    public String getRecoveryAnswer() {
-        return recoveryAnswer;
-    }
+    public String getRecovery_question() { return recovery_question; }
 
-    public void setRecoveryAnswer(String recoveryAnswer) {
-        this.recoveryAnswer = recoveryAnswer;
-    }
+    public void setRecovery_question(String recovery_question) { this.recovery_question = recovery_question; }
+
+    public String getRecovery_answer() { return recovery_answer; }
+
+    public void setRecovery_answer(String recovery_answer) { this.recovery_answer = recovery_answer; }
+
+    public Byte getIs_lecturer() { return is_lecturer; }
+
+    public void setIs_lecturer(Byte is_lecturer) { this.is_lecturer = is_lecturer; }
 
     @Override
     public String toString() {
         return "Account{" +
-                "account_id=" + account_id +
+                "idaccount=" + idaccount +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", recoveryQuestion='" + recoveryQuestion + '\'' +
-                ", recoveryAnswer='" + recoveryAnswer + '\'' +
+                ", is_verificated=" + is_verificated +
+                ", recovery_question='" + recovery_question + '\'' +
+                ", recovery_answer='" + recovery_answer + '\'' +
+                ", is_lecturer=" + is_lecturer +
                 '}';
     }
 }
