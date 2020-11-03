@@ -1,39 +1,49 @@
 package com.myexaminer.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idaccount;
+    @Column(name = "idaccount")
+    private int idAccount;
 
     private String email;
     private String password;
-    private Byte is_verificated;
-    private String recovery_question;
-    private String recovery_answer;
-    private Byte is_lecturer;
+
+    @Column(name = "is_verificated")
+    private boolean isVerificated;
+
+    @Column(name = "recovery_question")
+    private String recoveryQuestion;
+
+    @Column(name = "recovery_answer")
+    private String recoveryAnswer;
+
+    @Column(name = "is_lecturer")
+    private boolean isLecturer;
 
     public Account() {
     }
 
-    public Account(int idaccount, String email, String password, Byte is_verificated, String recovery_question, String recovery_answer, Byte is_lecturer) {
-        this.idaccount = idaccount;
+    public Account(String email, String password, String recoveryQuestion, String recoveryAnswer) {
         this.email = email;
         this.password = password;
-        this.is_verificated = is_verificated;
-        this.recovery_question = recovery_question;
-        this.recovery_answer = recovery_answer;
-        this.is_lecturer = is_lecturer;
+        this.isVerificated = false;
+        this.recoveryQuestion = recoveryQuestion;
+        this.recoveryAnswer = recoveryAnswer;
+        this.isLecturer = false;
     }
 
-    public int getIdaccount() { return idaccount; }
+    public int getIdAccount() {
+        return idAccount;
+    }
 
-    public void setIdaccount(int idaccount) { this.idaccount = idaccount; }
+    public void setIdAccount(int idAccount) {
+        this.idAccount = idAccount;
+    }
 
     public String getEmail() {
         return email;
@@ -51,32 +61,48 @@ public class Account {
         this.password = password;
     }
 
-    public Byte getIs_verificated() { return is_verificated; }
+    public boolean isVerificated() {
+        return isVerificated;
+    }
 
-    public void setIs_verificated(Byte is_verificated) { this.is_verificated = is_verificated; }
+    public void setVerificated(boolean verificated) {
+        isVerificated = verificated;
+    }
 
-    public String getRecovery_question() { return recovery_question; }
+    public String getRecoveryQuestion() {
+        return recoveryQuestion;
+    }
 
-    public void setRecovery_question(String recovery_question) { this.recovery_question = recovery_question; }
+    public void setRecoveryQuestion(String recoveryQuestion) {
+        this.recoveryQuestion = recoveryQuestion;
+    }
 
-    public String getRecovery_answer() { return recovery_answer; }
+    public String getRecoveryAnswer() {
+        return recoveryAnswer;
+    }
 
-    public void setRecovery_answer(String recovery_answer) { this.recovery_answer = recovery_answer; }
+    public void setRecoveryAnswer(String recoveryAnswer) {
+        this.recoveryAnswer = recoveryAnswer;
+    }
 
-    public Byte getIs_lecturer() { return is_lecturer; }
+    public boolean isLecturer() {
+        return isLecturer;
+    }
 
-    public void setIs_lecturer(Byte is_lecturer) { this.is_lecturer = is_lecturer; }
+    public void setLecturer(boolean lecturer) {
+        isLecturer = lecturer;
+    }
 
     @Override
     public String toString() {
         return "Account{" +
-                "idaccount=" + idaccount +
+                "idaccount=" + idAccount +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", is_verificated=" + is_verificated +
-                ", recovery_question='" + recovery_question + '\'' +
-                ", recovery_answer='" + recovery_answer + '\'' +
-                ", is_lecturer=" + is_lecturer +
+                ", is_verificated=" + isVerificated +
+                ", recovery_question='" + recoveryQuestion + '\'' +
+                ", recovery_answer='" + recoveryAnswer + '\'' +
+                ", is_lecturer=" + isLecturer +
                 '}';
     }
 }
