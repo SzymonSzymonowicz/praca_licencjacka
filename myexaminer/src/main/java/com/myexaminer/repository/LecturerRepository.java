@@ -3,7 +3,9 @@ package com.myexaminer.repository;
 import com.myexaminer.model.Lecturer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LecturerRepository extends JpaRepository<Lecturer, Long> {
+import java.util.Optional;
+
+public interface LecturerRepository extends JpaRepository<Lecturer, Integer> {
     long deleteByIdLecturer(int idLecturer);
-    Lecturer findByIdLecturer(int idLecturer);
+    Optional<Lecturer> findByIdLecturer(int idLecturer);
 }
