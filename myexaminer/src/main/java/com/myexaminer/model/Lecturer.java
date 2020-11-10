@@ -81,11 +81,11 @@ public class Lecturer {
     @Override
     public String toString() {
         return "Lecturer{" +
-                "account_idaccount=" + idLecturer +
-                ", first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
-                ", home_page='" + homePage + '\'' +
-                ", contact_email='" + contactEmail + '\'' +
+                "idLecturer=" + idLecturer +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", homePage='" + homePage + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
                 '}';
     }
 }
