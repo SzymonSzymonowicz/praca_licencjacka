@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     long deleteByidAccount(int idAccount);
-    Account findByidAccount(int idAccount);
+    Optional<Account> findByidAccount(int idAccount);
     Optional<Account> findByEmail(String email);
 }

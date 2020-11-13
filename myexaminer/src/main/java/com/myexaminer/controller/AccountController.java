@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping(path="/account")
 public class AccountController {
-    @Autowired(required = true)
-    private AccountService accountService;
+
+    private final AccountService accountService;
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
@@ -26,7 +26,7 @@ public class AccountController {
             log.info("Account with given email -> {} <- ALREADY EXISTS", account.getEmail());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
-        if(accountService.accountExistsById(account)){
+        if(accountService.accountExistsById(account.getIdAccount())){
             log.info("Account with given ID -> {} <- ALREADY EXISTS", account.getIdAccount());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }

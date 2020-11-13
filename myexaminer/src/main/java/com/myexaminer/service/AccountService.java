@@ -9,17 +9,17 @@ import java.util.Optional;
 
 @Service
 public class AccountService {
-    @Autowired(required = true)
-    private AccountRepository accountRepository;
 
-/*  public AccountService(AccountRepository accountRepository){this.accountRepository = accountRepository;}*/
+    private final AccountRepository accountRepository;
+
+    public AccountService(AccountRepository accountRepository){this.accountRepository = accountRepository;}
 
     public void accountSave(Account account) {
         accountRepository.save(account);
     }
 
-    public boolean accountExistsById(Account account){
-        Optional<Account> accountById = accountRepository.findById(account.getIdAccount());
+    public boolean accountExistsById(int IdAccount){
+        Optional<Account> accountById = accountRepository.findByidAccount(IdAccount);
 
         if(accountById.isPresent())
             return true;
