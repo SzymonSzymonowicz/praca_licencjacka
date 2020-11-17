@@ -4,6 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import SignIn from './SignIn';
+import SignUp from './SignUp';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,8 +49,16 @@ export default function Home() {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <span id="logo">My Examiner</span>
-            
-            <SignIn className={classes}/>
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <SignIn className={classes}/>  
+              </Route>
+              <Route path="/signUp">
+                <SignUp className={classes}/>
+              </Route>
+            </Switch>
+          </Router>
         </div>
       </Grid>
     </Grid>
