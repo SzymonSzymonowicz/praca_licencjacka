@@ -251,3 +251,5 @@ application.properties
 myexaminer/**/HELP.md
 myexaminer-frontend/**/HELP.md
 myexaminer-frontend/**/README.md
+
+**/src/backup/*
