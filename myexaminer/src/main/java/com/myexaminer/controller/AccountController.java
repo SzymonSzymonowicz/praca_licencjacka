@@ -32,7 +32,7 @@ public class AccountController {
         }
 
         accountService.accountSave(account);
-        log.info("Account with idaccount -> {} <- has been ADDED", account.getIdAccount());
+        log.info("Account with ID -> {} <- has been ADDED", account.getIdAccount());
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

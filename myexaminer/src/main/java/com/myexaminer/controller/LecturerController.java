@@ -1,6 +1,5 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.model.Account;
 import com.myexaminer.model.Lecturer;
 import com.myexaminer.service.AccountService;
 import com.myexaminer.service.LecturerService;
@@ -28,16 +27,16 @@ public class LecturerController {
     @PostMapping
     public ResponseEntity<HttpStatus> addNewLecturer (@RequestBody Lecturer lecturer) {
         if(!accountService.accountExistsById(lecturer.getIdLecturer())) {
-            log.info("Account with given idaccount -> {} <- DOES NOT EXIST", lecturer.getIdLecturer());
+            log.info("Account with given ID -> {} <- DOES NOT EXIST", lecturer.getIdLecturer());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        if(lecturerService.lecturerExistsById(lecturer)){
-            log.info("Lecturer with given idaccount -> {} <- ALREADY EXISTS", lecturer.getIdLecturer());
+        if(lecturerService.lecturerExistsById(lecturer.getIdLecturer())){
+            log.info("Lecturer with given ID -> {} <- ALREADY EXISTS", lecturer.getIdLecturer());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
         lecturerService.lecturerSave(lecturer);
-        log.info("Lecturer with account_idaccount -> {} <- has been ADDED", lecturer.getIdLecturer());
+        log.info("Lecturer with ID -> {} <- has been ADDED", lecturer.getIdLecturer());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

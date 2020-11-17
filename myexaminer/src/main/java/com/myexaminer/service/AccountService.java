@@ -3,7 +3,6 @@ package com.myexaminer.service;
 import com.myexaminer.model.Account;
 
 import com.myexaminer.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -18,21 +17,15 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public boolean accountExistsById(int IdAccount){
-        Optional<Account> accountById = accountRepository.findByidAccount(IdAccount);
+    public boolean accountExistsById(int idAccount){
+        Optional<Account> accountById = accountRepository.findByidAccount(idAccount);
 
-        if(accountById.isPresent())
-            return true;
-
-        return false;
+        return accountById.isPresent();
     }
 
     public boolean accountExistsByEmail(Account account){
         Optional<Account> accountByEmail = accountRepository.findByEmail(account.getEmail());
 
-        if(accountByEmail.isPresent())
-            return true;
-
-        return false;
+        return accountByEmail.isPresent();
     }
 }

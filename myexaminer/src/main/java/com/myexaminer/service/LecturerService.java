@@ -1,5 +1,6 @@
 package com.myexaminer.service;
 
+import com.myexaminer.model.Account;
 import com.myexaminer.model.Lecturer;
 import com.myexaminer.repository.LecturerRepository;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,9 @@ public class LecturerService {
 
     public void lecturerSave(Lecturer lecturer) { lecturerRepository.save(lecturer); }
 
-    public boolean lecturerExistsById(Lecturer lecturer){
-        Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(lecturer.getIdLecturer());
+    public boolean lecturerExistsById(int idLecturer){
+        Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
 
-        if(lecturerById.isPresent()){
-            return true;
-        }
-
-        return false;
+        return lecturerById.isPresent();
     }
 }

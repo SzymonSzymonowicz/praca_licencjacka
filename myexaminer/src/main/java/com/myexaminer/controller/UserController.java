@@ -26,16 +26,16 @@ public class UserController {
     @PostMapping
     public ResponseEntity<HttpStatus> addNewUser (@RequestBody User user) {
         if(!accountService.accountExistsById(user.getIdUser())) {
-            log.info("Account with given idaccount -> {} <- DOES NOT EXIST", user.getIdUser());
+            log.info("Account with given ID -> {} <- DOES NOT EXIST", user.getIdUser());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         if(userService.userExistsById(user)){
-            log.info("User with given idaccount -> {} <- ALREADY EXISTS", user.getIdUser());
+            log.info("User with given ID -> {} <- ALREADY EXISTS", user.getIdUser());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
         userService.userSave(user);
-        log.info("User with account_idaccount -> {} <- has been ADDED", user.getIdUser());
+        log.info("User with ID -> {} <- has been ADDED", user.getIdUser());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
