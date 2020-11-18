@@ -27,7 +27,39 @@ function Copyright() {
 
 export default function SignIn(props) {
   const classes = props.className
-  
+
+  function loginUser(email, password){
+    fetch('http://localhost:8080/account/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    }).then(function (response) {
+      if (response.status === 200) {
+        console.log("User loggged in!")
+      } else if (response.status === 401 ){
+        console.log("UNAUTHORIZED!")
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).catch(function (error) {
+      console.log("error")
+    })
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    
+    console.table([{"email": event.target.email.value, "password": event.target.password.value}])
+
+    loginUser(event.target.email.value, event.target.password.value)
+  }
+
   return (
     <div className={classes.paper}>            
       <Avatar className={classes.avatar}>
@@ -36,7 +68,7 @@ export default function SignIn(props) {
       <Typography component="h1" variant="h5">
         Logowanie
       </Typography>
-      <form className={classes.form} noValidate>
+      <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <TextField
           variant="outlined"
           margin="normal"
