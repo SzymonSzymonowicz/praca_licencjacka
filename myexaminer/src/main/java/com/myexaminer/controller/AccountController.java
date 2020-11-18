@@ -22,6 +22,7 @@ public class AccountController {
     }
 
     @PostMapping
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<HttpStatus> addNewAccount (@RequestBody Account account) {
         if(accountService.accountExistsByEmail(account.getEmail())){
             log.info("Account with given email -> {} <- ALREADY EXISTS", account.getEmail());

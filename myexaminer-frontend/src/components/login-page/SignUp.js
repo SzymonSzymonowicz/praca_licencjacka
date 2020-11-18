@@ -29,6 +29,40 @@ function Copyright() {
 export default function SignUp(props) {
   const classes = props.className
 
+  function registerUser(email, password, recoveryQuestion, recoveryAnswer){
+    fetch('http://localhost:8080/account', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        recoveryQuestion: recoveryQuestion,
+        recoveryAnswer: recoveryAnswer
+      })
+    }).then(function (response) {
+      if (response.status === 200) {
+        console.log("User REGISTERED SUCCESSFULLY!")
+      } else if (response.status === 422 ){
+        console.log("Given email ALREADY EXISTS!")
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).catch(function (error) {
+      console.log("error")
+    })
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    
+    console.table([{"email": event.target.email.value, "password": event.target.password.value, "recoveryQuestion": event.target.recoveryQuestion.value, "recoveryAnswer": event.target.recoveryAnswer.value}])
+
+    registerUser(event.target.email.value, event.target.password.value, event.target.recoveryQuestion.value, event.target.recoveryQuestion.value, event.target.recoveryAnswer.value)
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -36,9 +70,9 @@ export default function SignUp(props) {
         <Typography component="h1" variant="h5">
           Rejestracja
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            {/*<Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="Imię"
                 name="firstName"
@@ -60,7 +94,7 @@ export default function SignUp(props) {
                 name="lastName"
                 autoComplete="Nazwisko"
               />
-            </Grid>
+            </Grid>*/}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -70,6 +104,7 @@ export default function SignUp(props) {
                 label="Email"
                 name="email"
                 autoComplete="Email"
+                autoFocus
               />
             </Grid>
             <Grid item xs={12}>
@@ -82,6 +117,28 @@ export default function SignUp(props) {
                 type="password"
                 id="password"
                 autoComplete="Hasło"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="recoveryQuestion"
+                label="Pytanie pomocniczne"
+                id="recoveryQuestion"
+                autoComplete="Pytanie pomocniczne"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="recoveryAnswer"
+                label="Odpowiedź"
+                id="recoveryAnswer"
+                autoComplete="Odpowiedź"
               />
             </Grid>
             <Grid item xs={12}>
