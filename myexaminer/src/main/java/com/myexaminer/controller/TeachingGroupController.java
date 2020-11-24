@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Log4j2
 @Controller
-@RequestMapping(path="/group")
+@RequestMapping(path="/teachinggroup")
 public class TeachingGroupController {
     private final TeachingGroupService teachingGroupService;
     private final LecturerService lecturerService;
@@ -30,8 +30,13 @@ public class TeachingGroupController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        if(!lecturerService.lecturerExistsById(teachingGroup.getTeachingGroupIdLecturer())){
-            log.info("Lecturer with given ID -> {} <- DOES NOT EXIST", teachingGroup.getTeachingGroupIdLecturer());
+        if(!lecturerService.lecturerExistsById(teachingGroup.getIdLecturer())){
+            log.info("Lecturer with given ID -> {} <- DOES NOT EXIST", teachingGroup.getIdLecturer());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        if(teachingGroupService.teachingGroupExistsByName(teachingGroup.getTeachingGroupName())){
+            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroup.getTeachingGroupName());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 

@@ -2,13 +2,15 @@ package com.myexaminer.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "teaching_group")
 public class TeachingGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idteaching_group")
+    @Column(name = "teaching_group_id")
     private int idTeachingGroup;
 
     @Column(name = "teaching_group_name")
@@ -21,8 +23,11 @@ public class TeachingGroup {
     @Temporal(TemporalType.TIMESTAMP)
     private Date teachingGroupDateOfStarting;
 
-    @Column(name = "lecturer_account_idaccount")
-    private int teachingGroupIdLecturer;
+    @Column(name = "fk_lecturer_account_id")
+    private int idLecturer;
+
+    @ManyToMany(mappedBy = "teachingGroups")
+    private Set<User> users = new HashSet<>();
 
     public int getIdTeachingGroup() {
         return idTeachingGroup;
@@ -56,22 +61,31 @@ public class TeachingGroup {
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
     }
 
-    public int getTeachingGroupIdLecturer() {
-        return teachingGroupIdLecturer;
+    public int getIdLecturer() {
+        return idLecturer;
     }
 
-    public void setTeachingGroupIdLecturer(int teachingGroupIdLecturer) {
-        this.teachingGroupIdLecturer = teachingGroupIdLecturer;
+    public void setIdLecturer(int idLecturer) {
+        this.idLecturer = idLecturer;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public TeachingGroup() {
     }
 
-    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int teachingGroupIdLecturer) {
+    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer, Set<User> users) {
         this.teachingGroupName = teachingGroupName;
         this.accessCode = accessCode;
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
-        this.teachingGroupIdLecturer = teachingGroupIdLecturer;
+        this.idLecturer = idLecturer;
+        this.users = users;
     }
 
     @Override
@@ -81,7 +95,8 @@ public class TeachingGroup {
                 ", teachingGroupName='" + teachingGroupName + '\'' +
                 ", accessCode='" + accessCode + '\'' +
                 ", teachingGroupDateOfStarting=" + teachingGroupDateOfStarting +
-                ", teachingGroupIdLecturer=" + teachingGroupIdLecturer +
+                ", idLecturer=" + idLecturer +
+                ", users=" + users +
                 '}';
     }
 }

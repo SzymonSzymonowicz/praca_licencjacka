@@ -1,17 +1,19 @@
 package com.myexaminer.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
 public class User {
 
     @Id
-    @Column(name = "account_idaccount")
+    @Column(name = "fk_account_id")
     private int idUser;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idaccount")
+    @JoinColumn(name = "account_id")
     Account account;
 
     @Column(name = "first_name")
@@ -29,6 +31,16 @@ public class User {
     @Column(name = "field_of_study")
     private String fieldOfStudy;
 
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "user_teaching_group",
+            joinColumns = @JoinColumn(name = "fk_user_account_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_teaching_group_id")
+    )
+    private Set<TeachingGroup> teachingGroups = new HashSet<>();
+
     public User() {
     }
 
@@ -38,6 +50,14 @@ public class User {
         this.index = index;
         this.faculty = faculty;
         this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public int getIdUser() {
@@ -86,6 +106,14 @@ public class User {
 
     public void setFieldOfStudy(String fieldOfStudy) {
         this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public Set<TeachingGroup> getTeachingGroups() {
+        return teachingGroups;
+    }
+
+    public void setTeachingGroups(Set<TeachingGroup> teachingGroups) {
+        this.teachingGroups = teachingGroups;
     }
 
     @Override

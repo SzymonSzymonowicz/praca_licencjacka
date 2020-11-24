@@ -21,4 +21,10 @@ public class TeachingGroupService {
 
         return teachingGroupById.isPresent();
     }
+
+    public boolean teachingGroupExistsByName(String teachingGroupName){
+        Optional<TeachingGroup> teachingGroupExistsByName = teachingGroupRepository.findByTeachingGroupName(teachingGroupName);
+
+        return teachingGroupExistsByName.isPresent();
+    }
 }

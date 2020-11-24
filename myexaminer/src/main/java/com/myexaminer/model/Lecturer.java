@@ -7,11 +7,11 @@ import javax.persistence.*;
 public class Lecturer {
 
     @Id
-    @Column(name = "account_idaccount")
+    @Column(name = "fk_account_id")
     private int idLecturer;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idaccount")
+    @JoinColumn(name = "account_id")
     Account account;
 
     @Column(name = "first_name")
