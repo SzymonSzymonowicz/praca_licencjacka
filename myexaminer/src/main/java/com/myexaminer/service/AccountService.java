@@ -23,9 +23,20 @@ public class AccountService {
         return accountById.isPresent();
     }
 
-    public boolean accountExistsByEmail(Account account){
-        Optional<Account> accountByEmail = accountRepository.findByEmail(account.getEmail());
+    public boolean accountExistsByEmail(String email){
+        Optional<Account> accountByEmail = accountRepository.findByEmail(email);
 
         return accountByEmail.isPresent();
+    }
+
+    public boolean checkCredentials(Account account){
+        Optional<Account> accountFromDB = accountRepository.findByEmail(account.getEmail());
+
+        if (accountFromDB.isEmpty()
+                || !account.getPassword().equals(accountFromDB.get().getPassword())) {
+            return false;
+        }
+
+        return true;
     }
 }

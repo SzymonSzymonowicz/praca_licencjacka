@@ -3,7 +3,6 @@ package com.myexaminer.controller;
 import com.myexaminer.model.Account;
 import com.myexaminer.service.AccountService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,7 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<HttpStatus> addNewAccount (@RequestBody Account account) {
-        if(accountService.accountExistsByEmail(account)){
+        if(accountService.accountExistsByEmail(account.getEmail())){
             log.info("Account with given email -> {} <- ALREADY EXISTS", account.getEmail());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
@@ -36,4 +35,14 @@ public class AccountController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<HttpStatus> login (@RequestBody() Account account) {
+        if(!accountService.checkCredentials(account)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }
