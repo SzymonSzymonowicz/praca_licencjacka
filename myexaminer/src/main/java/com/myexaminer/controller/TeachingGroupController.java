@@ -1,8 +1,10 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.model.TeachingGroup;
+import com.myexaminer.model.Student;
 import com.myexaminer.service.TeachingGroupService;
 import com.myexaminer.service.LecturerService;
+import com.myexaminer.service.StudentService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Log4j2
 @Controller
@@ -17,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TeachingGroupController {
     private final TeachingGroupService teachingGroupService;
     private final LecturerService lecturerService;
+    private final StudentService studentService;
 
-    public TeachingGroupController(TeachingGroupService teachingGroupService, LecturerService lecturerService) {
+    public TeachingGroupController(TeachingGroupService teachingGroupService, LecturerService lecturerService, StudentService studentService) {
         this.teachingGroupService = teachingGroupService;
         this.lecturerService = lecturerService;
+        this.studentService = studentService;
     }
 
     @PostMapping
@@ -42,6 +47,33 @@ public class TeachingGroupController {
 
         teachingGroupService.teachingGroupSave(teachingGroup);
         log.info("Group with ID -> {} <- has been ADDED", teachingGroup.getIdTeachingGroup());
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/addStudent")
+    public ResponseEntity<HttpStatus> addStudentToGroup (@RequestParam int idTeachingGroup, @RequestParam int idStudent) {
+        if(!teachingGroupService.teachingGroupExistsById(idTeachingGroup)){
+            log.info("Group with given ID -> {} <- DOES NOT EXIST", idTeachingGroup);
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        if(!studentService.studentExistsById(idStudent)){
+            log.info("Student with given ID -> {} <- DOES NOT EXIST", idStudent);
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        TeachingGroup teachingGroup = teachingGroupService.returnTeachingGroupById(idTeachingGroup);
+
+        Student student = studentService.returnStudentById(idStudent);
+
+        teachingGroup.addToUsers(student);
+
+        teachingGroupService.teachingGroupSave(teachingGroup);
+
+        student.addToTeachingGroups(teachingGroup);
+
+        studentService.studentSave(student);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

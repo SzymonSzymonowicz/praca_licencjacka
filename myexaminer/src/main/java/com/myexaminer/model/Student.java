@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "student")
+public class Student {
 
     @Id
     @Column(name = "fk_account_id")
-    private int idUser;
+    private int idStudent;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
@@ -22,7 +22,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "user_index")
+    @Column(name = "student_index")
     private String index;
 
     @Column(name = "faculty")
@@ -31,25 +31,20 @@ public class User {
     @Column(name = "field_of_study")
     private String fieldOfStudy;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "user_teaching_group",
-            joinColumns = @JoinColumn(name = "fk_user_account_id"),
-            inverseJoinColumns = @JoinColumn(name = "fk_teaching_group_id")
-    )
+    @ManyToMany(mappedBy = "students")
     private Set<TeachingGroup> teachingGroups = new HashSet<>();
 
-    public User() {
+    public Student() {
     }
 
-    public User(String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
+    public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy, Set<TeachingGroup> teachingGroups) {
+        this.idStudent = idStudent;
         this.firstName = firstName;
         this.lastName = lastName;
         this.index = index;
         this.faculty = faculty;
         this.fieldOfStudy = fieldOfStudy;
+        this.teachingGroups = teachingGroups;
     }
 
     public Account getAccount() {
@@ -60,12 +55,12 @@ public class User {
         this.account = account;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public int getIdStudent() {
+        return idStudent;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setIdStudent(int idStudent) {
+        this.idStudent = idStudent;
     }
 
     public String getFirstName() {
@@ -116,15 +111,21 @@ public class User {
         this.teachingGroups = teachingGroups;
     }
 
+    public void addToTeachingGroups(TeachingGroup teachingGroup) {
+        teachingGroups.add(teachingGroup);
+    }
+
     @Override
     public String toString() {
-        return "User{" +
-                "idUser=" + idUser +
+        return "Student{" +
+                "idStudent=" + idStudent +
+                ", account=" + account +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", index='" + index + '\'' +
                 ", faculty='" + faculty + '\'' +
                 ", fieldOfStudy='" + fieldOfStudy + '\'' +
+                ", teachingGroups=" + teachingGroups +
                 '}';
     }
 }

@@ -26,8 +26,15 @@ public class TeachingGroup {
     @Column(name = "fk_lecturer_account_id")
     private int idLecturer;
 
-    @ManyToMany(mappedBy = "teachingGroups")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "student_teaching_group",
+            joinColumns = @JoinColumn(name = "fk_teaching_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_student_account_id")
+    )
+    private Set<Student> students = new HashSet<>();
 
     public int getIdTeachingGroup() {
         return idTeachingGroup;
@@ -69,23 +76,27 @@ public class TeachingGroup {
         this.idLecturer = idLecturer;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<Student> getUsers() {
+        return students;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUsers(Set<Student> students) {
+        this.students = students;
+    }
+
+    public void addToUsers(Student student) {
+        students.add(student);
     }
 
     public TeachingGroup() {
     }
 
-    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer, Set<User> users) {
+    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer, Set<Student> students) {
         this.teachingGroupName = teachingGroupName;
         this.accessCode = accessCode;
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
         this.idLecturer = idLecturer;
-        this.users = users;
+        this.students = students;
     }
 
     @Override
@@ -96,7 +107,7 @@ public class TeachingGroup {
                 ", accessCode='" + accessCode + '\'' +
                 ", teachingGroupDateOfStarting=" + teachingGroupDateOfStarting +
                 ", idLecturer=" + idLecturer +
-                ", users=" + users +
+                ", students=" + students +
                 '}';
     }
 }
