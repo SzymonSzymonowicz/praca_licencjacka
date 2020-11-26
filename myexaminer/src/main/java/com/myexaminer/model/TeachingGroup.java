@@ -2,13 +2,15 @@ package com.myexaminer.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "teaching_group")
 public class TeachingGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idteaching_group")
+    @Column(name = "teaching_group_id")
     private int idTeachingGroup;
 
     @Column(name = "teaching_group_name")
@@ -21,8 +23,18 @@ public class TeachingGroup {
     @Temporal(TemporalType.TIMESTAMP)
     private Date teachingGroupDateOfStarting;
 
-    @Column(name = "lecturer_account_idaccount")
-    private int teachingGroupIdLecturer;
+    @Column(name = "fk_lecturer_account_id")
+    private int idLecturer;
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "student_teaching_group",
+            joinColumns = @JoinColumn(name = "fk_teaching_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_student_account_id")
+    )
+    private Set<Student> students = new HashSet<>();
 
     public int getIdTeachingGroup() {
         return idTeachingGroup;
@@ -56,22 +68,35 @@ public class TeachingGroup {
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
     }
 
-    public int getTeachingGroupIdLecturer() {
-        return teachingGroupIdLecturer;
+    public int getIdLecturer() {
+        return idLecturer;
     }
 
-    public void setTeachingGroupIdLecturer(int teachingGroupIdLecturer) {
-        this.teachingGroupIdLecturer = teachingGroupIdLecturer;
+    public void setIdLecturer(int idLecturer) {
+        this.idLecturer = idLecturer;
+    }
+
+    public Set<Student> getUsers() {
+        return students;
+    }
+
+    public void setUsers(Set<Student> students) {
+        this.students = students;
+    }
+
+    public void addToUsers(Student student) {
+        students.add(student);
     }
 
     public TeachingGroup() {
     }
 
-    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int teachingGroupIdLecturer) {
+    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer, Set<Student> students) {
         this.teachingGroupName = teachingGroupName;
         this.accessCode = accessCode;
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
-        this.teachingGroupIdLecturer = teachingGroupIdLecturer;
+        this.idLecturer = idLecturer;
+        this.students = students;
     }
 
     @Override
@@ -81,7 +106,8 @@ public class TeachingGroup {
                 ", teachingGroupName='" + teachingGroupName + '\'' +
                 ", accessCode='" + accessCode + '\'' +
                 ", teachingGroupDateOfStarting=" + teachingGroupDateOfStarting +
-                ", teachingGroupIdLecturer=" + teachingGroupIdLecturer +
+                ", idLecturer=" + idLecturer +
+                ", students=" + students +
                 '}';
     }
 }

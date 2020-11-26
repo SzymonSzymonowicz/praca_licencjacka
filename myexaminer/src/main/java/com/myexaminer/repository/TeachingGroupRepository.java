@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface TeachingGroupRepository extends JpaRepository<TeachingGroup, Integer> {
     long deleteByidTeachingGroup(int idTeachingGroup);
     Optional<TeachingGroup> findByidTeachingGroup(int idTeachingGroup);
+    Optional<TeachingGroup> findByTeachingGroupName(String teachingGroupName);
 }
