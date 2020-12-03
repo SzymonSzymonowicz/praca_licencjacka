@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 //import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router";
 
 function Copyright() {
   return (
@@ -27,8 +28,9 @@ function Copyright() {
 
 export default function SignIn(props) {
   const classes = props.className
+  const history = useHistory()
 
-  function loginUser(email, password){
+  const loginUser = (email, password) => {
     fetch('http://localhost:8080/account/login', {
       method: 'POST',
       headers: {
@@ -39,16 +41,16 @@ export default function SignIn(props) {
         email: email,
         password: password
       })
-    }).then(function (response) {
+     }).then((response) => {
       if (response.status === 200) {
         console.log("User loggged in!")
+        history.push("/landing")
+
       } else if (response.status === 401 ){
         console.log("UNAUTHORIZED!")
       } else {
         console.log("Something went wrong!")
       }
-    }).catch(function (error) {
-      console.log("error")
     })
   }
 

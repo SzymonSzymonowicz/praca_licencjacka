@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router";
 
 
 function Copyright() {
@@ -28,6 +29,7 @@ function Copyright() {
 
 export default function SignUp(props) {
   const classes = props.className
+  const history = useHistory()
 
   function registerUser(email, password, recoveryQuestion, recoveryAnswer){
     fetch('http://localhost:8080/account', {
@@ -45,6 +47,7 @@ export default function SignUp(props) {
     }).then(function (response) {
       if (response.status === 200) {
         console.log("User REGISTERED SUCCESSFULLY!")
+        history.push("/")
       } else if (response.status === 422 ){
         console.log("Given email ALREADY EXISTS!")
       } else {
