@@ -63,7 +63,7 @@ export default function SignUp(props) {
     
     console.table([{"email": event.target.email.value, "password": event.target.password.value, "recoveryQuestion": event.target.recoveryQuestion.value, "recoveryAnswer": event.target.recoveryAnswer.value}])
 
-    registerUser(event.target.email.value, event.target.password.value, event.target.recoveryQuestion.value, event.target.recoveryQuestion.value, event.target.recoveryAnswer.value)
+    registerUser(event.target.email.value, event.target.password.value, event.target.recoveryQuestion.value, event.target.recoveryAnswer.value)
   }
 
   return (
@@ -162,7 +162,7 @@ export default function SignUp(props) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link to="/" variant="body2">
+              <Link to="/">
                 Już posiadasz konto? Zaloguj się
               </Link>
             </Grid>

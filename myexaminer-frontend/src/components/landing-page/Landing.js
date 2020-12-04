@@ -12,8 +12,10 @@ import GTranslateIcon from '@material-ui/icons/GTranslate';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
 import Fab from '@material-ui/core/Fab';
-import NoteIcon from '@material-ui/icons/Note';
+import {default as NoteIcon} from '@material-ui/icons/LibraryBooks';
 import Zoom from '@material-ui/core/Zoom';
+import Tiles from './Tiles';
+import { AccountCircle } from '@material-ui/icons';
 
 
 const drawerWidth = 240;
@@ -80,9 +82,12 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
   }
 }));
 
@@ -126,9 +131,18 @@ export default function Landing(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.title}>
             My Examiner
           </Typography>
+          <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                //TODO onClick={}
+                color="inherit"
+              >
+              <AccountCircle fontSize="large"/>
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -179,11 +193,9 @@ export default function Landing(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography paragraph variant='h2'>
-          Witaj! Udało ci się zalogować!
+          Witaj! Udało Ci się zalogować!
         </Typography>
-        <Typography paragraph>
-          TODO Kafelkowe menu do podstron
-        </Typography>
+        <Tiles/>
       </main>
       <Zoom
           in = {true}
