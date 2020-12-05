@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { AppBar, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Toolbar, Typography, useTheme } from '@material-ui/core';
 
@@ -10,12 +10,14 @@ import AnnouncementIcon from '@material-ui/icons/Announcement';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GTranslateIcon from '@material-ui/icons/GTranslate';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import HomeIcon from '@material-ui/icons/Home';
 
 import Fab from '@material-ui/core/Fab';
 import {default as NoteIcon} from '@material-ui/icons/LibraryBooks';
 import Zoom from '@material-ui/core/Zoom';
 import Tiles from './Tiles';
 import { AccountCircle } from '@material-ui/icons';
+import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 
 
 const drawerWidth = 240;
@@ -96,6 +98,47 @@ export default function Landing(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  let match = useRouteMatch();
+  const history = useHistory();
+
+  const itemLists = [
+    [
+      {
+        "name": "Menu",
+        "icon": <HomeIcon/>,
+        "subpage": ""
+      },
+      {
+        "name": "Grupy",
+        "icon": <GroupIcon/>,
+        "subpage": "group"
+      },
+      {
+        "name": "Egzaminy",
+        "icon": <AssignmentIcon/>,
+        "subpage": "exams"
+      }
+    ],
+    [
+      {
+        "name": "Ogłoszenia",
+        "icon": <AnnouncementIcon/>,
+        "subpage": "announcments"
+      },
+      {
+        "name": "Oceny i statystyki",
+        "icon": <EqualizerIcon/>,
+        "subpage": "grades"
+      },
+      {
+        "name": "Tłumacz / Słownik",
+        "icon": <GTranslateIcon/>,
+        "subpage": "dictionary"
+      }
+    ]
+  ]
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -163,39 +206,55 @@ export default function Landing(props) {
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
-        <Divider />
-        <List>
-            <ListItem button>
-              <ListItemIcon><GroupIcon/></ListItemIcon>
-              <ListItemText primary="Grupy" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon><AssignmentIcon/></ListItemIcon>
-              <ListItemText primary="Egzaminy" />
-            </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem button>
-            <ListItemIcon><AnnouncementIcon/></ListItemIcon>
-            <ListItemText primary="Ogłoszenia" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon><EqualizerIcon/></ListItemIcon>
-            <ListItemText primary="Oceny i statystyki" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon><GTranslateIcon/></ListItemIcon>
-            <ListItemText primary="Tłumacz" />
-          </ListItem>
-        </List>
+        {itemLists.map((itemList, listIndex, array) => {
+          let prevListLength = 0
+          if(listIndex !== 0)
+            prevListLength = array[listIndex - 1].length
+          return <div key={listIndex}>
+            <Divider />
+            <List>
+              {itemList.map((item, index) => (
+                <ListItem button
+                  key={index} 
+                  selected={selectedIndex === index + prevListLength}
+                  onClick={() => {
+                    setSelectedIndex(index + prevListLength);
+                    history.push(`${match.path}/${item.subpage}`)
+                }}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.name}/>
+                </ListItem>
+              ))}
+            </List>
+          </div>
+        })}
       </Drawer>
       <main className={classes.content}>
+        {/* Place holder for toolbar so that content isn't overlaped by appbar */}
         <div className={classes.toolbar} />
-        <Typography paragraph variant='h2'>
-          Witaj! Udało Ci się zalogować!
-        </Typography>
-        <Tiles/>
+          <Switch>
+            <Route exact path={`${match.path}`}>
+              <Typography paragraph variant='h2'>
+                Witaj! Udało Ci się zalogować!
+              </Typography>
+              <Tiles setSelectedIndex={setSelectedIndex}/>
+            </Route>
+            <Route path={`${match.path}/group`}>
+              <h1>Grupy</h1>
+            </Route>
+            <Route path={`${match.path}/exams`}>
+              <h1>Egzaminy</h1>
+            </Route>
+            <Route path={`${match.path}/announcments`}>
+              <h1>Ogłoszenia</h1>
+            </Route>
+            <Route path={`${match.path}/grades`}>
+              <h1>Oceny</h1>
+            </Route>
+            <Route path={`${match.path}/dictionary`}>
+              <h1>Słownik</h1>
+            </Route>
+          </Switch>
       </main>
       <Zoom
           in = {true}
