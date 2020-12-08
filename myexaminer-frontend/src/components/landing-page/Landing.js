@@ -243,7 +243,7 @@ export default function Landing(props) {
               <h1>Grupy</h1>
             </Route>
             <Route path={`${match.path}/exams`}>
-              <h1>Egzaminy</h1>
+              <Exams/>
             </Route>
             <Route path={`${match.path}/announcments`}>
               <h1>Ogłoszenia</h1>

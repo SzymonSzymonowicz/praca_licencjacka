@@ -1,5 +1,5 @@
 import { Card, CardActionArea, CardContent, CardMedia, Grid, makeStyles, Typography } from '@material-ui/core'
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import React from 'react'
 
 const useStyles = makeStyles({
@@ -14,6 +14,7 @@ const useStyles = makeStyles({
 export default function Tiles(props) {
   const classes = useStyles();
   const history = useHistory();
+  let match = useRouteMatch();
 
   const tilesData = [
     {
@@ -59,7 +60,7 @@ export default function Tiles(props) {
         <Grid item xs={12} sm={6} lg={4} key={tile.path}>
           <Card className={classes.root} elevation={12} 
             onClick={() => {
-              history.push(`${tile.path}`)
+              history.push(`${match.path}/${tile.path}`)
               props.setSelectedIndex(index + 1)
           }}>
             <CardActionArea>
