@@ -18,6 +18,8 @@ import Zoom from '@material-ui/core/Zoom';
 import Tiles from './Tiles';
 import { AccountCircle } from '@material-ui/icons';
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
+import Exams from 'components/subpages/Exams';
+import Exam from 'components/exam/Exam';
 
 
 const drawerWidth = 240;
@@ -253,6 +255,9 @@ export default function Landing(props) {
             </Route>
             <Route path={`${match.path}/dictionary`}>
               <h1>Słownik</h1>
+            </Route>
+            <Route path={`${match.path}/exam/:id`}>
+              <Exam/>
             </Route>
           </Switch>
       </main>

@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import TimerIcon from '@material-ui/icons/Timer';
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -21,12 +22,15 @@ export default function Exams(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
+  const history = useHistory()
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   const exams = [
     {
+      "id": 0,
       "title": "Idiomy",
       "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
       "date": "11-12-2020",
@@ -34,6 +38,7 @@ export default function Exams(props) {
       "duration": "45 min"
     },
     {
+      "id": 1,
       "title": "Idiomy",
       "description": "Słówka z rodziału VI<br/>Czasy<ul><li>Present perfect</li><li>past simple</li><li>past perfect</li></ul>",
       "date": "11-12-2020",
@@ -41,6 +46,7 @@ export default function Exams(props) {
       "duration": "45 min"
     },
     {
+      "id": 2,
       "title": "Idiomy",
       "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
       "date": "11-12-2020",
@@ -48,6 +54,7 @@ export default function Exams(props) {
       "duration": "45 min"
     },
     {
+      "id": 3,
       "title": "Idiomy",
       "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
       "date": "11-12-2020",
@@ -60,7 +67,7 @@ export default function Exams(props) {
   return (
     <>
       {exams.map((exam,index) => (
-      <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
+      <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2bh-content"
@@ -72,7 +79,7 @@ export default function Exams(props) {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography component="div">
             <div dangerouslySetInnerHTML={{__html: exam.description}}></div>
           </Typography>
         </AccordionDetails>
@@ -81,7 +88,7 @@ export default function Exams(props) {
           <EventIcon/><Typography>{exam.date}</Typography>
           <HourglassEmptyIcon/><Typography>{exam.hour}</Typography>
           <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration}</Typography>
-          <Button size="small" onClick={() => (console.log("redirect"))}>Rozpocznij</Button>
+          <Button size="small" onClick={() => (history.push(`/landing/exam/${exam.id}`))}>Rozpocznij</Button>
           <Button size="small" color="primary">
             Wyniki
           </Button>
