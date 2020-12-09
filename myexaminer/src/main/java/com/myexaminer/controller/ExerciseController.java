@@ -1,0 +1,54 @@
+package com.myexaminer.controller;
+
+import com.myexaminer.model.Account;
+import com.myexaminer.model.Exercise;
+import com.myexaminer.service.AccountService;
+import com.myexaminer.service.ExerciseService;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@Log4j2
+@Controller
+@RequestMapping(path="/exercise")
+public class ExerciseController {
+
+    private final ExerciseService exerciseService;
+
+    public ExerciseController(ExerciseService exerciseService) {
+        this.exerciseService = exerciseService;
+    }
+
+    @PostMapping
+    public ResponseEntity<HttpStatus> addNewExercise (@RequestBody Exercise exercise) {
+        if(exerciseService.exerciseExistsById(exercise.getIdExercise())){
+            log.info("Exercise with given ID -> {} <- ALREADY EXISTS", exercise.getIdExercise());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        exerciseService.exerciseSave(exercise);
+        log.info("Exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public @ResponseBody Exercise getExercise (@RequestBody Map<String, Integer> map_idExercise) {
+        Integer idExercise = map_idExercise.get("idExercise");
+        if(!exerciseService.exerciseExistsById(idExercise)){
+            log.info("Exercise with given ID -> {} <- DOES NOT EXIST", idExercise);
+            return null;
+        }
+
+        Exercise returnedExercise = exerciseService.returnExerciseById(idExercise);
+
+        log.info("Exercise with ID -> {} <- HAS BEEN RETURNED", returnedExercise.getIdExercise());
+
+        return returnedExercise;
+    }
+
+}

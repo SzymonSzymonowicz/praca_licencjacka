@@ -24,4 +24,8 @@ public class StudentService {
 
         return studentById.get();
     }
+
+    public Iterable<Student> returnAllStudents(){
+        return studentRepository.findAll();
+    }
 }
