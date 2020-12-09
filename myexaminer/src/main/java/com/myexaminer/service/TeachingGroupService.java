@@ -1,5 +1,6 @@
 package com.myexaminer.service;
 
+import com.myexaminer.model.Student;
 import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.repository.TeachingGroupRepository;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,12 @@ import java.util.Optional;
 public class TeachingGroupService {
 
     private final TeachingGroupRepository teachingGroupRepository;
+    private final StudentService studentService;
 
-    public TeachingGroupService(TeachingGroupRepository teachingGroupRepository){this.teachingGroupRepository = teachingGroupRepository;}
+    public TeachingGroupService(TeachingGroupRepository teachingGroupRepository, StudentService studentService){
+        this.teachingGroupRepository = teachingGroupRepository;
+        this.studentService = studentService;
+    }
 
     public void teachingGroupSave(TeachingGroup teachingGroup){
         teachingGroupRepository.save(teachingGroup);}
@@ -32,5 +37,19 @@ public class TeachingGroupService {
         Optional<TeachingGroup> teachingGroupExistsByName = teachingGroupRepository.findByTeachingGroupName(teachingGroupName);
 
         return teachingGroupExistsByName.isPresent();
+    }
+
+    public void addStudentToTeachingGroup(int idTeachingGroup, int idStudent){
+        TeachingGroup teachingGroup = returnTeachingGroupById(idTeachingGroup);
+
+        Student student = studentService.returnStudentById(idStudent);
+
+        teachingGroup.addToUsers(student);
+
+        teachingGroupSave(teachingGroup);
+
+        student.addToTeachingGroups(teachingGroup);
+
+        studentService.studentSave(student);
     }
 }

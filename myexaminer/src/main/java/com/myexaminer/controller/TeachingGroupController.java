@@ -63,17 +63,8 @@ public class TeachingGroupController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        TeachingGroup teachingGroup = teachingGroupService.returnTeachingGroupById(idTeachingGroup);
-
-        Student student = studentService.returnStudentById(idStudent);
-
-        teachingGroup.addToUsers(student);
-
-        teachingGroupService.teachingGroupSave(teachingGroup);
-
-        student.addToTeachingGroups(teachingGroup);
-
-        studentService.studentSave(student);
+        teachingGroupService.addStudentToTeachingGroup(idTeachingGroup, idStudent);
+        log.info("Student with ID -> {} <- has been ADDED to TeachingGroup with ID -> {} <-", idStudent, idTeachingGroup);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

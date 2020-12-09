@@ -36,6 +36,9 @@ public class TeachingGroup {
     )
     private Set<Student> students = new HashSet<>();
 
+    @OneToMany(mappedBy="teachingGroup")
+    private Set<Exam> exams;
+
     public int getIdTeachingGroup() {
         return idTeachingGroup;
     }
@@ -88,15 +91,32 @@ public class TeachingGroup {
         students.add(student);
     }
 
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
+    public Set<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(Set<Exam> exams) {
+        this.exams = exams;
+    }
+
     public TeachingGroup() {
     }
 
-    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer, Set<Student> students) {
+    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer, Set<Student> students, Set<Exam> exams) {
         this.teachingGroupName = teachingGroupName;
         this.accessCode = accessCode;
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
         this.idLecturer = idLecturer;
         this.students = students;
+        this.exams = exams;
     }
 
     @Override
@@ -108,6 +128,7 @@ public class TeachingGroup {
                 ", teachingGroupDateOfStarting=" + teachingGroupDateOfStarting +
                 ", idLecturer=" + idLecturer +
                 ", students=" + students +
+                ", exams=" + exams +
                 '}';
     }
 }
