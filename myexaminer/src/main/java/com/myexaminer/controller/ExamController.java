@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Log4j2
 @Controller
@@ -54,8 +57,10 @@ public class ExamController {
         return returnedExam;
     }
 
-    @GetMapping("/all")
-    public @ResponseBody Iterable<ExamDTO> getAllExams() {
-        return examService.returnAllExamsDTO();
+    @GetMapping("/{idGroup}")
+    public @ResponseBody Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
+        return StreamSupport.stream(examService.returnAllExams().spliterator(), false).
+                filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
+                map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
     }
 }

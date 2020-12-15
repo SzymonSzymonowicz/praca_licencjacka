@@ -27,4 +27,8 @@ public class ExerciseService {
 
         return exerciseById.get();
     }
+
+    public Iterable<Exercise> returnAllExercises(){
+        return exerciseRepository.findAll();
+    }
 }
