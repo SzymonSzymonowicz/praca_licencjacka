@@ -2,6 +2,8 @@ package com.myexaminer.controller;
 
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Exercise;
+import com.myexaminer.modelDTO.ExamDTO;
+import com.myexaminer.modelDTO.ExerciseDTO;
 import com.myexaminer.service.AccountService;
 import com.myexaminer.service.ExerciseService;
 import lombok.extern.log4j.Log4j2;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Log4j2
 @Controller
@@ -49,6 +53,13 @@ public class ExerciseController {
         log.info("Exercise with ID -> {} <- HAS BEEN RETURNED", returnedExercise.getIdExercise());
 
         return returnedExercise;
+    }
+
+    @GetMapping("/{idExam}")
+    public @ResponseBody Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable int idExam) {
+        return StreamSupport.stream(exerciseService.returnAllExercises().spliterator(), false).
+                filter(exercise -> exercise.getExam().getIdExam() == idExam).
+                map(exercise -> new ExerciseDTO(exercise)).collect(Collectors.toList());
     }
 
 }

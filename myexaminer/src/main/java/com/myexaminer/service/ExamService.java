@@ -30,7 +30,7 @@ public class ExamService {
         return examById.get();
     }
 
-    public Iterable<ExamDTO> returnAllExamsDTO(){
-        return examRepository.findAll().stream().map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
+    public Iterable<Exam> returnAllExams(){
+        return examRepository.findAll();
     }
 }

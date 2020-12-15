@@ -25,6 +25,9 @@ public class Exam {
     @Temporal(TemporalType.TIMESTAMP)
     private Date examAvailableDate;
 
+    @Column(name = "exam_duration_time")
+    private Integer examDurationTime;
+
     @ManyToOne
     @JoinColumn(name="fk_teaching_group_id", nullable=false)
     private TeachingGroup teachingGroup;
@@ -72,6 +75,14 @@ public class Exam {
         this.examAvailableDate = examAvailableDate;
     }
 
+    public Integer getExamDurationTime() {
+        return examDurationTime;
+    }
+
+    public void setExamDurationTime(Integer examDurationTime) {
+        this.examDurationTime = examDurationTime;
+    }
+
     public List<Exercise> getExercises() {
         return exercises;
     }
@@ -80,10 +91,11 @@ public class Exam {
         this.exercises = exercises;
     }
 
-    public Exam(String examName, String examDescription, Date examAvailableDate, TeachingGroup teachingGroup, List<Exercise> exercises) {
+    public Exam(String examName, String examDescription, Date examAvailableDate, Integer examDurationTime, TeachingGroup teachingGroup, List<Exercise> exercises) {
         this.examName = examName;
         this.examDescription = examDescription;
         this.examAvailableDate = examAvailableDate;
+        this.examDurationTime = examDurationTime;
         this.teachingGroup = teachingGroup;
         this.exercises = exercises;
     }
@@ -98,8 +110,8 @@ public class Exam {
                 ", examName='" + examName + '\'' +
                 ", examDescription='" + examDescription + '\'' +
                 ", examAvailableDate=" + examAvailableDate +
-                ", teachingGroup=" + teachingGroup +
-                ", exercises=" + exercises +
+                ", examDurationTime=" + examDurationTime +
+                ", teachingGroup=" + teachingGroup.getIdTeachingGroup() +
                 '}';
     }
 }

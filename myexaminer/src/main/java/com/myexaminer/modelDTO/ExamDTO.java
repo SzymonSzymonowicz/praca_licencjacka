@@ -19,7 +19,7 @@ public class ExamDTO {
 
     private Date examAvailableDate;
 
-    private List<ExerciseDTO> exercises;
+    private Integer examDurationTime;
 
     public int getIdExam() {
         return idExam;
@@ -53,12 +53,12 @@ public class ExamDTO {
         this.examAvailableDate = examAvailableDate;
     }
 
-    public List<ExerciseDTO> getExercises() {
-        return exercises;
+    public Integer getExamDurationTime() {
+        return examDurationTime;
     }
 
-    private List<ExerciseDTO>  setExercises(List<Exercise> exercises) {
-        return exercises.stream().map(exercise -> new ExerciseDTO(exercise)).collect(Collectors.toList());
+    public void setExamDurationTime(Integer examDurationTime) {
+        this.examDurationTime = examDurationTime;
     }
 
     public ExamDTO(Exam exam) {
@@ -66,7 +66,7 @@ public class ExamDTO {
         this.examName = exam.getExamName();
         this.examDescription = exam.getExamDescription();
         this.examAvailableDate = exam.getExamAvailableDate();
-        this.exercises = setExercises(exam.getExercises());
+        this.examDurationTime = exam.getExamDurationTime();
     }
 
 }
