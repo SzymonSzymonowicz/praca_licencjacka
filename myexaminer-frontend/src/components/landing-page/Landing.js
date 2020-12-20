@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { AppBar, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Toolbar, Typography, useTheme } from '@material-ui/core';
 
@@ -96,10 +96,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Landing(props) {
-  
+  const [exams, setExams] = useState([])
+
+  const groupId = 1
+
+  useEffect(() => {
+    fetch('http://localhost:8080/exam/' + groupId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).then( examsJson => {
+      console.log(examsJson)
+      setExams(examsJson)
+    }).catch(function (error) {
+      console.log("error")
+    })
+  }, [groupId])
+
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   let match = useRouteMatch();
@@ -245,7 +269,7 @@ export default function Landing(props) {
               <h1>Grupy</h1>
             </Route>
             <Route path={`${match.path}/exams`}>
-              <Exams/>
+              <Exams exams={exams}/>
             </Route>
             <Route path={`${match.path}/announcments`}>
               <h1>Ogłoszenia</h1>

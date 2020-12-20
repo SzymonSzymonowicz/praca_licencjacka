@@ -9,14 +9,10 @@ import { useParams } from 'react-router-dom';
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
-    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
-    // And swap it with the current element.
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
@@ -25,29 +21,32 @@ function shuffle(array) {
   return array;
 }
 
-export default function Exam(props) {
-  // TODO set up fetching from backend
-  // id for request from backend
+export default function Exam() {
   let { id } = useParams();
 
-  const tasks = [
-    {
-      type: "O",
-      points: 2,
-      instruction: "Polecenie trudne nie do zrobienia",
-    },
-    {
-      type: "O",
-      points: 5,
-      instruction: "Całka powierzchniowa z rogu gabriela",
-    },
-    {
-      type: "Z",
-      points: 1,
-      instruction: "ABCD?",
-      answers: ["Yep, T", "Nopers, F", "Lubie placki, F", "Heeheheerbata, F"]
-    }
-  ]
+  const [tasks, setTasks] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('http://localhost:8080/exercise/' + id, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).then( tasksJson => {
+      console.log(tasksJson)
+      console.log(tasksJson.map(task => JSON.parse(task.exerciseBody)))
+      setTasks(tasksJson.map(task => JSON.parse(task.exerciseBody)))
+    }).catch(function (error) {
+      console.log("error")
+    })
+  }, [id])
 
   return (
     <Grid
@@ -70,3 +69,16 @@ export default function Exam(props) {
     )
 }
 
+  // const fixedTasks = [
+  //   {
+  //     type: "O",
+  //     points: 5,
+  //     instruction: "Całka powierzchniowa z rogu gabriela",
+  //   },
+  //   {
+  //     type: "Z",
+  //     points: 1,
+  //     instruction: "ABCD?",
+  //     answers: ["Yep, T", "Nopers, F", "Lubie placki, F", "Heeheheerbata, F"]
+  //   }
+  // ]
