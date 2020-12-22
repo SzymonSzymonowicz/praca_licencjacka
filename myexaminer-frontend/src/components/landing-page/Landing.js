@@ -13,6 +13,8 @@ import Notepad from './Notepad'
 import { Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import Exams from 'components/subpages/Exams';
 import Exam from 'components/exam/Exam';
+import Groups from "../subpages/Groups";
+import Lesson from "../group/Lesson";
 
 
 const drawerWidth = 240;
@@ -257,7 +259,7 @@ export default function Landing(props) {
               <Tiles setSelectedIndex={setSelectedIndex}/>
             </Route>
             <Route path={`${match.path}/group`}>
-              <h1>Grupy</h1>
+              <Groups/>
             </Route>
             <Route path={`${match.path}/exams`}>
               <Exams exams={exams}/>
@@ -273,6 +275,9 @@ export default function Landing(props) {
             </Route>
             <Route path={`${match.path}/exam/:id`}>
               <Exam/>
+            </Route>
+            <Route path={`${match.path}/lesson/`}>
+              <Lesson/>
             </Route>
           </Switch>
       </main>
