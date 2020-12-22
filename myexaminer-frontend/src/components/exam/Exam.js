@@ -1,6 +1,7 @@
 import { Button, Grid } from '@material-ui/core'
-import Closedtask from 'components/exam/ClosedTask'
+import ClosedTask from 'components/exam/ClosedTask'
 import OpenTask from 'components/exam/OpenTask'
+import FillBlanksTask from 'components/exam/FillBlanksTask'
 import React from 'react'
 import { useParams } from 'react-router-dom';
 
@@ -59,7 +60,9 @@ export default function Exam() {
         if (task.type === "O") 
           return <Grid item xs={12} key={index}><OpenTask index={index} instruction={task.instruction} points={task.points}/></Grid>
         else if (task.type === "Z")
-          return <Grid item xs={12} key={index}><Closedtask index={index} instruction={task.instruction} points={task.points} answers={shuffle(task.answers)}/></Grid>
+          return <Grid item xs={12} key={index}><ClosedTask index={index} instruction={task.instruction} points={task.points} answers={shuffle(task.answers)}/></Grid>
+        else if (task.type === "L")
+          return <Grid item xs={12} key={index}><FillBlanksTask index={index} instruction={task.instruction} points={task.points} fill={task.fill}/></Grid>
         else
           return <></>
       })}
@@ -80,5 +83,11 @@ export default function Exam() {
   //     points: 1,
   //     instruction: "ABCD?",
   //     answers: ["Yep, T", "Nopers, F", "Lubie placki, F", "Heeheheerbata, F"]
+  //   },
+  //   {
+  //     type: "L",
+  //     points: 3,
+  //     instruction: "Wpisz odpowiednie słowa",
+  //     fill: "Welcome to the <blank>! <blank> in the jar. Sultans of <blank>."
   //   }
   // ]
