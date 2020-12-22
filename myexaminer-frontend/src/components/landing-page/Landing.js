@@ -1,23 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { AppBar, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Toolbar, Typography, useTheme } from '@material-ui/core';
 
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import GroupIcon from '@material-ui/icons/Group';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
-import GTranslateIcon from '@material-ui/icons/GTranslate';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import HomeIcon from '@material-ui/icons/Home';
+import {
+  Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,
+  Group as GroupIcon, Announcement as AnnouncementIcon, Equalizer as EqualizerIcon,
+  GTranslate as GTranslateIcon, Assignment as AssignmentIcon, Home as HomeIcon, AccountCircle
+ } from '@material-ui/icons'
 
-import Fab from '@material-ui/core/Fab';
-import {default as NoteIcon} from '@material-ui/icons/LibraryBooks';
-import Zoom from '@material-ui/core/Zoom';
 import Tiles from './Tiles';
-import { AccountCircle } from '@material-ui/icons';
-import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
+import Notepad from './Notepad'
+import { Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import Exams from 'components/subpages/Exams';
 import Exam from 'components/exam/Exam';
 
@@ -92,14 +85,41 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  popPaper: {
+    width: "40%",
   }
 }));
 
 export default function Landing(props) {
-  
+  const [exams, setExams] = useState([])
+
+  const groupId = 1
+
+  useEffect(() => {
+    fetch('http://localhost:8080/exam/' + groupId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).then( examsJson => {
+      console.log(examsJson)
+      setExams(examsJson)
+    }).catch(function (error) {
+      console.log("error")
+    })
+  }, [groupId])
+
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   let match = useRouteMatch();
@@ -148,11 +168,6 @@ export default function Landing(props) {
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  const transitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
   };
 
   return (
@@ -245,7 +260,7 @@ export default function Landing(props) {
               <h1>Grupy</h1>
             </Route>
             <Route path={`${match.path}/exams`}>
-              <Exams/>
+              <Exams exams={exams}/>
             </Route>
             <Route path={`${match.path}/announcments`}>
               <h1>Ogłoszenia</h1>
@@ -261,17 +276,7 @@ export default function Landing(props) {
             </Route>
           </Switch>
       </main>
-      <Zoom
-          in = {true}
-          timeout={transitionDuration}
-          style={{
-            transitionDelay: `${transitionDuration.exit}ms`,
-          }}
-        >
-          <Fab aria-label='Notepad' className={classes.fab} color='primary'>
-            <NoteIcon/>
-          </Fab>
-        </Zoom>
+      <Notepad classes={classes}/>
     </div>
   )
 }

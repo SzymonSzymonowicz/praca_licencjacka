@@ -1,6 +1,7 @@
 import { Button, Grid } from '@material-ui/core'
-import Closedtask from 'components/exam/ClosedTask'
+import ClosedTask from 'components/exam/ClosedTask'
 import OpenTask from 'components/exam/OpenTask'
+import FillBlanksTask from 'components/exam/FillBlanksTask'
 import React from 'react'
 import { useParams } from 'react-router-dom';
 
@@ -9,14 +10,10 @@ import { useParams } from 'react-router-dom';
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
-    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
-    // And swap it with the current element.
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
@@ -25,29 +22,32 @@ function shuffle(array) {
   return array;
 }
 
-export default function Exam(props) {
-  // TODO set up fetching from backend
-  // id for request from backend
+export default function Exam() {
   let { id } = useParams();
 
-  const tasks = [
-    {
-      type: "O",
-      points: 2,
-      instruction: "Polecenie trudne nie do zrobienia",
-    },
-    {
-      type: "O",
-      points: 5,
-      instruction: "Całka powierzchniowa z rogu gabriela",
-    },
-    {
-      type: "Z",
-      points: 1,
-      instruction: "ABCD?",
-      answers: ["Yep, T", "Nopers, F", "Lubie placki, F", "Heeheheerbata, F"]
-    }
-  ]
+  const [tasks, setTasks] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('http://localhost:8080/exercise/' + id, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).then( tasksJson => {
+      console.log(tasksJson)
+      console.log(tasksJson.map(task => JSON.parse(task.exerciseBody)))
+      setTasks(tasksJson.map(task => JSON.parse(task.exerciseBody)))
+    }).catch(function (error) {
+      console.log("error")
+    })
+  }, [id])
 
   return (
     <Grid
@@ -60,7 +60,9 @@ export default function Exam(props) {
         if (task.type === "O") 
           return <Grid item xs={12} key={index}><OpenTask index={index} instruction={task.instruction} points={task.points}/></Grid>
         else if (task.type === "Z")
-          return <Grid item xs={12} key={index}><Closedtask index={index} instruction={task.instruction} points={task.points} answers={shuffle(task.answers)}/></Grid>
+          return <Grid item xs={12} key={index}><ClosedTask index={index} instruction={task.instruction} points={task.points} answers={shuffle(task.answers)}/></Grid>
+        else if (task.type === "L")
+          return <Grid item xs={12} key={index}><FillBlanksTask index={index} instruction={task.instruction} points={task.points} fill={task.fill}/></Grid>
         else
           return <></>
       })}
@@ -70,3 +72,22 @@ export default function Exam(props) {
     )
 }
 
+  // const fixedTasks = [
+  //   {
+  //     type: "O",
+  //     points: 5,
+  //     instruction: "Całka powierzchniowa z rogu gabriela",
+  //   },
+  //   {
+  //     type: "Z",
+  //     points: 1,
+  //     instruction: "ABCD?",
+  //     answers: ["Yep, T", "Nopers, F", "Lubie placki, F", "Heeheheerbata, F"]
+  //   },
+  //   {
+  //     type: "L",
+  //     points: 3,
+  //     instruction: "Wpisz odpowiednie słowa",
+  //     fill: "Welcome to the <blank>! <blank> in the jar. Sultans of <blank>."
+  //   }
+  // ]

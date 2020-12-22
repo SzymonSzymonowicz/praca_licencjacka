@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Exams(props) {
+export default function Exams({exams}, props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -27,42 +27,6 @@ export default function Exams(props) {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
-  const exams = [
-    {
-      "id": 0,
-      "title": "Idiomy",
-      "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
-      "date": "11-12-2020",
-      "hour": "13:30",
-      "duration": "45 min"
-    },
-    {
-      "id": 1,
-      "title": "Idiomy",
-      "description": "Słówka z rodziału VI<br/>Czasy<ul><li>Present perfect</li><li>past simple</li><li>past perfect</li></ul>",
-      "date": "11-12-2020",
-      "hour": "13:30",
-      "duration": "45 min"
-    },
-    {
-      "id": 2,
-      "title": "Idiomy",
-      "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
-      "date": "11-12-2020",
-      "hour": "13:30",
-      "duration": "45 min"
-    },
-    {
-      "id": 3,
-      "title": "Idiomy",
-      "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
-      "date": "11-12-2020",
-      "hour": "13:30",
-      "duration": "45 min"
-    },
-  ]
-
 
   return (
     <>
@@ -88,7 +52,7 @@ export default function Exams(props) {
           <EventIcon/><Typography>{exam.date}</Typography>
           <HourglassEmptyIcon/><Typography>{exam.hour}</Typography>
           <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration}</Typography>
-          <Button size="small" onClick={() => (history.push(`/landing/exam/${exam.id}`))}>Rozpocznij</Button>
+          <Button size="small" onClick={() => (history.push(`/landing/exam/${exam.idExam}`))}>Rozpocznij</Button>
           <Button size="small" color="primary">
             Wyniki
           </Button>
@@ -97,3 +61,22 @@ export default function Exams(props) {
     </>
   )
 }
+
+// const fixedExams = [
+//   {
+//     "id": 0,
+//     "title": "Idiomy",
+//     "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
+//     "date": "11-12-2020",
+//     "hour": "13:30",
+//     "duration": "45 min"
+//   },
+//   {
+//     "id": 1,
+//     "title": "Idiomy",
+//     "description": "Słówka z rodziału VI<br/>Czasy<ul><li>Present perfect</li><li>past simple</li><li>past perfect</li></ul>",
+//     "date": "11-12-2020",
+//     "hour": "13:30",
+//     "duration": "45 min"
+//   }
+// ]

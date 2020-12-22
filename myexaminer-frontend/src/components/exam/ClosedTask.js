@@ -2,7 +2,7 @@ import { FormControl, FormControlLabel, Paper, Radio, RadioGroup, Typography } f
 import React from 'react'
 
 
-export default function Closedtask(props) {
+export default function ClosedTask(props) {
   const [value, setValue] = React.useState(null);
 
   const handleChange = (event) => {

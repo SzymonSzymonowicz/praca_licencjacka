@@ -55,10 +55,10 @@ export default function Tiles(props) {
   ]
 
   return (
-    <Grid container spacing={4} >
+    <Grid container spacing={4} alignItems="stretch">
       {tilesData.map((tile, index) => (
         <Grid item xs={12} sm={6} lg={4} key={tile.path}>
-          <Card className={classes.root} elevation={12} 
+          <Card className={classes.root} elevation={12} style={{height: '100%'}}
             onClick={() => {
               history.push(`${match.path}/${tile.path}`)
               props.setSelectedIndex(index + 1)
