@@ -2,6 +2,7 @@ package com.myexaminer.service;
 
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Lecturer;
+import com.myexaminer.model.Student;
 import com.myexaminer.repository.LecturerRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,11 @@ public class LecturerService {
         Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
 
         return lecturerById.isPresent();
+    }
+
+    public Lecturer returnLecturerById(int idLecturer){
+        Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
+
+        return lecturerById.get();
     }
 }

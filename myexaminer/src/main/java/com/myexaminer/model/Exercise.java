@@ -1,6 +1,7 @@
 package com.myexaminer.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "exercise")
@@ -17,6 +18,9 @@ public class Exercise {
     @ManyToOne
     @JoinColumn(name="fk_exam_id", nullable=false)
     private Exam exam;
+
+    @OneToMany(mappedBy="exercise")
+    private List<ArchiveExercise> archiveExercises;
 
     public int getIdExercise() {
         return idExercise;
@@ -42,9 +46,18 @@ public class Exercise {
         this.exam = exam;
     }
 
-    public Exercise(String exerciseBody, Exam exam) {
+    public List<ArchiveExercise> getArchiveExercises() {
+        return archiveExercises;
+    }
+
+    public void setArchiveExercises(List<ArchiveExercise> archiveExercises) {
+        this.archiveExercises = archiveExercises;
+    }
+
+    public Exercise(String exerciseBody, Exam exam, List<ArchiveExercise> archiveExercises) {
         this.exerciseBody = exerciseBody;
         this.exam = exam;
+        this.archiveExercises = archiveExercises;
     }
 
     public Exercise() {

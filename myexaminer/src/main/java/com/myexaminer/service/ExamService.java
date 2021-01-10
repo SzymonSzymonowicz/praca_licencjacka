@@ -1,6 +1,7 @@
 package com.myexaminer.service;
 
 import com.myexaminer.model.Exam;
+import com.myexaminer.model.Exercise;
 import com.myexaminer.modelDTO.ExamDTO;
 import com.myexaminer.repository.ExamRepository;
 import org.springframework.stereotype.Service;

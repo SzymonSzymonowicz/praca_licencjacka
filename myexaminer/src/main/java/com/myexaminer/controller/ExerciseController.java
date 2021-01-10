@@ -1,10 +1,8 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.model.Account;
+import com.myexaminer.exerciseTypes.ReceivedExercise;
 import com.myexaminer.model.Exercise;
-import com.myexaminer.modelDTO.ExamDTO;
 import com.myexaminer.modelDTO.ExerciseDTO;
-import com.myexaminer.service.AccountService;
 import com.myexaminer.service.ExerciseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -12,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -60,6 +59,30 @@ public class ExerciseController {
         return StreamSupport.stream(exerciseService.returnAllExercises().spliterator(), false).
                 filter(exercise -> exercise.getExam().getIdExam() == idExam).
                 map(exercise -> new ExerciseDTO(exercise)).collect(Collectors.toList());
+    }
+
+    @PostMapping("/saveExercises")
+    public ResponseEntity<HttpStatus> saveExercises(@RequestBody List<ReceivedExercise> receivedExerciseList){
+        for(ReceivedExercise exercise: receivedExerciseList){
+            String type = exerciseService.getExerciseType(exercise.getTaskId());
+            switch (type) {
+                case "L":
+                    System.out.println(exercise.getAnswer());
+                    break;
+                case "Z": {
+                    String x = (String) exercise.getAnswer();
+                    System.out.println(x.split(", ")[1]);
+                    break;
+                }
+                case "O": {
+                    String x = (String) exercise.getAnswer();
+                    System.out.println(x);
+                    break;
+                }
+            }
+        }
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 }

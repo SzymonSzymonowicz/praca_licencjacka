@@ -1,10 +1,8 @@
 package com.myexaminer.model;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "exam")
@@ -34,6 +32,9 @@ public class Exam {
 
     @OneToMany(mappedBy="exam")
     private List<Exercise> exercises;
+
+    @OneToMany(mappedBy="savedExam")
+    private List<ExamStatus> examStatusList;
 
     public int getIdExam() {
         return idExam;
@@ -91,13 +92,23 @@ public class Exam {
         this.exercises = exercises;
     }
 
-    public Exam(String examName, String examDescription, Date examAvailableDate, Integer examDurationTime, TeachingGroup teachingGroup, List<Exercise> exercises) {
+    public List<ExamStatus> getExamStatusList() {
+        return examStatusList;
+    }
+
+    public void setExamStatusList(List<ExamStatus> examStatusList) {
+        this.examStatusList = examStatusList;
+    }
+
+    public Exam(String examName, String examDescription, Date examAvailableDate, Integer examDurationTime,
+                TeachingGroup teachingGroup, List<Exercise> exercises, List<ExamStatus> examStatusList) {
         this.examName = examName;
         this.examDescription = examDescription;
         this.examAvailableDate = examAvailableDate;
         this.examDurationTime = examDurationTime;
         this.teachingGroup = teachingGroup;
         this.exercises = exercises;
+        this.examStatusList = examStatusList;
     }
 
     public Exam() {

@@ -1,7 +1,9 @@
 package com.myexaminer.service;
 
+import com.google.gson.Gson;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.repository.ExerciseRepository;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -30,5 +32,11 @@ public class ExerciseService {
 
     public Iterable<Exercise> returnAllExercises(){
         return exerciseRepository.findAll();
+    }
+
+    public String getExerciseType(int idExercise){
+        JSONObject obj = new JSONObject(
+                exerciseRepository.findByIdExercise(idExercise).get().getExerciseBody());
+        return obj.getString("type");
     }
 }
