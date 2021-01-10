@@ -2,6 +2,7 @@ package com.myexaminer.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,10 +35,13 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private Set<TeachingGroup> teachingGroups = new HashSet<>();
 
+    @OneToMany(mappedBy="student")
+    private List<ArchiveExercise> archiveExercises;
+
     public Student() {
     }
 
-    public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy, Set<TeachingGroup> teachingGroups) {
+    public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy, Set<TeachingGroup> teachingGroups, List<ArchiveExercise> archiveExercises) {
         this.idStudent = idStudent;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,6 +49,7 @@ public class Student {
         this.faculty = faculty;
         this.fieldOfStudy = fieldOfStudy;
         this.teachingGroups = teachingGroups;
+        this.archiveExercises = archiveExercises;
     }
 
     public Account getAccount() {
@@ -113,6 +118,14 @@ public class Student {
 
     public void addToTeachingGroups(TeachingGroup teachingGroup) {
         teachingGroups.add(teachingGroup);
+    }
+
+    public List<ArchiveExercise> getArchiveExercises() {
+        return archiveExercises;
+    }
+
+    public void setArchiveExercises(List<ArchiveExercise> archiveExercises) {
+        this.archiveExercises = archiveExercises;
     }
 
     @Override

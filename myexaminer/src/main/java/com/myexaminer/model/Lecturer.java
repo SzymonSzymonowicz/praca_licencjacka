@@ -1,6 +1,7 @@
 package com.myexaminer.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "lecturer")

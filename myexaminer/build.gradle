@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'org.json:json:20201115'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
