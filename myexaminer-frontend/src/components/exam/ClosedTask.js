@@ -7,6 +7,10 @@ export default function ClosedTask(props) {
 
   const handleChange = (event) => {
     setValue(event.target.value);
+    if(!props.answered.some(item => item['taskId'] === props.index))
+      props.setAnswered(props.answered.concat({taskId: props.index, answer: event.target.value}))
+    else
+      props.setAnswered(props.answered.map(item => item['taskId'] === props.index ? {taskId: props.index, answer: event.target.value} : item))
   };
 
   return (
@@ -19,7 +23,7 @@ export default function ClosedTask(props) {
             <FormControlLabel key={ans} value={ans} control={<Radio />} label={String(ans).split(',')[0]} />
           ))}
         </RadioGroup>
-    </FormControl>
+     </FormControl>
     </Paper>
   )
 }
