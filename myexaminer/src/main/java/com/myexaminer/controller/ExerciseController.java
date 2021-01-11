@@ -64,7 +64,7 @@ public class ExerciseController {
     @PostMapping("/saveExercises")
     public ResponseEntity<HttpStatus> saveExercises(@RequestBody List<ReceivedExercise> receivedExerciseList){
         for(ReceivedExercise exercise: receivedExerciseList){
-            String type = exerciseService.getExerciseType(exercise.getTaskId());
+            String type = exerciseService.getExerciseType(exercise.getIdExercise());
             switch (type) {
                 case "L":
                     System.out.println(exercise.getAnswer());

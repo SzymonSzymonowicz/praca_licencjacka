@@ -2,7 +2,7 @@ package com.myexaminer.exerciseTypes;
 
 import java.util.List;
 
-public class ReceivedExerciseWithStudentId {
+public class ReceivedExercisesWithStudentId {
 
     private List<ReceivedExercise> receivedExercises;
 
