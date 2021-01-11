@@ -1,7 +1,7 @@
 package com.myexaminer.exerciseTypes;
 
 public class ReceivedExercise {
-    private int taskId;
+    private int idExercise;
 
     private int points;
 
@@ -9,12 +9,12 @@ public class ReceivedExercise {
 
     private Object answer;
 
-    public int getTaskId() {
-        return taskId;
+    public int getIdExercise() {
+        return idExercise;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setIdExercise(int idExercise) {
+        this.idExercise = idExercise;
     }
 
     public int getPoints() {
@@ -41,8 +41,8 @@ public class ReceivedExercise {
         this.answer = answer;
     }
 
-    public ReceivedExercise(int taskId, int points, String comment, Object answer) {
-        this.taskId = taskId;
+    public ReceivedExercise(int idExercise, int points, String comment, Object answer) {
+        this.idExercise = idExercise;
         this.points = points;
         this.comment = comment;
         this.answer = answer;

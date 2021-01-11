@@ -1,11 +1,9 @@
 package com.myexaminer.controller;
 
-import com.google.gson.Gson;
 import com.myexaminer.exerciseTypes.ReceivedExercise;
-import com.myexaminer.exerciseTypes.ReceivedExerciseWithStudentId;
+import com.myexaminer.exerciseTypes.ReceivedExercisesWithStudentId;
 import com.myexaminer.model.ArchiveExercise;
 import com.myexaminer.model.Exercise;
-import com.myexaminer.model.Student;
 import com.myexaminer.modelDTO.TwoIdObject;
 import com.myexaminer.service.*;
 import lombok.extern.log4j.Log4j2;
@@ -56,11 +54,12 @@ public class ArchiveExerciseController {
     }
 
     @PutMapping("/checkExercises")
-    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExerciseWithStudentId receivedExerciseWithStudentId){
+    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithStudentId receivedExerciseWithStudentId){
         for(ReceivedExercise receivedExercise: receivedExerciseWithStudentId.getReceivedExercises()){
-            int taskId = receivedExercise.getTaskId();
-            String type = exerciseService.getExerciseType(taskId);
-            ArchiveExercise archiveExercise = archiveExerciseService.returnArchiveExerciseByExerciseAndStudent(exerciseService.returnExerciseById(taskId), studentService.returnStudentById(receivedExerciseWithStudentId.getIdStudent()));
+            int idExercise = receivedExercise.getIdExercise();
+            System.out.println("FAIL TASK id ->" + idExercise);
+            String type = exerciseService.getExerciseType(idExercise);
+            ArchiveExercise archiveExercise = archiveExerciseService.returnArchiveExerciseByExerciseAndStudent(exerciseService.returnExerciseById(idExercise), studentService.returnStudentById(receivedExerciseWithStudentId.getIdStudent()));
             archiveExercise.setLecturerComment(receivedExercise.getComment());
             switch (type) {
                 case "L":
@@ -69,8 +68,9 @@ public class ArchiveExerciseController {
                     break;
                 case "Z": {
                     String answer = (String) receivedExercise.getAnswer();
-                    String userAnswer = answer.split(", ")[1];
-                    JSONObject obj = new JSONObject(exerciseService.returnExerciseById(taskId).getExerciseBody());
+                    System.out.println("Closed task answer: ->" + answer);
+                    String userAnswer = answer.split(",")[1];
+                    JSONObject obj = new JSONObject(exerciseService.returnExerciseById(idExercise).getExerciseBody());
                     int maxPointsFromExercise = obj.getInt("points");
                     archiveExercise.setGainedPoints((userAnswer.equals("T") ? maxPointsFromExercise : 0));
                     archiveExercise.setAnswer(archiveExerciseService.toJSONString((String) receivedExercise.getAnswer()));

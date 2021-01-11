@@ -26,6 +26,9 @@ export default function Exam() {
   let { id } = useParams();
 
   const [tasks, setTasks] = React.useState([]);
+  const [answered, setAnswered] = React.useState([]);
+
+  const idStudent = 2;
 
   React.useEffect(() => {
     fetch('http://localhost:8080/exercise/' + id, {
@@ -41,13 +44,64 @@ export default function Exam() {
         console.log("Something went wrong!")
       }
     }).then( tasksJson => {
+      let answArr = []
+
+      tasksJson.map(task => {
+        answArr.push({idExercise: task["idExercise"], answer: null})
+        task.exerciseBody = JSON.parse(task.exerciseBody)
+        return task
+      })
+      tasksJson.map(task => {
+        if(task.type === "Z"){
+          shuffle(task.answers)
+          return task
+        }else
+          return task
+      })
       console.log(tasksJson)
-      console.log(tasksJson.map(task => JSON.parse(task.exerciseBody)))
-      setTasks(tasksJson.map(task => JSON.parse(task.exerciseBody)))
-    }).catch(function (error) {
-      console.log("error")
+      setTasks(tasksJson);
+
+      //.map((_, i) => ({idExercise: i, answer: null}))
+      console.log(answArr)
+      setAnswered(answArr)
+    })
+    .catch(function (error) {
+      console.log("Error fetching exam")
+      console.log(error)
     })
   }, [id])
+
+  function saveAnswers(idStudent, receivedExercises){
+    fetch('http://localhost:8080/archive/checkExercises', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        idStudent: idStudent,
+        receivedExercises: receivedExercises
+      })
+    }).then(function (response) {
+      if (response.status === 200) {
+        console.log("Exam saved properly!")
+        //history.push("/")
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).catch(function (error) {
+      console.log(error)
+      console.log("error")
+    })
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    console.log(answered);
+
+    saveAnswers(idStudent, answered)
+  }
+
 
   return (
     <Grid
@@ -56,18 +110,37 @@ export default function Exam() {
     justify="center"
     spacing={3}
     >
-      {tasks.map((task,index) => {
-        if (task.type === "O") 
-          return <Grid item xs={12} key={index}><OpenTask index={index} instruction={task.instruction} points={task.points}/></Grid>
-        else if (task.type === "Z")
-          return <Grid item xs={12} key={index}><ClosedTask index={index} instruction={task.instruction} points={task.points} answers={shuffle(task.answers)}/></Grid>
-        else if (task.type === "L")
-          return <Grid item xs={12} key={index}><FillBlanksTask index={index} instruction={task.instruction} points={task.points} fill={task.fill}/></Grid>
+      <form onSubmit={handleSubmit}>
+      {tasks.map((task, index) => {
+        let type = task.exerciseBody.type 
+        let points = task.exerciseBody.points 
+        let instruction = task.exerciseBody.instruction 
+        let id = task.idExercise
+
+        if (type === "O") 
+          return (
+            <Grid item xs={12} key={index}>
+              <OpenTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} />
+            </Grid>
+          )
+        else if (type === "Z")
+          return (
+            <Grid item xs={12} key={index}>
+              <ClosedTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.exerciseBody.answers}/>
+            </Grid>
+          )
+        else if (type === "L")
+          return (
+            <Grid item xs={12} key={index}>
+              <FillBlanksTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.exerciseBody.fill}/>
+            </Grid>
+          )
         else
           return <></>
       })}
       
-      <Grid item style={{textAlign: "right", marginRight: "6%"}}><Button>Wyślij rozwiązania</Button></Grid>
+      <Grid item style={{textAlign: "right", marginRight: "6%"}}><Button type="submit">Wyślij rozwiązania</Button></Grid>
+      </form>
     </Grid>
     )
 }

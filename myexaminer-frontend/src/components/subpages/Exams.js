@@ -24,9 +24,38 @@ export default function Exams({exams}, props) {
 
   const history = useHistory()
 
+  const idStudent = 2
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  //"archive/createExerciseArchive" POST
+
+  function createAnswersForExam(idStudent, idExam){
+    fetch('http://localhost:8080/archive/createExerciseArchive', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        idStudent: idStudent,
+        idExam: idExam
+      })
+    }).then(function (response) {
+      if (response.status === 200) {
+        console.log("Exam created properly!")
+        //history.push("/")
+      } else {
+        console.log("Something went wrong!")
+      }
+    }).catch(function (error) {
+      console.log(error)
+      console.log("error")
+    })
+  }
+
 
   return (
     <>
@@ -52,7 +81,12 @@ export default function Exams({exams}, props) {
           <EventIcon/><Typography>{exam.date}</Typography>
           <HourglassEmptyIcon/><Typography>{exam.hour}</Typography>
           <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration}</Typography>
-          <Button size="small" onClick={() => (history.push(`/landing/exam/${exam.idExam}`))}>Rozpocznij</Button>
+          <Button size="small" onClick={() => {
+                createAnswersForExam(idStudent, exam.idExam);
+                history.push(`/landing/exam/${exam.idExam}`);
+              }}>
+          Rozpocznij
+          </Button>
           <Button size="small" color="primary">
             Wyniki
           </Button>
