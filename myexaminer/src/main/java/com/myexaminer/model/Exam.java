@@ -1,5 +1,7 @@
 package com.myexaminer.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -26,15 +28,27 @@ public class Exam {
     @Column(name = "exam_duration_time")
     private Integer examDurationTime;
 
+    public enum Status {
+        @JsonProperty("HIDDEN")
+        HIDDEN,
+        @JsonProperty("OPEN")
+        OPEN,
+        @JsonProperty("CLOSED")
+        CLOSED,
+        @JsonProperty("CHECKED")
+        CHECKED;
+    }
+
+    @Column(name = "exam_status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToOne
     @JoinColumn(name="fk_teaching_group_id", nullable=false)
     private TeachingGroup teachingGroup;
 
     @OneToMany(mappedBy="exam")
     private List<Exercise> exercises;
-
-    @OneToMany(mappedBy="savedExam")
-    private List<ExamStatus> examStatusList;
 
     public int getIdExam() {
         return idExam;
@@ -92,23 +106,23 @@ public class Exam {
         this.exercises = exercises;
     }
 
-    public List<ExamStatus> getExamStatusList() {
-        return examStatusList;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setExamStatusList(List<ExamStatus> examStatusList) {
-        this.examStatusList = examStatusList;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Exam(String examName, String examDescription, Date examAvailableDate, Integer examDurationTime,
-                TeachingGroup teachingGroup, List<Exercise> exercises, List<ExamStatus> examStatusList) {
+                TeachingGroup teachingGroup, List<Exercise> exercises, Status status) {
         this.examName = examName;
         this.examDescription = examDescription;
         this.examAvailableDate = examAvailableDate;
         this.examDurationTime = examDurationTime;
         this.teachingGroup = teachingGroup;
         this.exercises = exercises;
-        this.examStatusList = examStatusList;
+        this.status = status;
     }
 
     public Exam() {

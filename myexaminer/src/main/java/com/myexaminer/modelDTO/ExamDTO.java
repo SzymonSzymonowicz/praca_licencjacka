@@ -21,6 +21,8 @@ public class ExamDTO {
 
     private Integer examDurationTime;
 
+    private String examStatus;
+
     public int getIdExam() {
         return idExam;
     }
@@ -61,12 +63,21 @@ public class ExamDTO {
         this.examDurationTime = examDurationTime;
     }
 
+    public String getExamStatus() {
+        return examStatus;
+    }
+
+    public void setExamStatus(String examStatus) {
+        this.examStatus = examStatus;
+    }
+
     public ExamDTO(Exam exam) {
         this.idExam = exam.getIdExam();
         this.examName = exam.getExamName();
         this.examDescription = exam.getExamDescription();
         this.examAvailableDate = exam.getExamAvailableDate();
         this.examDurationTime = exam.getExamDurationTime();
+        this.examStatus = exam.getStatus().name();
     }
 
 }
