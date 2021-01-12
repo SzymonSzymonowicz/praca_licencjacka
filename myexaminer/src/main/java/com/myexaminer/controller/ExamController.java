@@ -1,20 +1,17 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.model.Exam;
-import com.myexaminer.model.Exercise;
-import com.myexaminer.model.Student;
 import com.myexaminer.modelDTO.ExamDTO;
+import com.myexaminer.modelDTO.GenericOneValue;
+import com.myexaminer.modelDTO.GenericTwoValues;
 import com.myexaminer.service.ExamService;
-import com.myexaminer.service.ExerciseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -62,5 +59,23 @@ public class ExamController {
         return StreamSupport.stream(examService.returnAllExams().spliterator(), false).
                 filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
                 map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
+    }
+
+    @PutMapping("/changeExamStatus")
+    public ResponseEntity<HttpStatus> changeExamStatus(@RequestBody GenericTwoValues genericTwoValues){
+        Integer idExam = (Integer) genericTwoValues.getFirstValue();
+        Exam.Status status = Exam.Status.valueOf((String) genericTwoValues.getSecondValue());
+
+        Exam exam = examService.returnExamById(idExam);
+        exam.setStatus(status);
+
+        examService.examSave(exam);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/getExamStatus")
+    public @ResponseBody Exam.Status getExamStatus(@RequestBody GenericOneValue idExam){
+        return examService.returnExamById((Integer) idExam.getFirstValue()).getStatus();
     }
 }

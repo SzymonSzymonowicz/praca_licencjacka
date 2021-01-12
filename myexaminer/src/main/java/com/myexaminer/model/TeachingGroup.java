@@ -40,9 +40,6 @@ public class TeachingGroup {
     @OneToMany(mappedBy="teachingGroup")
     private Set<Exam> exams;
 
-    @OneToMany(mappedBy="examTeachingGroup")
-    private List<ExamStatus> examStatusList;
-
     public int getIdTeachingGroup() {
         return idTeachingGroup;
     }
@@ -111,26 +108,17 @@ public class TeachingGroup {
         this.exams = exams;
     }
 
-    public List<ExamStatus> getExamStatusList() {
-        return examStatusList;
-    }
-
-    public void setExamStatusList(List<ExamStatus> examStatusList) {
-        this.examStatusList = examStatusList;
-    }
-
     public TeachingGroup() {
     }
 
     public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer,
-                         Set<Student> students, Set<Exam> exams, List<ExamStatus> examStatusList) {
+                         Set<Student> students, Set<Exam> exams) {
         this.teachingGroupName = teachingGroupName;
         this.accessCode = accessCode;
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
         this.idLecturer = idLecturer;
         this.students = students;
         this.exams = exams;
-        this.examStatusList = examStatusList;
     }
 
     @Override

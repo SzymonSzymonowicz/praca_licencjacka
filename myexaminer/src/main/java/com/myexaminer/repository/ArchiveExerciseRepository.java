@@ -1,8 +1,6 @@
 package com.myexaminer.repository;
 
 import com.myexaminer.model.ArchiveExercise;
-import com.myexaminer.model.Exercise;
-import com.myexaminer.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
