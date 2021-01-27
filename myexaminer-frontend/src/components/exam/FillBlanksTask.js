@@ -4,7 +4,7 @@ import React from 'react'
 export default function FillBlanksTask(props) {
   const fill = props.fill.split("<blank>")
 
-  const [blanksFilled, setBlanksFilled] = React.useState(new Array(fill.length-1).fill())
+  const [blanksFilled, setBlanksFilled] = React.useState(new Array(fill.length-1).fill(""))
 
   const handleChange = (event, blankIndex) => {
     let items = [...blanksFilled];
@@ -18,10 +18,11 @@ export default function FillBlanksTask(props) {
 
   };
 
-
+  const pointsString = props.loadValue === true ?  `(${props.answered[props.index]['gainedPoints']} / ${props.points} pkt.)` : `(${props.points} pkt.)`
+  
   return (
     <Paper elevation={4} style={{padding: 20}}>
-      <Typography>{`Zadanie. ${props.id + 1}   (${props.points} pkt.)`}</Typography>
+      <Typography>{`Zadanie. ${props.index + 1}   ${pointsString}`}</Typography>
       <Typography>{props.instruction}</Typography>
       <Grid
         container
@@ -30,10 +31,19 @@ export default function FillBlanksTask(props) {
         alignItems="center"
       >
       {fill.map( (str, index, {length}) => {
-        
+
         return <React.Fragment key={`${props.id}seg${index}`}>
         <Typography key={str}>{str}</Typography>
-        {index !== length - 1 && <TextField onChange={event => handleChange(event, index)} key={`t${props.id}b${index}`} style={{margin: '0px 10px', minWidth: '60px'}} inputProps={{ style: { textAlign: "center" } }}/>}
+        {index !== length - 1 && 
+          <TextField 
+            onChange={event => handleChange(event, index)} key={`t${props.id}b${index}`} 
+            style={{margin: '0px 10px', minWidth: '60px'}} 
+            inputProps={{ style: { textAlign: "center" } }}
+            {...(props.loadValue === true  && {
+              value: props.answered.find(item => item['idExercise'] === props.id)['answer'][index],
+              disabled: true,
+            })}
+          />}
         </React.Fragment>
       })}
       </Grid>

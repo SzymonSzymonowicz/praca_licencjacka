@@ -10,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router";
-import axios from 'axios'
 
 function Copyright() {
   return (

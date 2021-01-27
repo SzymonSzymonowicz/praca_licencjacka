@@ -15,6 +15,7 @@ import Exams from 'components/subpages/Exams';
 import Exam from 'components/exam/Exam';
 import Groups from "../subpages/Groups";
 import Lesson from "../group/Lesson";
+import ExamResults from 'components/exam/ExamResults';
 
 
 const drawerWidth = 240;
@@ -277,6 +278,9 @@ export default function Landing(props) {
             </Route>
             <Route path={`${match.path}/exam/:id`}>
               <Exam/>
+            </Route>
+            <Route path={`${match.path}/examresults/:id`}>
+              <ExamResults/>
             </Route>
             <Route path={`${match.path}/lesson/`}>
               <Lesson/>

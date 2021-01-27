@@ -106,44 +106,44 @@ export default function Exam() {
 
 
   return (
-    <Grid
-    container
-    direction="column"
-    justify="center"
-    spacing={3}
-    >
-      <form onSubmit={handleSubmit}>
-      {tasks.map((task, index) => {
-        let type = task.exerciseBody.type 
-        let points = task.exerciseBody.points 
-        let instruction = task.exerciseBody.instruction 
-        let id = task.idExercise
+    <form onSubmit={handleSubmit}>
+      <Grid
+      container
+      direction="column"
+      justify="center"
+      spacing={3}
+      >
+        {tasks.map((task, index) => {
+          let type = task.exerciseBody.type 
+          let points = task.exerciseBody.points 
+          let instruction = task.exerciseBody.instruction 
+          let id = task.idExercise
 
-        if (type === "O") 
-          return (
-            <Grid item xs={12} key={index}>
-              <OpenTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} />
-            </Grid>
-          )
-        else if (type === "Z")
-          return (
-            <Grid item xs={12} key={index}>
-              <ClosedTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.exerciseBody.answers}/>
-            </Grid>
-          )
-        else if (type === "L")
-          return (
-            <Grid item xs={12} key={index}>
-              <FillBlanksTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.exerciseBody.fill}/>
-            </Grid>
-          )
-        else
-          return <></>
-      })}
-      
-      <Grid item style={{textAlign: "right", marginRight: "6%"}}><Button type="submit">Wyślij rozwiązania</Button></Grid>
-      </form>
-    </Grid>
+          if (type === "O") 
+            return (
+              <Grid item xs={12} key={index}>
+                <OpenTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} index={index}/>
+              </Grid>
+            )
+          else if (type === "Z")
+            return (
+              <Grid item xs={12} key={index}>
+                <ClosedTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.exerciseBody.answers} index={index}/>
+              </Grid>
+            )
+          else if (type === "L")
+            return (
+              <Grid item xs={12} key={index}>
+                <FillBlanksTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.exerciseBody.fill} index={index}/>
+              </Grid>
+            )
+          else
+            return <></>
+        })}
+        
+        <Grid item style={{textAlign: "right", marginRight: "6%"}}><Button type="submit">Wyślij rozwiązania</Button></Grid>
+      </Grid>
+    </form>
     )
 }
 

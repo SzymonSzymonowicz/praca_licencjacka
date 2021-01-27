@@ -8,10 +8,12 @@ export default function OpenTask(props) {
     else
       props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {idExercise: props.id, answer: event.target.value} : item))
   };
-  
+  // props.answered[props.id]['gainedPoints']
+  const pointsString = props.loadValue === true ?  `(${props.answered[props.index]['gainedPoints']} / ${props.points} pkt.)` : `(${props.points} pkt.)`
+
   return (
     <Paper elevation={4} style={{padding: 20}}>
-      <Typography>{`Zadanie. ${props.id + 1}   (${props.points} pkt.)`}</Typography>
+      <Typography>{`Zadanie. ${props.index + 1}   ${pointsString}`}</Typography>
       <Typography>{props.instruction}</Typography>
       <TextField
           id="outlined-multiline-static"
@@ -21,6 +23,12 @@ export default function OpenTask(props) {
           variant="outlined"
           fullWidth
           onChange={handleChange}
+
+          {...(props.loadValue === true && {
+            value: props.answered.find(item => item['idExercise'] === props.id)['answer'],
+            disabled: true,
+            label: null,
+          })}
       />
     </Paper>
   )

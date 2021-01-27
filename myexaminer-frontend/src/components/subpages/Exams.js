@@ -83,12 +83,17 @@ export default function Exams({exams}, props) {
           <HourglassEmptyIcon/><Typography>{exam.hour}</Typography>
           <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration}</Typography>
           <Button size="small" onClick={() => {
-                createAnswersForExam(idStudent, exam.idExam);
-                history.push(`/landing/exam/${exam.idExam}`);
-              }}>
+              createAnswersForExam(idStudent, exam.idExam);
+              history.push(`/landing/exam/${exam.idExam}`);
+            }}
+            {...(exam.examStatus !== "OPEN" && {disabled: true})}    
+          >
           Rozpocznij
           </Button>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary"
+            onClick={() => history.push(`/landing/examresults/${exam.idExam}`)}
+            {...(exam.examStatus !== "CHECKED" && {disabled: true})}
+          >
             Wyniki
           </Button>
         </AccordionActions>

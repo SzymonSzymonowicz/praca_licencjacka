@@ -13,12 +13,16 @@ export default function ClosedTask(props) {
       props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {idExercise: props.id, answer: event.target.value} : item))
   };
 
+  const pointsString = props.loadValue === true ?  `(${props.answered[props.index]['gainedPoints']} / ${props.points} pkt.)` : `(${props.points} pkt.)`
+
+  const markValue = props.loadValue === true ? props.answered.find(item => item['idExercise'] === props.id)['answer'] : value
+
   return (
     <Paper elevation={4} style={{padding: 20}}>
-      <Typography>{`Zadanie. ${props.id + 1}   (${props.points} pkt.)`}</Typography>
+      <Typography>{`Zadanie. ${props.index + 1}   ${pointsString}`}</Typography>
       <Typography>{props.instruction}</Typography>
-      <FormControl component="fieldset" fullWidth>
-        <RadioGroup row name={`task${props.id}`} value={value} onChange={handleChange} style={{justifyContent: "space-evenly"}}>
+      <FormControl disabled={props.loadValue} component="fieldset" fullWidth>
+        <RadioGroup row name={`task${props.id}`} value={markValue} onChange={handleChange} style={{justifyContent: "space-evenly"}}>
           {props.answers.map(ans =>(
             <FormControlLabel key={ans} value={ans} control={<Radio />} label={String(ans).split(',')[0]} />
           ))}
