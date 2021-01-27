@@ -29,6 +29,8 @@ public class MyexaminerApplication {
 				registry.addMapping("/archive/checkExercises").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/archive/createExerciseArchive").allowedOrigins(LOCALHOST);
 				registry.addMapping("/archive/getExercises").allowedOrigins(LOCALHOST);
+				registry.addMapping("/notebook").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/notebook/edit").allowedMethods("*").allowedOrigins(LOCALHOST);
 			}
 		};
 	}
