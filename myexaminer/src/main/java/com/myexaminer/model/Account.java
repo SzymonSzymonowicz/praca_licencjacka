@@ -1,6 +1,10 @@
 package com.myexaminer.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "account")
@@ -24,6 +28,16 @@ public class Account {
 
     @Column(name = "is_lecturer")
     private boolean isLecturer;
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER)
+    @JoinTable(name = "account_role",
+            joinColumns = @JoinColumn(name = "fk_account_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_role_id")
+    )
+    private List<Role> roles = new ArrayList<>();
 
     public Account() {
     }
@@ -91,6 +105,14 @@ public class Account {
 
     public void setLecturer(boolean lecturer) {
         isLecturer = lecturer;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

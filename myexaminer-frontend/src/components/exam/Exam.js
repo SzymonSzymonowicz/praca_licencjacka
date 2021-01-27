@@ -28,14 +28,15 @@ export default function Exam() {
   const [tasks, setTasks] = React.useState([]);
   const [answered, setAnswered] = React.useState([]);
 
-  const idStudent = 2;
+/*  const idStudent = 2;*/
 
   React.useEffect(() => {
     fetch('http://localhost:8080/exercise/' + id, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
       }
     }).then(function (response) {
       if (response.status === 200) {
@@ -71,15 +72,16 @@ export default function Exam() {
     })
   }, [id])
 
-  function saveAnswers(idStudent, receivedExercises){
+  function saveAnswers(studentEmail, receivedExercises){
     fetch('http://localhost:8080/archive/checkExercises', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
       },
       body: JSON.stringify({
-        idStudent: idStudent,
+        studentEmail: studentEmail,
         receivedExercises: receivedExercises
       })
     }).then(function (response) {
@@ -99,7 +101,7 @@ export default function Exam() {
     event.preventDefault();
     console.log(answered);
 
-    saveAnswers(idStudent, answered)
+    saveAnswers(sessionStorage.getItem('USER_SESSION_EMAIL'), answered)
   }
 
 

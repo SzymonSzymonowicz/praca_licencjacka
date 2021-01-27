@@ -15,7 +15,6 @@ export default function Tiles(props) {
   const classes = useStyles();
   const history = useHistory();
   let match = useRouteMatch();
-
   const tilesData = [
     {
       "header": "Grupy",

@@ -1,7 +1,7 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.exerciseTypes.ReceivedExercise;
-import com.myexaminer.exerciseTypes.ReceivedExercisesWithStudentId;
+import com.myexaminer.exerciseTypes.ReceivedExercisesWithStudentEmail;
 import com.myexaminer.model.ArchiveExercise;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.modelDTO.ArchiveExerciseDTO;
@@ -25,13 +25,15 @@ public class ArchiveExerciseController {
     private final ArchiveExerciseService archiveExerciseService;
     private final ExamService examService;
     private final StudentService studentService;
+    private final AccountService accountService;
 
     public ArchiveExerciseController(ExerciseService exerciseService, ArchiveExerciseService archiveExerciseService,
-                                     ExamService examService, StudentService studentService){
+                                     ExamService examService, StudentService studentService, AccountService accountService){
         this.exerciseService = exerciseService;
         this.archiveExerciseService = archiveExerciseService;
         this.examService = examService;
         this.studentService = studentService;
+        this.accountService = accountService;
     }
 
     @PostMapping("/createExerciseArchive")
@@ -55,11 +57,16 @@ public class ArchiveExerciseController {
     }
 
     @PutMapping("/checkExercises")
-    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithStudentId receivedExerciseWithStudentId){
-        for(ReceivedExercise receivedExercise: receivedExerciseWithStudentId.getReceivedExercises()){
+    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithStudentEmail receivedExerciseWithStudentEmail){
+        for(ReceivedExercise receivedExercise: receivedExerciseWithStudentEmail.getReceivedExercises()){
             int idExercise = receivedExercise.getIdExercise();
             String type = exerciseService.getExerciseType(idExercise);
-            ArchiveExercise archiveExercise = archiveExerciseService.returnArchiveExerciseByExerciseAndStudent(exerciseService.returnExerciseById(idExercise), studentService.returnStudentById(receivedExerciseWithStudentId.getIdStudent())).get();
+            ArchiveExercise archiveExercise = archiveExerciseService
+                    .returnArchiveExerciseByExerciseAndStudent(
+                            exerciseService.returnExerciseById(idExercise),
+                            studentService.returnStudentById(accountService.returnAccountByEmail(receivedExerciseWithStudentEmail.getStudentEmail()).get().getIdAccount())
+                    ).get();
+
             archiveExercise.setLecturerComment(receivedExercise.getComment());
             Object receivedAnswer = receivedExercise.getAnswer();
             switch (type) {
@@ -95,7 +102,7 @@ public class ArchiveExerciseController {
     }
 
     @GetMapping("/getExercises")
-    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestBody TwoIdObject twoIdObject){
-        return archiveExerciseService.archiveExercisesDTOByExamIdAndIdStudent(twoIdObject.getIdExam(), twoIdObject.getIdStudent());
+    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam int idExam, @RequestParam int idStudent){
+        return archiveExerciseService.archiveExercisesDTOByExamIdAndIdStudent(idExam, idStudent);
     }
 }

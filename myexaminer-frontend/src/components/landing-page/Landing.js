@@ -97,13 +97,13 @@ export default function Landing(props) {
   const [exams, setExams] = useState([])
 
   const groupId = 1
-
   useEffect(() => {
     fetch('http://localhost:8080/exam/' + groupId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
       }
     }).then(function (response) {
       if (response.status === 200) {
@@ -171,6 +171,8 @@ export default function Landing(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const email_user = sessionStorage.getItem('USER_SESSION_EMAIL')
 
   return (
     <div className={classes.root}>
@@ -254,7 +256,7 @@ export default function Landing(props) {
           <Switch>
             <Route exact path={`${match.path}`}>
               <Typography paragraph variant='h2'>
-                Witaj! Udało Ci się zalogować!
+                {`Witaj ${email_user} ! Udało Ci się zalogować!`}
               </Typography>
               <Tiles setSelectedIndex={setSelectedIndex}/>
             </Route>

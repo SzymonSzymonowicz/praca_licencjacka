@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router";
+import axios from 'axios'
 
 function Copyright() {
   return (
@@ -32,9 +33,10 @@ export default function SignIn(props) {
   const loginUser = (email, password) => {
     fetch('http://localhost:8080/account/login', {
       method: 'POST',
-      headers: {
+      headers:{
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization':'Basic ' + window.btoa(email + ":" + password)
       },
       body: JSON.stringify({
         email: email,
@@ -43,8 +45,9 @@ export default function SignIn(props) {
      }).then((response) => {
       if (response.status === 200) {
         console.log("User loggged in!")
+        sessionStorage.setItem('USER_SESSION_EMAIL', email)
+        sessionStorage.setItem('USER_SESSION_PASSWORD', password)
         history.push("/landing")
-
       } else if (response.status === 401 ){
         console.log("UNAUTHORIZED!")
       } else {
