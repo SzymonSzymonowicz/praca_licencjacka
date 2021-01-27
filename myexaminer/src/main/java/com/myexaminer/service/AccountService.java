@@ -3,6 +3,8 @@ package com.myexaminer.service;
 import com.myexaminer.model.Account;
 
 import com.myexaminer.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -12,6 +14,9 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository){this.accountRepository = accountRepository;}
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void accountSave(Account account) {
         accountRepository.save(account);
@@ -33,10 +38,16 @@ public class AccountService {
         Optional<Account> accountFromDB = accountRepository.findByEmail(account.getEmail());
 
         if (accountFromDB.isEmpty()
-                || !account.getPassword().equals(accountFromDB.get().getPassword())) {
+                || !passwordEncoder.matches(account.getPassword(), accountFromDB.get().getPassword())) {
             return false;
         }
 
         return true;
+    }
+
+    public Optional<Account> returnAccountByEmail(String email){
+        Optional<Account> accountByEmail = accountRepository.findByEmail(email);
+
+        return accountByEmail;
     }
 }

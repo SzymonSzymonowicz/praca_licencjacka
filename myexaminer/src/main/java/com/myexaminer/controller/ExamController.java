@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -55,7 +56,7 @@ public class ExamController {
     }
 
     @GetMapping("/{idGroup}")
-    public @ResponseBody Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
+    public @ResponseBody Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup,  HttpServletResponse response) {
         return StreamSupport.stream(examService.returnAllExams().spliterator(), false).
                 filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
                 map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
