@@ -2,7 +2,11 @@ package com.myexaminer.controller;
 
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Role;
+import com.myexaminer.model.Student;
+import com.myexaminer.modelDTO.RegisterDTO;
 import com.myexaminer.service.AccountService;
+import com.myexaminer.service.RoleService;
+import com.myexaminer.service.StudentService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -19,28 +23,52 @@ import java.util.List;
 public class AccountController {
 
     private final AccountService accountService;
+    private final StudentService studentService;
+    private final RoleService roleService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, StudentService studentService, RoleService roleService) {
         this.accountService = accountService;
+        this.studentService = studentService;
+        this.roleService = roleService;
     }
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addNewAccount (@RequestBody Account account) {
-        if(accountService.accountExistsByEmail(account.getEmail())){
-            log.info("Account with given email -> {} <- ALREADY EXISTS", account.getEmail());
+    public ResponseEntity<HttpStatus> addNewAccount (@RequestBody RegisterDTO registerDTO) {
+        if(accountService.accountExistsByEmail(registerDTO.getEmail())){
+            log.info("Account with given email -> {} <- ALREADY EXISTS", registerDTO.getEmail());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
-        if(accountService.accountExistsById(account.getIdAccount())){
-            log.info("Account with given ID -> {} <- ALREADY EXISTS", account.getIdAccount());
+/*        if(accountService.accountExistsById(registerDTO.getIdAccount())){
+            log.info("Account with given ID -> {} <- ALREADY EXISTS", registerDTO.getIdAccount());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        }*/
+        Account account = new Account(
+                registerDTO.getEmail(),
+                passwordEncoder.encode(registerDTO.getPassword()),
+                registerDTO.getRecoveryQuestion(),
+                registerDTO.getRecoveryAnswer()
+        );
+
+        Role role = roleService.returnRoleByName("STUDENT");
+        account.addToRoles(role);
 
         accountService.accountSave(account);
         log.info("Account with ID -> {} <- has been ADDED", account.getIdAccount());
+
+        Student student = new Student(
+          account.getIdAccount(),
+          registerDTO.getFirstName(),
+          registerDTO.getLastName(),
+          registerDTO.getIndex(),
+          registerDTO.getFaculty(),
+          registerDTO.getFieldOfStudy()
+        );
+
+        studentService.studentSave(student);
+        log.info("Student with ID -> {} <- has been ADDED", student.getIdStudent());
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

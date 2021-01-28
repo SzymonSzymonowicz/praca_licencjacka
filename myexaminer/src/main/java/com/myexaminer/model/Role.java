@@ -44,6 +44,10 @@ public class Role {
         this.accounts = accounts;
     }
 
+    public void addToAccounts(Account account){
+        accounts.add(account);
+    }
+
     public Role() {
     }
 

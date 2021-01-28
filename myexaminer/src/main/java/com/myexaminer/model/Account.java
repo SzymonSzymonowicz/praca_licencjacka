@@ -115,6 +115,10 @@ public class Account {
         this.roles = roles;
     }
 
+    public void addToRoles(Role role){
+        roles.add(role);
+    }
+
     @Override
     public String toString() {
         return "Account{" +
