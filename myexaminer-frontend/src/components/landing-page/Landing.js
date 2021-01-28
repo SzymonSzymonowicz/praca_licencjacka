@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import { AppBar, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Toolbar, Typography, useTheme } from '@material-ui/core';
+import { AppBar, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Menu, MenuItem, Toolbar, Typography, useTheme } from '@material-ui/core';
 
 import {
   Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,
@@ -173,6 +173,17 @@ export default function Landing(props) {
     setOpen(false);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openAccount = Boolean(anchorEl);
+
+  const handleMenuAnchor = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const email_user = sessionStorage.getItem('USER_SESSION_EMAIL')
 
   return (
@@ -199,15 +210,40 @@ export default function Landing(props) {
           <Typography variant="h6" noWrap className={classes.title}>
             My Examiner
           </Typography>
-          <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                //TODO onClick={}
-                color="inherit"
-              >
-              <AccountCircle fontSize="large"/>
-          </IconButton>
+          <div>
+            <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenuAnchor}
+                  color="inherit"
+                >
+                <AccountCircle fontSize="large"/>
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              getContentAnchorEl={null}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              open={openAccount}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleMenuClose}>Moje konto</MenuItem>
+              <MenuItem onClick={() => {
+                handleMenuClose();
+                sessionStorage.clear();
+                history.push("/");
+                }}>Wyloguj</MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer

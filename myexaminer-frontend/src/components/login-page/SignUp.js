@@ -31,7 +31,8 @@ export default function SignUp(props) {
   const classes = props.className
   const history = useHistory()
 
-  function registerUser(email, password, recoveryQuestion, recoveryAnswer){
+  function registerUser(email, password, recoveryQuestion, recoveryAnswer,
+    firstName, lastName, index, faculty, fieldOfStudy){
     fetch('http://localhost:8080/account', {
       method: 'POST',
       headers: {
@@ -42,7 +43,12 @@ export default function SignUp(props) {
         email: email,
         password: password,
         recoveryQuestion: recoveryQuestion,
-        recoveryAnswer: recoveryAnswer
+        recoveryAnswer: recoveryAnswer,
+        firstName: firstName,
+        lastName: lastName,
+        index: index,
+        faculty: faculty,
+        fieldOfStudy: fieldOfStudy
       })
     }).then(function (response) {
       if (response.status === 200) {
@@ -60,10 +66,12 @@ export default function SignUp(props) {
 
   const handleSubmit = event => {
     event.preventDefault();
+    let form = event.tagert;
     
-    console.table([{"email": event.target.email.value, "password": event.target.password.value, "recoveryQuestion": event.target.recoveryQuestion.value, "recoveryAnswer": event.target.recoveryAnswer.value}])
+    console.table([{"email": form.email.value, "password": form.password.value, "recoveryQuestion": form.recoveryQuestion.value, "recoveryAnswer": form.recoveryAnswer.value}])
 
-    registerUser(event.target.email.value, event.target.password.value, event.target.recoveryQuestion.value, event.target.recoveryAnswer.value)
+    registerUser(form.email.value, form.password.value, form.recoveryQuestion.value, form.recoveryAnswer.value,
+      form.firstName.value, form.lastName.value, form.index.value, form.faculty.value, form.fieldOfStudy.value)
   }
 
   return (
@@ -75,7 +83,7 @@ export default function SignUp(props) {
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {/*<Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="Imię"
                 name="firstName"
@@ -97,7 +105,7 @@ export default function SignUp(props) {
                 name="lastName"
                 autoComplete="Nazwisko"
               />
-            </Grid>*/}
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -120,6 +128,39 @@ export default function SignUp(props) {
                 type="password"
                 id="password"
                 autoComplete="Hasło"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="Wydział"
+                name="faculty"
+                variant="outlined"
+                required
+                fullWidth
+                id="faculty"
+                label="Wydział"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="Kierunek"
+                name="fieldOfStudy"
+                variant="outlined"
+                required
+                fullWidth
+                id="fieldOfStudy"
+                label="Kierunek"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="Indeks"
+                name="index"
+                variant="outlined"
+                required
+                fullWidth
+                label="Indeks"
+                id="index"
               />
             </Grid>
             <Grid item xs={12}>
