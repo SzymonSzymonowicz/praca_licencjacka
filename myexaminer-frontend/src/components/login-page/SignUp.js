@@ -66,7 +66,7 @@ export default function SignUp(props) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    let form = event.tagert;
+    let form = event.target;
     
     console.table([{"email": form.email.value, "password": form.password.value, "recoveryQuestion": form.recoveryQuestion.value, "recoveryAnswer": form.recoveryAnswer.value}])
 
