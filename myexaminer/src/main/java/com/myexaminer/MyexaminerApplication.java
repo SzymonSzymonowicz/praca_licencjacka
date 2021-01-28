@@ -22,6 +22,7 @@ public class MyexaminerApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/account").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/account/login").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/account/getRole").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/exam/{idGroup}").allowedOrigins(LOCALHOST);
 				registry.addMapping("/exam/getExamStatus").allowedOrigins(LOCALHOST);
 				registry.addMapping("/exam/changeExamStatus").allowedMethods("*").allowedOrigins(LOCALHOST);

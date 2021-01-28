@@ -29,6 +29,8 @@ export default function SignIn(props) {
   const classes = props.className
   const history = useHistory()
 
+  const [role, setRole] = React.useState([]);
+
   const loginUser = (email, password) => {
     fetch('http://localhost:8080/account/login', {
       method: 'POST',
@@ -46,6 +48,7 @@ export default function SignIn(props) {
         console.log("User loggged in!")
         sessionStorage.setItem('USER_SESSION_EMAIL', email)
         sessionStorage.setItem('USER_SESSION_PASSWORD', password)
+        getRole();
         history.push("/landing")
       } else if (response.status === 401 ){
         console.log("UNAUTHORIZED!")
@@ -54,6 +57,31 @@ export default function SignIn(props) {
       }
     })
   }
+    /*sessionStorage.setItem('USER_SESSION_ROLE', email)*/
+    const getRole = () => {
+        fetch('http://localhost:8080/account/getRole', {
+            method: 'GET',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
+            }
+        }).then((response) => {
+            if (response.status === 200) {
+                return response.json()
+            } else if (response.status === 401 ){
+                console.log("UNAUTHORIZED!")
+            } else {
+                console.log("Something went wrong!")
+            }
+        }).then(roleJSON => {
+            let roles = []
+            roleJSON.map(userRole => {
+                roles.push(userRole["name"])
+            })
+            sessionStorage.setItem('USER_SESSION_ROLE', roles.pop())
+        })
+    }
 
   const handleSubmit = event => {
     event.preventDefault();
