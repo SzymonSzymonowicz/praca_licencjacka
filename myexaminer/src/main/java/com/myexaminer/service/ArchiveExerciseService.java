@@ -51,7 +51,9 @@ public class ArchiveExerciseService {
         StringBuilder jsonAnswer = new StringBuilder("{\"answerJSON\":[");
         for (int i = 0; i < answers.size()-1; i++){
             jsonAnswer.append("\"");
-            jsonAnswer.append(answers.get(i));
+            if (answers.get(i) != null) {
+                jsonAnswer.append(answers.get(i));
+            }
             jsonAnswer.append("\"");
             jsonAnswer.append(",");
         }

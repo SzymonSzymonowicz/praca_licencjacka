@@ -22,6 +22,7 @@ public class MyexaminerApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/account").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/account/login").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/account/getRole").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/exam/{idGroup}").allowedOrigins(LOCALHOST);
 				registry.addMapping("/exam/getExamStatus").allowedOrigins(LOCALHOST);
 				registry.addMapping("/exam/changeExamStatus").allowedMethods("*").allowedOrigins(LOCALHOST);
@@ -29,6 +30,8 @@ public class MyexaminerApplication {
 				registry.addMapping("/archive/checkExercises").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/archive/createExerciseArchive").allowedOrigins(LOCALHOST);
 				registry.addMapping("/archive/getExercises").allowedOrigins(LOCALHOST);
+				registry.addMapping("/notebook").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/notebook/edit").allowedMethods("*").allowedOrigins(LOCALHOST);
 			}
 		};
 	}

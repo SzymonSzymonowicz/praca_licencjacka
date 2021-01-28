@@ -42,4 +42,5 @@ public class StudentController {
     public @ResponseBody Iterable<Student> getStudents() {
         return studentService.returnAllStudents();
     }
+
 }

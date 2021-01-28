@@ -1,6 +1,7 @@
 package com.myexaminer.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class Student {
     private int idStudent;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "fk_account_id")
     Account account;
 
     @Column(name = "first_name")
@@ -41,15 +42,15 @@ public class Student {
     public Student() {
     }
 
-    public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy, Set<TeachingGroup> teachingGroups, List<ArchiveExercise> archiveExercises) {
+    public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
         this.idStudent = idStudent;
         this.firstName = firstName;
         this.lastName = lastName;
         this.index = index;
         this.faculty = faculty;
         this.fieldOfStudy = fieldOfStudy;
-        this.teachingGroups = teachingGroups;
-        this.archiveExercises = archiveExercises;
+        this.teachingGroups = new HashSet<>();
+        this.archiveExercises = new ArrayList<>();
     }
 
     public Account getAccount() {

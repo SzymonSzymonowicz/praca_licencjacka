@@ -16,23 +16,23 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class AccountControllerTest {
 
-    @Mock
-    private AccountService accountService;
+//    @Mock
+//    private AccountService accountService;
+//
+//    @InjectMocks
+//    AccountController accountController;
+//
+//    private Account account1, account2;
 
-    @InjectMocks
-    AccountController accountController;
-
-    private Account account1, account2;
-
-    @BeforeEach
+/*    @BeforeEach
     void init() {
         account1 = new Account("testowy@gmail.com", "haslo", "Tak?", "Nie");
         account2 = new Account("testowy@gmail.com", "haslo", "Tak?", "Nie");
         account1.setIdAccount(1);
         account2.setIdAccount(2);
-    }
+    }*/
 
-    @Test
+/*    @Test
     public void When_addNewAccount_expect_accountService_called() {
         final ArgumentCaptor<Account> argumentCaptor = ArgumentCaptor.forClass(Account.class);
         accountController.addNewAccount(account1);
@@ -41,7 +41,7 @@ public class AccountControllerTest {
         Assertions.assertEquals("haslo", argumentCaptor.getValue().getPassword());
         Assertions.assertEquals("Tak?", argumentCaptor.getValue().getRecoveryQuestion());
         Assertions.assertEquals("Nie", argumentCaptor.getValue().getRecoveryAnswer());
-    }
+    }*/
 
 /*    @Test
     public void When_add_two_accounts_with_same_email_then_return_httpstatus_UNPROCESSABLE_ENTITY() {
