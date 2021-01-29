@@ -1,7 +1,6 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.model.Student;
 import com.myexaminer.service.TeachingGroupService;
 import com.myexaminer.service.LecturerService;
 import com.myexaminer.service.StudentService;
@@ -35,8 +34,8 @@ public class TeachingGroupController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        if(!lecturerService.lecturerExistsById(teachingGroup.getIdLecturer())){
-            log.info("Lecturer with given ID -> {} <- DOES NOT EXIST", teachingGroup.getIdLecturer());
+        if(!lecturerService.lecturerExistsById(teachingGroup.getLecturer().getIdLecturer())){
+            log.info("Lecturer with given ID -> {} <- DOES NOT EXIST", teachingGroup.getLecturer().getIdLecturer());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 

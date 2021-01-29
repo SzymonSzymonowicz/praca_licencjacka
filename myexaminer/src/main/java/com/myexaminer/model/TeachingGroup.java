@@ -3,7 +3,6 @@ package com.myexaminer.model;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,8 +23,9 @@ public class TeachingGroup {
     @Temporal(TemporalType.TIMESTAMP)
     private Date teachingGroupDateOfStarting;
 
-    @Column(name = "fk_lecturer_account_id")
-    private int idLecturer;
+    @ManyToOne
+    @JoinColumn(name="fk_lecturer_account_id", nullable=false)
+    private Lecturer lecturer;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -72,12 +72,12 @@ public class TeachingGroup {
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
     }
 
-    public int getIdLecturer() {
-        return idLecturer;
+    public Lecturer getLecturer() {
+        return lecturer;
     }
 
-    public void setIdLecturer(int idLecturer) {
-        this.idLecturer = idLecturer;
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
     }
 
     public Set<Student> getUsers() {
@@ -111,26 +111,12 @@ public class TeachingGroup {
     public TeachingGroup() {
     }
 
-    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, int idLecturer,
-                         Set<Student> students, Set<Exam> exams) {
+    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, Lecturer lecturer, Set<Student> students, Set<Exam> exams) {
         this.teachingGroupName = teachingGroupName;
         this.accessCode = accessCode;
         this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
-        this.idLecturer = idLecturer;
+        this.lecturer = lecturer;
         this.students = students;
         this.exams = exams;
-    }
-
-    @Override
-    public String toString() {
-        return "TeachingGroup{" +
-                "idTeachingGroup=" + idTeachingGroup +
-                ", teachingGroupName='" + teachingGroupName + '\'' +
-                ", accessCode='" + accessCode + '\'' +
-                ", teachingGroupDateOfStarting=" + teachingGroupDateOfStarting +
-                ", idLecturer=" + idLecturer +
-                ", students=" + students +
-                ", exams=" + exams +
-                '}';
     }
 }

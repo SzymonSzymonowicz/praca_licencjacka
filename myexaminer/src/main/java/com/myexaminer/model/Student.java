@@ -37,7 +37,7 @@ public class Student {
     private Set<TeachingGroup> teachingGroups = new HashSet<>();
 
     @OneToMany(mappedBy="student")
-    private List<ArchiveExercise> archiveExercises;
+    private List<IndividualExam> individualExams;
 
     public Student() {
     }
@@ -50,7 +50,6 @@ public class Student {
         this.faculty = faculty;
         this.fieldOfStudy = fieldOfStudy;
         this.teachingGroups = new HashSet<>();
-        this.archiveExercises = new ArrayList<>();
     }
 
     public Account getAccount() {
@@ -119,14 +118,6 @@ public class Student {
 
     public void addToTeachingGroups(TeachingGroup teachingGroup) {
         teachingGroups.add(teachingGroup);
-    }
-
-    public List<ArchiveExercise> getArchiveExercises() {
-        return archiveExercises;
-    }
-
-    public void setArchiveExercises(List<ArchiveExercise> archiveExercises) {
-        this.archiveExercises = archiveExercises;
     }
 
     @Override

@@ -2,11 +2,11 @@ package com.myexaminer.exerciseTypes;
 
 import java.util.List;
 
-public class ReceivedExercisesWithStudentEmail {
+public class ReceivedExercisesWithIdIndividualExam {
 
     private List<ReceivedExercise> receivedExercises;
 
-    private String studentEmail;
+    private int idIndividualExam;
 
     public List<ReceivedExercise> getReceivedExercises() {
         return receivedExercises;
@@ -16,11 +16,11 @@ public class ReceivedExercisesWithStudentEmail {
         this.receivedExercises = receivedExercises;
     }
 
-    public String getStudentEmail() {
-        return studentEmail;
+    public int getIdIndividualExam() {
+        return idIndividualExam;
     }
 
-    public void setStudentEmail(String studentEmail) {
-        this.studentEmail = studentEmail;
+    public void setIdIndividualExam(int idIndividualExam) {
+        this.idIndividualExam = idIndividualExam;
     }
 }

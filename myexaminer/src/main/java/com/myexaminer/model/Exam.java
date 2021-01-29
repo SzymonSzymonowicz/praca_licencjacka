@@ -50,6 +50,9 @@ public class Exam {
     @OneToMany(mappedBy="exam")
     private List<Exercise> exercises;
 
+    @OneToMany(mappedBy="mainExam")
+    private List<IndividualExam> individualExams;
+
     public int getIdExam() {
         return idExam;
     }

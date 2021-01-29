@@ -15,8 +15,8 @@ public class ArchiveExercise {
     private Exercise exercise;
 
     @ManyToOne
-    @JoinColumn(name="fk_student_id", nullable=false)
-    private Student student;
+    @JoinColumn(name="fk_individual_exam_id", nullable=false)
+    private IndividualExam individualExam;
 
     @Column(name = "gained_points")
     private Integer gainedPoints;
@@ -29,9 +29,9 @@ public class ArchiveExercise {
 
     public ArchiveExercise(){}
 
-    public ArchiveExercise(Exercise exercise, Student student, Integer gainedPoints, String answer, String lecturerComment){
+    public ArchiveExercise(Exercise exercise, IndividualExam individualExam, Integer gainedPoints, String answer, String lecturerComment){
         this.exercise = exercise;
-        this.student = student;
+        this.individualExam = individualExam;
         this.gainedPoints = gainedPoints;
         this.answer = answer;
         this.lecturerComment = lecturerComment;
@@ -51,14 +51,6 @@ public class ArchiveExercise {
 
     public void setExercise(Exercise exercise) {
         this.exercise = exercise;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
     }
 
     public Integer getGainedPoints() {
@@ -83,5 +75,13 @@ public class ArchiveExercise {
 
     public void setLecturerComment(String lecturerComment) {
         this.lecturerComment = lecturerComment;
+    }
+
+    public IndividualExam getIndividualExam() {
+        return individualExam;
+    }
+
+    public void setIndividualExam(IndividualExam individualExam) {
+        this.individualExam = individualExam;
     }
 }
