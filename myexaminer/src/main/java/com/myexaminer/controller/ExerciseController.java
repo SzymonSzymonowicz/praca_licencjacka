@@ -4,12 +4,14 @@ import com.myexaminer.exerciseTypes.ReceivedExercise;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.modelDTO.ExerciseDTO;
 import com.myexaminer.service.ExerciseService;
+import com.myexaminer.service.IndividualExamService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,9 +23,11 @@ import java.util.stream.StreamSupport;
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
+    private final IndividualExamService individualExamService;
 
-    public ExerciseController(ExerciseService exerciseService) {
+    public ExerciseController(IndividualExamService individualExamService, ExerciseService exerciseService) {
         this.exerciseService = exerciseService;
+        this.individualExamService = individualExamService;
     }
 
     @PostMapping
@@ -55,10 +59,18 @@ public class ExerciseController {
     }
 
     @GetMapping("/{idExam}")
-    public @ResponseBody Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable int idExam) {
+    public @ResponseBody Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Integer idExam, HttpServletRequest request) {
+        if(request.getUserPrincipal().getName().equals("dianaLektor@gmail.com")) {
+            return StreamSupport.stream(exerciseService.returnAllExercises().spliterator(), false).
+                    filter(exercise -> exercise.getExam().getIdExam() == individualExamService.returnIndividualExamById(idExam).getMainExam().getIdExam()).
+                    map(exercise -> new ExerciseDTO(exercise)).collect(Collectors.toList());
+        }
+        else {
         return StreamSupport.stream(exerciseService.returnAllExercises().spliterator(), false).
                 filter(exercise -> exercise.getExam().getIdExam() == idExam).
                 map(exercise -> new ExerciseDTO(exercise)).collect(Collectors.toList());
+
+        }
     }
 
     @PostMapping("/saveExercises")

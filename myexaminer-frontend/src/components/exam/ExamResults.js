@@ -27,7 +27,7 @@ export default function ExamResults(props) {
     try {
       let answArr = []
 
-      const result = await fetch('http://localhost:8080/archive/getExercises?idExam=' + id + '&idStudent=' + idStudent, {
+      const result = await fetch('http://localhost:8080/archive/getExercises?idExam=' + id, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

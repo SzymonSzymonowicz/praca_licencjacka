@@ -72,7 +72,7 @@ export default function Exam() {
     })
   }, [id])
 
-  function saveAnswers(studentEmail, receivedExercises){
+  function saveAnswers(receivedExercises, idIndividualExam, idExam){
     fetch('http://localhost:8080/archive/checkExercises', {
       method: 'PUT',
       headers: {
@@ -81,8 +81,9 @@ export default function Exam() {
         'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
       },
       body: JSON.stringify({
-        studentEmail: studentEmail,
-        receivedExercises: receivedExercises
+        receivedExercises: receivedExercises,
+        idIndividualExam: idIndividualExam,
+        idExam: idExam
       })
     }).then(function (response) {
       if (response.status === 200) {
@@ -101,7 +102,7 @@ export default function Exam() {
     event.preventDefault();
     console.log(answered);
 
-    saveAnswers(sessionStorage.getItem('USER_SESSION_EMAIL'), answered)
+    saveAnswers(answered, null, id)
   }
 
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Controller
@@ -44,9 +45,14 @@ public class ArchiveExerciseController {
         int idExam = twoIdObject.getIdExam();
         Student student = studentService.returnStudentById(idStudent);
         Exam exam = examService.returnExamById(idExam);
-        IndividualExam individualExam = new IndividualExam(exam, student);
-        if(individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).isEmpty()){
+        Optional<IndividualExam> individualExamOpt = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam);
+        IndividualExam individualExam;
+        if(individualExamOpt.isEmpty()){
+            individualExam = new IndividualExam(exam, student);
             individualExamService.individualExamSave(individualExam);
+        }
+        else {
+            individualExam = individualExamOpt.get();
         }
         if(archiveExerciseService.returnArchiveExerciseByExerciseAndIndividualExam(examService.returnExamById(idExam).getExercises().get(0), individualExamService.returnIndividualExamById(individualExam.getIdIndividualExam())).isPresent()){
             return ResponseEntity.ok(HttpStatus.CONFLICT);
@@ -68,12 +74,24 @@ public class ArchiveExerciseController {
     public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam, HttpServletRequest request){
         for(ReceivedExercise receivedExercise: receivedExercisesWithIdIndividualExam.getReceivedExercises()){
             int idExercise = receivedExercise.getIdExercise();
+            int idStudent;
+            ArchiveExercise archiveExercise;
             String type = exerciseService.getExerciseType(idExercise);
-            ArchiveExercise archiveExercise = archiveExerciseService
-                    .returnArchiveExerciseByExerciseAndIndividualExam(
-                            exerciseService.returnExerciseById(idExercise),
-                            individualExamService.returnIndividualExamById(receivedExercisesWithIdIndividualExam.getIdIndividualExam())
-                    ).get();
+            if(receivedExercisesWithIdIndividualExam.getIdExam() == null) {
+                archiveExercise = archiveExerciseService
+                        .returnArchiveExerciseByExerciseAndIndividualExam(
+                                exerciseService.returnExerciseById(idExercise),
+                                individualExamService.returnIndividualExamById(receivedExercisesWithIdIndividualExam.getIdIndividualExam())
+                        ).get();
+            }
+            else {
+                idStudent = accountService.returnAccountByEmail(request.getUserPrincipal().getName()).get().getIdAccount();
+                archiveExercise = archiveExerciseService
+                        .returnArchiveExerciseByExerciseAndIndividualExam(
+                                exerciseService.returnExerciseById(idExercise),
+                                individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, receivedExercisesWithIdIndividualExam.getIdExam()).get()
+                        ).get();
+            }
 
             archiveExercise.setLecturerComment(receivedExercise.getComment());
             Object receivedAnswer = receivedExercise.getAnswer();
@@ -115,7 +133,17 @@ public class ArchiveExerciseController {
     }
 
     @GetMapping("/getExercises")
-    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam int idExam, @RequestParam int idIndividualExam){
-        return archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(idExam, idIndividualExam);
+    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Integer idExam, @RequestParam(required = false) Integer idIndExam, HttpServletRequest request){
+        List<ArchiveExerciseDTO> archiveExerciseDTOS;
+        if(idIndExam == null) {
+            int idStudent = accountService.returnAccountByEmail(request.getUserPrincipal().getName()).get().getIdAccount();
+            int idIndividualExam = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).get().getIdIndividualExam();
+            archiveExerciseDTOS = archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(idExam, idIndividualExam);
+        }
+        else {
+            IndividualExam individualExam = individualExamService.returnIndividualExamById(idIndExam);
+            archiveExerciseDTOS = archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(individualExam.getMainExam().getIdExam(), idIndExam);
+        }
+        return archiveExerciseDTOS;
     }
 }
