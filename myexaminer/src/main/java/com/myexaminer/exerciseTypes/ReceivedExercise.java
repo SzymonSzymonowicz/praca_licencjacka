@@ -3,9 +3,9 @@ package com.myexaminer.exerciseTypes;
 public class ReceivedExercise {
     private int idExercise;
 
-    private int points;
+    private int gainedPoints;
 
-    private String comment;
+    private String lecturerComment;
 
     private Object answer;
 
@@ -17,20 +17,20 @@ public class ReceivedExercise {
         this.idExercise = idExercise;
     }
 
-    public int getPoints() {
-        return points;
+    public int getGainedPoints() {
+        return gainedPoints;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setGainedPoints(int gainedPoints) {
+        this.gainedPoints = gainedPoints;
     }
 
-    public String getComment() {
-        return comment;
+    public String getLecturerComment() {
+        return lecturerComment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setLecturerComment(String lecturerComment) {
+        this.lecturerComment = lecturerComment;
     }
 
     public Object getAnswer() {
@@ -41,10 +41,20 @@ public class ReceivedExercise {
         this.answer = answer;
     }
 
-    public ReceivedExercise(int idExercise, int points, String comment, Object answer) {
+    public ReceivedExercise(int idExercise, int gainedPoints, String comment, Object answer) {
         this.idExercise = idExercise;
-        this.points = points;
-        this.comment = comment;
+        this.gainedPoints = gainedPoints;
+        this.lecturerComment = comment;
         this.answer = answer;
+    }
+
+    @Override
+    public String toString() {
+        return "ReceivedExercise{" +
+                "idExercise=" + idExercise +
+                ", points=" + gainedPoints +
+                ", lecturerComment='" + lecturerComment + '\'' +
+                ", answer=" + answer +
+                '}';
     }
 }

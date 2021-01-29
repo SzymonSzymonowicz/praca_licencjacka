@@ -93,11 +93,11 @@ public class ArchiveExerciseController {
                         ).get();
             }
 
-            archiveExercise.setLecturerComment(receivedExercise.getComment());
+            archiveExercise.setLecturerComment(receivedExercise.getLecturerComment());
             Object receivedAnswer = receivedExercise.getAnswer();
             switch (type) {
                 case "L":
-                    archiveExercise.setGainedPoints(receivedExercise.getPoints());
+                    archiveExercise.setGainedPoints(receivedExercise.getGainedPoints());
                     archiveExercise.setAnswer(archiveExerciseService.toJSONArray((List<String>) receivedAnswer));
                     break;
                 case "Z": {
@@ -116,11 +116,14 @@ public class ArchiveExerciseController {
                     break;
                 }
                 case "O": {
-                    archiveExercise.setGainedPoints(receivedExercise.getPoints());
+                    archiveExercise.setGainedPoints(receivedExercise.getGainedPoints());
                     archiveExercise.setAnswer(archiveExerciseService.toJSONString((String) receivedAnswer));
                     break;
                 }
             }
+            System.out.println("elo");
+            System.out.println(receivedExercise);
+            archiveExercise.setLecturerComment(receivedExercise.getLecturerComment());
             archiveExerciseService.exerciseSave(archiveExercise);
             if(request.getUserPrincipal().getName().equals("dianaLektor@gmail.com")){
                 IndividualExam individualExam = individualExamService.returnIndividualExamById(receivedExercisesWithIdIndividualExam.getIdIndividualExam());

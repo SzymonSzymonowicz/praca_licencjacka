@@ -15,7 +15,6 @@ export default function ExamResults(props) {
   const [answered, setAnswered] = React.useState([]);
   const history = useHistory();
 
-  const idStudent = 2;
 
   React.useEffect(() => {
     fetchAnswers()
@@ -98,21 +97,21 @@ export default function ExamResults(props) {
           return (
             <Grid item xs={12} key={index}>
               <OpenTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} index={index}/>
-              {lecturerComment && <Comment lecturerComment={lecturerComment}/>}
+              {lecturerComment && <Comment lecturerComment={lecturerComment} disable={true}/>}
             </Grid>
           )
         else if (type === "Z")
           return (
             <Grid item xs={12} key={index}>
               <ClosedTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.exerciseBody.answers} index={index}/>
-              {lecturerComment && <Comment lecturerComment={lecturerComment}/>}
+              {lecturerComment && <Comment lecturerComment={lecturerComment} disable={true}/>}
             </Grid>
           )
         else if (type === "L")
           return (
             <Grid item xs={12} key={index}>
               <FillBlanksTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.exerciseBody.fill} index={index}/>
-              {lecturerComment && <Comment lecturerComment={lecturerComment}/>}
+              {lecturerComment && <Comment lecturerComment={lecturerComment} disable={true}/>}
             </Grid>
           )
         else
