@@ -1,6 +1,5 @@
 package com.myexaminer.controller;
 
-
 import com.myexaminer.model.Exam;
 import com.myexaminer.model.IndividualExam;
 import com.myexaminer.model.Student;

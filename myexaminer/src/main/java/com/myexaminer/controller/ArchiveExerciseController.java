@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Log4j2
@@ -24,15 +25,17 @@ public class ArchiveExerciseController {
     private final ArchiveExerciseService archiveExerciseService;
     private final StudentService studentService;
     private final ExamService examService;
+    private final AccountService accountService;
     private final IndividualExamService individualExamService;
 
     public ArchiveExerciseController(ExerciseService exerciseService, ArchiveExerciseService archiveExerciseService,
-                                     ExamService examService, IndividualExamService individualExamService, StudentService studentService){
+                                     ExamService examService, IndividualExamService individualExamService, StudentService studentService, AccountService accountService){
         this.exerciseService = exerciseService;
         this.archiveExerciseService = archiveExerciseService;
         this.examService = examService;
         this.individualExamService = individualExamService;
         this.studentService = studentService;
+        this.accountService = accountService;
     }
 
     @PostMapping("/createExerciseArchive")
@@ -42,7 +45,9 @@ public class ArchiveExerciseController {
         Student student = studentService.returnStudentById(idStudent);
         Exam exam = examService.returnExamById(idExam);
         IndividualExam individualExam = new IndividualExam(exam, student);
-        individualExamService.individualExamSave(individualExam);
+        if(individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).isEmpty()){
+            individualExamService.individualExamSave(individualExam);
+        }
         if(archiveExerciseService.returnArchiveExerciseByExerciseAndIndividualExam(examService.returnExamById(idExam).getExercises().get(0), individualExamService.returnIndividualExamById(individualExam.getIdIndividualExam())).isPresent()){
             return ResponseEntity.ok(HttpStatus.CONFLICT);
         } else {
@@ -60,7 +65,7 @@ public class ArchiveExerciseController {
     }
 
     @PutMapping("/checkExercises")
-    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam){
+    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam, HttpServletRequest request){
         for(ReceivedExercise receivedExercise: receivedExercisesWithIdIndividualExam.getReceivedExercises()){
             int idExercise = receivedExercise.getIdExercise();
             String type = exerciseService.getExerciseType(idExercise);
@@ -99,6 +104,11 @@ public class ArchiveExerciseController {
                 }
             }
             archiveExerciseService.exerciseSave(archiveExercise);
+            if(request.getUserPrincipal().getName().equals("dianaLektor@gmail.com")){
+                IndividualExam individualExam = individualExamService.returnIndividualExamById(receivedExercisesWithIdIndividualExam.getIdIndividualExam());
+                individualExam.setChecked(true);
+                individualExamService.individualExamSave(individualExam);
+            }
         }
 
         return ResponseEntity.ok(HttpStatus.OK);
