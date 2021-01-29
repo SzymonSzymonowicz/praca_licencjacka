@@ -1,9 +1,8 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.exerciseTypes.ReceivedExercise;
-import com.myexaminer.exerciseTypes.ReceivedExercisesWithStudentEmail;
-import com.myexaminer.model.ArchiveExercise;
-import com.myexaminer.model.Exercise;
+import com.myexaminer.exerciseTypes.ReceivedExercisesWithIdIndividualExam;
+import com.myexaminer.model.*;
 import com.myexaminer.modelDTO.ArchiveExerciseDTO;
 import com.myexaminer.modelDTO.TwoIdObject;
 import com.myexaminer.service.*;
@@ -23,30 +22,34 @@ public class ArchiveExerciseController {
 
     private final ExerciseService exerciseService;
     private final ArchiveExerciseService archiveExerciseService;
-    private final ExamService examService;
     private final StudentService studentService;
-    private final AccountService accountService;
+    private final ExamService examService;
+    private final IndividualExamService individualExamService;
 
     public ArchiveExerciseController(ExerciseService exerciseService, ArchiveExerciseService archiveExerciseService,
-                                     ExamService examService, StudentService studentService, AccountService accountService){
+                                     ExamService examService, IndividualExamService individualExamService, StudentService studentService){
         this.exerciseService = exerciseService;
         this.archiveExerciseService = archiveExerciseService;
         this.examService = examService;
+        this.individualExamService = individualExamService;
         this.studentService = studentService;
-        this.accountService = accountService;
     }
 
     @PostMapping("/createExerciseArchive")
     public ResponseEntity<HttpStatus> createExerciseArchive(@RequestBody TwoIdObject twoIdObject) {
         int idStudent = twoIdObject.getIdStudent();
         int idExam = twoIdObject.getIdExam();
-        if(archiveExerciseService.returnArchiveExerciseByExerciseAndStudent(examService.returnExamById(idExam).getExercises().get(0), studentService.returnStudentById(idStudent)).isPresent()){
+        Student student = studentService.returnStudentById(idStudent);
+        Exam exam = examService.returnExamById(idExam);
+        IndividualExam individualExam = new IndividualExam(exam, student);
+        individualExamService.individualExamSave(individualExam);
+        if(archiveExerciseService.returnArchiveExerciseByExerciseAndIndividualExam(examService.returnExamById(idExam).getExercises().get(0), individualExamService.returnIndividualExamById(individualExam.getIdIndividualExam())).isPresent()){
             return ResponseEntity.ok(HttpStatus.CONFLICT);
         } else {
             for (Exercise exercise : examService.returnExamById(idExam).getExercises()) {
                 archiveExerciseService.exerciseSave(new ArchiveExercise(
                         exercise,
-                        studentService.returnStudentById(idStudent),
+                        individualExam,
                         0,
                         null,
                         null
@@ -57,14 +60,14 @@ public class ArchiveExerciseController {
     }
 
     @PutMapping("/checkExercises")
-    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithStudentEmail receivedExerciseWithStudentEmail){
-        for(ReceivedExercise receivedExercise: receivedExerciseWithStudentEmail.getReceivedExercises()){
+    public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam){
+        for(ReceivedExercise receivedExercise: receivedExercisesWithIdIndividualExam.getReceivedExercises()){
             int idExercise = receivedExercise.getIdExercise();
             String type = exerciseService.getExerciseType(idExercise);
             ArchiveExercise archiveExercise = archiveExerciseService
-                    .returnArchiveExerciseByExerciseAndStudent(
+                    .returnArchiveExerciseByExerciseAndIndividualExam(
                             exerciseService.returnExerciseById(idExercise),
-                            studentService.returnStudentById(accountService.returnAccountByEmail(receivedExerciseWithStudentEmail.getStudentEmail()).get().getIdAccount())
+                            individualExamService.returnIndividualExamById(receivedExercisesWithIdIndividualExam.getIdIndividualExam())
                     ).get();
 
             archiveExercise.setLecturerComment(receivedExercise.getComment());
@@ -102,7 +105,7 @@ public class ArchiveExerciseController {
     }
 
     @GetMapping("/getExercises")
-    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam int idExam, @RequestParam int idStudent){
-        return archiveExerciseService.archiveExercisesDTOByExamIdAndIdStudent(idExam, idStudent);
+    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam int idExam, @RequestParam int idIndividualExam){
+        return archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(idExam, idIndividualExam);
     }
 }

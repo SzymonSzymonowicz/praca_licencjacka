@@ -1,6 +1,7 @@
 package com.myexaminer.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "lecturer")
@@ -25,6 +26,9 @@ public class Lecturer {
 
     @Column(name = "contact_email")
     private String contactEmail;
+
+    @OneToMany(mappedBy="lecturer")
+    private List<TeachingGroup> teachingGroups;
 
     public int getIdLecturer() {
         return idLecturer;
@@ -70,12 +74,13 @@ public class Lecturer {
 
     }
 
-    public Lecturer(int idLecturer, String firstName, String lastName, String homePage, String contactEmail) {
-        this.idLecturer = idLecturer;
+    public Lecturer(Account account, String firstName, String lastName, String homePage, String contactEmail, List<TeachingGroup> teachingGroups) {
+        this.account = account;
         this.firstName = firstName;
         this.lastName = lastName;
         this.homePage = homePage;
         this.contactEmail = contactEmail;
+        this.teachingGroups = teachingGroups;
     }
 
     @Override

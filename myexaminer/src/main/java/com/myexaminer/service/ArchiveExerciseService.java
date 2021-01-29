@@ -2,6 +2,7 @@ package com.myexaminer.service;
 
 import com.myexaminer.model.ArchiveExercise;
 import com.myexaminer.model.Exercise;
+import com.myexaminer.model.IndividualExam;
 import com.myexaminer.model.Student;
 import com.myexaminer.modelDTO.ArchiveExerciseDTO;
 import com.myexaminer.repository.ArchiveExerciseRepository;
@@ -17,30 +18,31 @@ public class ArchiveExerciseService {
 
     private final ArchiveExerciseRepository archiveExerciseRepository;
     private final ExamService examService;
-    private final StudentService studentService;
+    private final IndividualExamService individualExamService;
 
-    public ArchiveExerciseService(ArchiveExerciseRepository archiveExerciseRepository, ExamService examService, StudentService studentService){
+    public ArchiveExerciseService(ArchiveExerciseRepository archiveExerciseRepository, ExamService examService, IndividualExamService individualExamService){
         this.archiveExerciseRepository = archiveExerciseRepository;
         this.examService = examService;
-        this.studentService = studentService;
+        this.individualExamService = individualExamService;
     }
 
     public void exerciseSave(ArchiveExercise archiveExercise) {
         archiveExerciseRepository.save(archiveExercise);
     }
 
-    public Optional<ArchiveExercise> returnArchiveExerciseByExerciseAndStudent(Exercise exercise, Student student){
-        Optional<ArchiveExercise> exerciseByExerciseAndStudent = archiveExerciseRepository.findByExerciseIdExerciseAndStudentIdStudent(exercise.getIdExercise(), student.getIdStudent());
+    public Optional<ArchiveExercise> returnArchiveExerciseByExerciseAndIndividualExam(Exercise exercise, IndividualExam individualExam){
+        Optional<ArchiveExercise> exerciseByExerciseAndIndividualExam =
+                archiveExerciseRepository.findByExerciseIdExerciseAndIndividualExamIdIndividualExam(exercise.getIdExercise(), individualExam.getIdIndividualExam());
 
-        return exerciseByExerciseAndStudent;
+        return exerciseByExerciseAndIndividualExam;
     }
 
-    public List<ArchiveExerciseDTO> archiveExercisesDTOByExamIdAndIdStudent(int idExam, int idStudent){
+    public List<ArchiveExerciseDTO> archiveExercisesDTOByExamIdAndIdIndividualExam(int idExam, int idIndividualExam){
         List<ArchiveExercise> archiveExerciseList = new ArrayList<>();
-        Student student = studentService.returnStudentById(idStudent);
+        IndividualExam individualExam = individualExamService.returnIndividualExamById(idIndividualExam);
         for (Exercise exercise : examService.returnExamById(idExam).getExercises()) {
             archiveExerciseList.add(
-                    returnArchiveExerciseByExerciseAndStudent(exercise, student).get()
+                    returnArchiveExerciseByExerciseAndIndividualExam(exercise, individualExam).get()
             );
         }
 

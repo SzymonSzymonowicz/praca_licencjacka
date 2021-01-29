@@ -7,7 +7,7 @@ public class ArchiveExerciseDTO {
 
     private int idExercise;
 
-    private int idStudent;
+    private int idIndividualExam;
 
     private Integer gainedPoints;
 
@@ -29,14 +29,6 @@ public class ArchiveExerciseDTO {
 
     public void setIdExercise(int idExercise) {
         this.idExercise = idExercise;
-    }
-
-    public int getIdStudent() {
-        return idStudent;
-    }
-
-    public void setIdStudent(int idStudent) {
-        this.idStudent = idStudent;
     }
 
     public Integer getGainedPoints() {
@@ -63,10 +55,18 @@ public class ArchiveExerciseDTO {
         this.lecturerComment = lecturerComment;
     }
 
+    public int getIdIndividualExam() {
+        return idIndividualExam;
+    }
+
+    public void setIdIndividualExam(int idIndividualExam) {
+        this.idIndividualExam = idIndividualExam;
+    }
+
     public ArchiveExerciseDTO(ArchiveExercise archiveExercise) {
         this.idArchiveExercise = archiveExercise.getIdArchiveExercise();
         this.idExercise = archiveExercise.getExercise().getIdExercise();
-        this.idStudent = archiveExercise.getStudent().getIdStudent();
+        this.idIndividualExam = archiveExercise.getIndividualExam().getIdIndividualExam();
         this.gainedPoints = archiveExercise.getGainedPoints();
         this.answer = archiveExercise.getAnswer();
         this.lecturerComment = archiveExercise.getLecturerComment();

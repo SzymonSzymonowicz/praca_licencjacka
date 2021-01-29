@@ -5,6 +5,7 @@ import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.repository.TeachingGroupRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,5 +52,13 @@ public class TeachingGroupService {
         student.addToTeachingGroups(teachingGroup);
 
         studentService.studentSave(student);
+    }
+
+    public List<TeachingGroup> returnTeachingGroupsByLecturerEmail(String email){
+        return teachingGroupRepository.findByLecturerAccountEmail(email);
+    }
+
+    public List<TeachingGroup> returnTeachingGroupsByLecturerId(int id){
+        return teachingGroupRepository.findByLecturerIdLecturer(id);
     }
 }

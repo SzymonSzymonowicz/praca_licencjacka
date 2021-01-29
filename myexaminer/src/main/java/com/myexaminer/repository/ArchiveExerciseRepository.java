@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface ArchiveExerciseRepository extends JpaRepository<ArchiveExercise, Integer> {
     long deleteByIdArchiveExercise(int idArchiveExercise);
     Optional<ArchiveExercise> findByIdArchiveExercise(int idArchiveExercise);
-    Optional<ArchiveExercise> findByExerciseIdExerciseAndStudentIdStudent(int idExercise, int idStudent);
+    Optional<ArchiveExercise> findByExerciseIdExerciseAndIndividualExamIdIndividualExam(int idExercise, int idIndividualExam);
 }

@@ -1,10 +1,12 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.model.Account;
+import com.myexaminer.model.Notebook;
 import com.myexaminer.model.Role;
 import com.myexaminer.model.Student;
 import com.myexaminer.modelDTO.RegisterDTO;
 import com.myexaminer.service.AccountService;
+import com.myexaminer.service.NotebookService;
 import com.myexaminer.service.RoleService;
 import com.myexaminer.service.StudentService;
 import lombok.extern.log4j.Log4j2;
@@ -25,11 +27,13 @@ public class AccountController {
     private final AccountService accountService;
     private final StudentService studentService;
     private final RoleService roleService;
+    private final NotebookService notebookService;
 
-    public AccountController(AccountService accountService, StudentService studentService, RoleService roleService) {
+    public AccountController(AccountService accountService, StudentService studentService, RoleService roleService, NotebookService notebookService) {
         this.accountService = accountService;
         this.studentService = studentService;
         this.roleService = roleService;
+        this.notebookService = notebookService;
     }
 
     @Autowired
@@ -69,6 +73,8 @@ public class AccountController {
 
         studentService.studentSave(student);
         log.info("Student with ID -> {} <- has been ADDED", student.getIdStudent());
+
+        notebookService.notebookSave(new Notebook("Miłej nauki !", account));
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

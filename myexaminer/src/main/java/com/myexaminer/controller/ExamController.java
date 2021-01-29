@@ -56,7 +56,7 @@ public class ExamController {
     }
 
     @GetMapping("/{idGroup}")
-    public @ResponseBody Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup,  HttpServletResponse response) {
+    public @ResponseBody Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
         return StreamSupport.stream(examService.returnAllExams().spliterator(), false).
                 filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
                 map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
