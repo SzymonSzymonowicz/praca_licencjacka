@@ -44,7 +44,7 @@ public class NotebookController {
 
         notebookService.notebookSave(notebook);
 
-        log.info("Notebook with ID -> {} <- has been UPDATED by user -> {} <-", notebook.getIdNotebook(), user);
+        log.info("Notebook with ID -> {} <- has been UPDATED by user -> {} <- with value: -> {} <-", notebook.getIdNotebook(), user, notebookContent);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

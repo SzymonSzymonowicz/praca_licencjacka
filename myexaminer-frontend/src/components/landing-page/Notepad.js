@@ -21,6 +21,55 @@ export default function Notepad({classes}, props) {
     setAnchorEl(event.currentTarget);
   };
 
+  useEffect(() => {
+    const fetchNotepadContent = async () => { 
+      try {
+        const result = await fetch('http://localhost:8080/notebook', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
+          }
+        })
+        const data = await result.text()
+
+        setNotes(data)
+      }
+      catch(error) {
+        console.log("Error fetching notes.")
+        console.log(error)
+      }
+    }
+
+    fetchNotepadContent();
+  }, [])
+
+
+  const editNotebook = async () => {
+    try {
+      const result = await fetch('http://localhost:8080/notebook/edit', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
+        },
+        body: JSON.stringify({
+          firstValue: notes,
+        })
+      })
+      const status = await result.status;
+
+      console.log("Edited notes with status: " + status)
+    }
+    catch(error) {
+      console.log("Error fetching notes.")
+      console.log(error)
+    }
+  }
+
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -58,8 +107,9 @@ export default function Notepad({classes}, props) {
           style={{padding: 20, width: "100%"}}
           value = {notes}
           onChange={(event) => {
-            setNotes(event.target.value)
+            setNotes(event.target.value);
           }}
+          onBlur={() => editNotebook()}
         />
       </Popover>
     </>

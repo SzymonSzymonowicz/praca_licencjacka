@@ -60,44 +60,47 @@ export default function Exams({exams}, props) {
 
   return (
     <>
-      {exams.map((exam,index) => (
-      <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2bh-content"
-          id="panel2bh-header"
-        >
-          <Typography className={classes.heading}>Egzamin {index+1}</Typography>
-          <Typography className={classes.secondaryHeading}>
-            {exam.title}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography component="div">
-            <div dangerouslySetInnerHTML={{__html: exam.description}}></div>
-          </Typography>
-        </AccordionDetails>
-
-        <AccordionActions>
-          <EventIcon/><Typography>{exam.date}</Typography>
-          <HourglassEmptyIcon/><Typography>{exam.hour}</Typography>
-          <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration}</Typography>
-          <Button size="small" onClick={() => {
-              createAnswersForExam(idStudent, exam.idExam);
-              history.push(`/landing/exam/${exam.idExam}`);
-            }}
-            {...(exam.examStatus !== "OPEN" && {disabled: true})}    
-          >
-          Rozpocznij
-          </Button>
-          <Button size="small" color="primary"
-            onClick={() => history.push(`/landing/examresults/${exam.idExam}`)}
-            {...(exam.examStatus !== "CHECKED" && {disabled: true})}
-          >
-            Wyniki
-          </Button>
-        </AccordionActions>
-      </Accordion>))}
+      {exams.map((exam,index) => {
+        let date = new Date(exam.examAvailableDate);
+        return (
+          <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2bh-content"
+              id="panel2bh-header"
+            >
+              <Typography className={classes.heading}>Egzamin {index+1}</Typography>
+              <Typography className={classes.secondaryHeading}>
+                {exam.examName}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography component="div">
+                <div dangerouslySetInnerHTML={{__html: exam.examDescription}}></div>
+              </Typography>
+            </AccordionDetails>
+            
+            <AccordionActions>
+              <EventIcon/><Typography>{date.toLocaleString().split(',')[0]}</Typography>
+              <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]}</Typography>
+              <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.examDurationTime} min.</Typography>
+              <Button size="small" onClick={() => {
+                  createAnswersForExam(idStudent, exam.idExam);
+                  history.push(`/landing/exam/${exam.idExam}`);
+                }}
+                {...(exam.examStatus !== "OPEN" && {disabled: true})}    
+              >
+              Rozpocznij
+              </Button>
+              <Button size="small" color="primary"
+                onClick={() => history.push(`/landing/examresults/${exam.idExam}`)}
+                {...(exam.examStatus !== "CHECKED" && {disabled: true})}
+              >
+                Wyniki
+              </Button>
+            </AccordionActions>
+          </Accordion>
+      )})}
     </>
   )
 }

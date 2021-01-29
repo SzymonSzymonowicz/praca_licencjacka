@@ -5,7 +5,8 @@ import { AppBar, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListI
 import {
   Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,
   Group as GroupIcon, Announcement as AnnouncementIcon, Equalizer as EqualizerIcon,
-  GTranslate as GTranslateIcon, Assignment as AssignmentIcon, Home as HomeIcon, AccountCircle
+  GTranslate as GTranslateIcon, Assignment as AssignmentIcon, Home as HomeIcon, AccountCircle,
+  DoneOutline as DoneOutlineIcon
  } from '@material-ui/icons'
 
 import Tiles from './Tiles';
@@ -16,6 +17,7 @@ import Exam from 'components/exam/Exam';
 import Groups from "../subpages/Groups";
 import Lesson from "../group/Lesson";
 import ExamResults from 'components/exam/ExamResults';
+import ExamsToCheck from 'components/lecturer/ExamsToCheck';
 
 
 const drawerWidth = 240;
@@ -162,6 +164,13 @@ export default function Landing(props) {
         "icon": <GTranslateIcon/>,
         "subpage": "dictionary"
       }
+    ],
+    [
+      {
+        "name": "Oceń egzaminy",
+        "icon": <DoneOutlineIcon/>,
+        "subpage": "examstocheck"
+      }
     ]
   ]
 
@@ -185,6 +194,8 @@ export default function Landing(props) {
   };
 
   const email_user = sessionStorage.getItem('USER_SESSION_EMAIL')
+
+  const userRole = sessionStorage.getItem('USER_SESSION_ROLE')
 
   return (
     <div className={classes.root}>
@@ -210,6 +221,7 @@ export default function Landing(props) {
           <Typography variant="h6" noWrap className={classes.title}>
             My Examiner
           </Typography>
+          <Typography>{email_user ? email_user : ""}</Typography>
           <div>
             <IconButton
                   aria-label="account of current user"
@@ -268,23 +280,26 @@ export default function Landing(props) {
           let prevListLength = 0
           if(listIndex !== 0)
             prevListLength = array[listIndex - 1].length
-          return <div key={listIndex}>
-            <Divider />
-            <List>
-              {itemList.map((item, index) => (
-                <ListItem button
-                  key={index} 
-                  selected={selectedIndex === index + prevListLength}
-                  onClick={() => {
-                    setSelectedIndex(index + prevListLength);
-                    history.push(`${match.path}/${item.subpage}`)
-                }}>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.name}/>
-                </ListItem>
-              ))}
-            </List>
-          </div>
+          if(listIndex !== array.length-1 || userRole === "LECTURER")
+            return (<div key={listIndex}>
+              <Divider />
+              <List>
+                {itemList.map((item, index) => (
+                  <ListItem button
+                    key={index} 
+                    selected={selectedIndex === index + prevListLength}
+                    onClick={() => {
+                      setSelectedIndex(index + prevListLength);
+                      history.push(`${match.path}/${item.subpage}`)
+                  }}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.name}/>
+                  </ListItem>
+                ))}
+              </List>
+            </div>)
+          else
+            return
         })}
       </Drawer>
       <main className={classes.content}>
@@ -318,6 +333,9 @@ export default function Landing(props) {
             <Route path={`${match.path}/examresults/:id`}>
               <ExamResults/>
             </Route>
+            {userRole === "LECTURER" && <Route path={`${match.path}/examstocheck`}>
+              <ExamsToCheck/>
+            </Route>}
             <Route path={`${match.path}/lesson/`}>
               <Lesson/>
             </Route>
