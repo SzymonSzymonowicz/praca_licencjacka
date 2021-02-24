@@ -1,5 +1,5 @@
 import { Typography, TextField, makeStyles } from '@material-ui/core'
-import React from 'react'
+import React, { useState } from 'react'
 
 
 const useStyles = makeStyles({
@@ -13,9 +13,17 @@ const useStyles = makeStyles({
 });
 
 
-function Comment({lecturerComment}) {
+function Comment(props, {lecturerComment, disable}) {
   const classes = useStyles();
 
+  const [comment, setComment] = useState(props.lecturerComment);
+
+  const handleChange = (event) => {
+    setComment(event.target.value);
+
+    props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {...item, lecturerComment: event.target.value} : item))
+  };
+  
   return (
     <>
       <Typography className={classes.input} variant="h6">Komentarz</Typography>
@@ -27,22 +35,13 @@ function Comment({lecturerComment}) {
           rows={2}
           variant="filled"
           fullWidth
-          disabled
-          // InputProps={{
-          //   className: classes.multilineColor
-          // }}
+          disabled={props.disable}
+          onChange={handleChange}
           color="primary"
-          value={lecturerComment === null ? "" : lecturerComment}
+          value={comment === null ? "" : comment}
       />
     </>
   )
 }
 
 export default Comment;
-// Comment.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   props: PropTypes.any,
-//   lecturerComment: PropTypes.string
-// };
-
-// export default withStyles(styles)(Comment);

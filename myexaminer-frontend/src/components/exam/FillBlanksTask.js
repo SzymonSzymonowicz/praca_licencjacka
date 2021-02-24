@@ -5,6 +5,7 @@ export default function FillBlanksTask(props) {
   const fill = props.fill.split("<blank>")
 
   const [blanksFilled, setBlanksFilled] = React.useState(new Array(fill.length-1).fill(""))
+  const [assignedPoints, setAssignedPoints] = React.useState(props.modify ? props.answered[props.index]['gainedPoints'] : null);
 
   const handleChange = (event, blankIndex) => {
     let items = [...blanksFilled];
@@ -18,11 +19,21 @@ export default function FillBlanksTask(props) {
 
   };
 
+  const handlePointsChange = (event) => {
+    setAssignedPoints(event.target.value);
+    
+    props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {...item, gainedPoints: event.target.value} : item))
+  };
+
   const pointsString = props.loadValue === true ?  `(${props.answered[props.index]['gainedPoints']} / ${props.points} pkt.)` : `(${props.points} pkt.)`
   
+  const pointsInput = <>
+    ( <TextField inputProps={{style: { textAlign: 'center', width: 40, transform: 'translateY(-4px)' }}} value={assignedPoints} onChange={handlePointsChange}></TextField> {`/ ${props.points} pkt.)`} 
+  </>
+
   return (
     <Paper elevation={4} style={{padding: 20}}>
-      <Typography>{`Zadanie. ${props.index + 1}   ${pointsString}`}</Typography>
+      <Typography>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
       <Typography>{props.instruction}</Typography>
       <Grid
         container

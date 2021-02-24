@@ -29,8 +29,6 @@ export default function SignIn(props) {
   const classes = props.className
   const history = useHistory()
 
-  const [role, setRole] = React.useState([]);
-
   const loginUser = (email, password) => {
     fetch('http://localhost:8080/account/login', {
       method: 'POST',

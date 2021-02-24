@@ -18,6 +18,7 @@ import Groups from "../subpages/Groups";
 import Lesson from "../group/Lesson";
 import ExamResults from 'components/exam/ExamResults';
 import ExamsToCheck from 'components/lecturer/ExamsToCheck';
+import CheckExam from 'components/lecturer/CheckExam';
 
 
 const drawerWidth = 240;
@@ -308,7 +309,7 @@ export default function Landing(props) {
           <Switch>
             <Route exact path={`${match.path}`}>
               <Typography paragraph variant='h2'>
-                {`Witaj ${email_user} ! Udało Ci się zalogować!`}
+                {`Witaj ${email_user} !`}
               </Typography>
               <Tiles setSelectedIndex={setSelectedIndex}/>
             </Route>
@@ -335,6 +336,9 @@ export default function Landing(props) {
             </Route>
             {userRole === "LECTURER" && <Route path={`${match.path}/examstocheck`}>
               <ExamsToCheck/>
+            </Route>}
+            {userRole === "LECTURER" && <Route path={`${match.path}/checkexam/:id`}>
+              <CheckExam/>
             </Route>}
             <Route path={`${match.path}/lesson/`}>
               <Lesson/>

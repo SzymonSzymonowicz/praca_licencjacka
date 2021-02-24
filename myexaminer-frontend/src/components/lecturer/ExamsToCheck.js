@@ -1,7 +1,6 @@
 import { Accordion, AccordionDetails, AccordionSummary, Typography, makeStyles, AccordionActions, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import TimerIcon from '@material-ui/icons/Timer';
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
@@ -19,10 +18,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Examstocheck(props) {
+export default function ExamsToCheck(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const [individualExams, setIndividualExams] = useState(dummyData);
+  const [individualExams, setIndividualExams] = useState([]);
 
   const history = useHistory()
 
@@ -93,6 +92,7 @@ export default function Examstocheck(props) {
   )
 }
 
+/*
 const dummyData = [
   {
       "idIndividualExam": 3,
@@ -131,3 +131,4 @@ const dummyData = [
       "studentIndex": "250123"
   }
 ]
+*/

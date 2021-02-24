@@ -3,7 +3,7 @@ import ClosedTask from 'components/exam/ClosedTask'
 import OpenTask from 'components/exam/OpenTask'
 import FillBlanksTask from 'components/exam/FillBlanksTask'
 import React from 'react'
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 
 //The Fisher-Yates (aka Knuth) Shuffle
@@ -24,6 +24,7 @@ function shuffle(array) {
 
 export default function Exam() {
   let { id } = useParams();
+  const history = useHistory();
 
   const [tasks, setTasks] = React.useState([]);
   const [answered, setAnswered] = React.useState([]);
@@ -50,15 +51,18 @@ export default function Exam() {
       tasksJson.map(task => {
         answArr.push({idExercise: task["idExercise"], answer: null})
         task.exerciseBody = JSON.parse(task.exerciseBody)
+        if(task.exerciseBody.type === "Z")
+          task.exerciseBody.answers = shuffle(task.exerciseBody.answers)
         return task
       })
-      tasksJson.map(task => {
-        if(task.type === "Z"){
-          shuffle(task.answers)
-          return task
-        }else
-          return task
-      })
+      // tasksJson.map(task => {
+      //   if(task.type === "Z"){
+      //     task.answers = shuffle(task.answers)
+      //     console.log("elo")
+      //     return task
+      //   }else
+      //     return task
+      // })
       console.log(tasksJson)
       setTasks(tasksJson);
 
@@ -103,6 +107,7 @@ export default function Exam() {
     console.log(answered);
 
     saveAnswers(answered, null, id)
+    history.goBack();
   }
 
 
