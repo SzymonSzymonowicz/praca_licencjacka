@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     long deleteByIdStudent(int idStudent);
     Optional<Student> findByIdStudent(int idStudent);
+    Optional<Student> findByIndex(String index);
 }

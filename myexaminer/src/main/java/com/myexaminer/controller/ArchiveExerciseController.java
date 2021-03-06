@@ -85,7 +85,7 @@ public class ArchiveExerciseController {
                         ).get();
             }
             else {
-                idStudent = accountService.returnAccountByEmail(request.getUserPrincipal().getName()).get().getIdAccount();
+                idStudent = accountService.returnAccountByEmail(request.getUserPrincipal().getName()).getIdAccount();
                 archiveExercise = archiveExerciseService
                         .returnArchiveExerciseByExerciseAndIndividualExam(
                                 exerciseService.returnExerciseById(idExercise),
@@ -139,7 +139,7 @@ public class ArchiveExerciseController {
     public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Integer idExam, @RequestParam(required = false) Integer idIndExam, HttpServletRequest request){
         List<ArchiveExerciseDTO> archiveExerciseDTOS;
         if(idIndExam == null) {
-            int idStudent = accountService.returnAccountByEmail(request.getUserPrincipal().getName()).get().getIdAccount();
+            int idStudent = accountService.returnAccountByEmail(request.getUserPrincipal().getName()).getIdAccount();
             int idIndividualExam = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).get().getIdIndividualExam();
             archiveExerciseDTOS = archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(idExam, idIndividualExam);
         }

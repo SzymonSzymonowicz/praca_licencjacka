@@ -3,11 +3,15 @@ package com.myexaminer.service;
 import com.myexaminer.model.Account;
 
 import com.myexaminer.repository.AccountRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class AccountService {
 
@@ -31,7 +35,13 @@ public class AccountService {
     public boolean accountExistsByEmail(String email){
         Optional<Account> accountByEmail = accountRepository.findByEmail(email);
 
-        return accountByEmail.isPresent();
+        if(accountByEmail.isPresent()){
+            log.info("Account with given email -> {} <- ALREADY EXISTS", email);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean checkCredentials(Account account){
@@ -45,9 +55,9 @@ public class AccountService {
         return true;
     }
 
-    public Optional<Account> returnAccountByEmail(String email){
+    public Account returnAccountByEmail(String email){
         Optional<Account> accountByEmail = accountRepository.findByEmail(email);
 
-        return accountByEmail;
+        return accountByEmail.orElseThrow(() -> new UsernameNotFoundException("Could not find account with given email"));
     }
 }
