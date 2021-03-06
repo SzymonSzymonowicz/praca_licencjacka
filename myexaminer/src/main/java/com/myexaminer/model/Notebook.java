@@ -1,8 +1,13 @@
 package com.myexaminer.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
 @Entity
+@NoArgsConstructor
 @Table(name = "notebook")
 public class Notebook {
 
@@ -17,33 +22,6 @@ public class Notebook {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")
     Account account;
-
-    public int getIdNotebook() {
-        return idNotebook;
-    }
-
-    public void setIdNotebook(int idNotebook) {
-        this.idNotebook = idNotebook;
-    }
-
-    public String getNotebookBody() {
-        return notebookBody;
-    }
-
-    public void setNotebookBody(String notebookBody) {
-        this.notebookBody = notebookBody;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Notebook() {
-    }
 
     public Notebook(String notebookBody, Account account) {
         this.notebookBody = notebookBody;

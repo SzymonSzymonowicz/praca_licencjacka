@@ -1,7 +1,12 @@
 package com.myexaminer.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "archive_exercise")
 public class ArchiveExercise {
@@ -27,61 +32,11 @@ public class ArchiveExercise {
     @Column(name = "lecturer_comment")
     private String lecturerComment;
 
-    public ArchiveExercise(){}
-
     public ArchiveExercise(Exercise exercise, IndividualExam individualExam, Integer gainedPoints, String answer, String lecturerComment){
         this.exercise = exercise;
         this.individualExam = individualExam;
         this.gainedPoints = gainedPoints;
         this.answer = answer;
         this.lecturerComment = lecturerComment;
-    }
-
-    public int getIdArchiveExercise() {
-        return idArchiveExercise;
-    }
-
-    public void setIdArchiveExercise(int idArchiveExercise) {
-        this.idArchiveExercise = idArchiveExercise;
-    }
-
-    public Exercise getExercise() {
-        return exercise;
-    }
-
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
-    }
-
-    public Integer getGainedPoints() {
-        return gainedPoints;
-    }
-
-    public void setGainedPoints(Integer gainedPoints) {
-        this.gainedPoints = gainedPoints;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public String getLecturerComment() {
-        return lecturerComment;
-    }
-
-    public void setLecturerComment(String lecturerComment) {
-        this.lecturerComment = lecturerComment;
-    }
-
-    public IndividualExam getIndividualExam() {
-        return individualExam;
-    }
-
-    public void setIndividualExam(IndividualExam individualExam) {
-        this.individualExam = individualExam;
     }
 }

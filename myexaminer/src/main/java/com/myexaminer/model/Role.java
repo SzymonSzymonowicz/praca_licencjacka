@@ -1,11 +1,15 @@
 package com.myexaminer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "role")
 public class Role {
@@ -20,35 +24,8 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private List<Account> accounts = new ArrayList<>();
 
-    public int getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }
-
     public void addToAccounts(Account account){
         accounts.add(account);
-    }
-
-    public Role() {
     }
 
     public Role(String name, List<Account> accounts) {

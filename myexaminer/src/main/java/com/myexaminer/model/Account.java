@@ -1,9 +1,14 @@
 package com.myexaminer.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "account")
 public class Account {
@@ -37,9 +42,6 @@ public class Account {
     )
     private List<Role> roles = new ArrayList<>();
 
-    public Account() {
-    }
-
     public Account(String email, String password, String recoveryQuestion, String recoveryAnswer) {
         this.email = email;
         this.password = password;
@@ -47,70 +49,6 @@ public class Account {
         this.recoveryQuestion = recoveryQuestion;
         this.recoveryAnswer = recoveryAnswer;
         this.isLecturer = false;
-    }
-
-    public int getIdAccount() {
-        return idAccount;
-    }
-
-    public void setIdAccount(int idAccount) {
-        this.idAccount = idAccount;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isVerificated() {
-        return isVerificated;
-    }
-
-    public void setVerificated(boolean verificated) {
-        isVerificated = verificated;
-    }
-
-    public String getRecoveryQuestion() {
-        return recoveryQuestion;
-    }
-
-    public void setRecoveryQuestion(String recoveryQuestion) {
-        this.recoveryQuestion = recoveryQuestion;
-    }
-
-    public String getRecoveryAnswer() {
-        return recoveryAnswer;
-    }
-
-    public void setRecoveryAnswer(String recoveryAnswer) {
-        this.recoveryAnswer = recoveryAnswer;
-    }
-
-    public boolean isLecturer() {
-        return isLecturer;
-    }
-
-    public void setLecturer(boolean lecturer) {
-        isLecturer = lecturer;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     public void addToRoles(Role role){
