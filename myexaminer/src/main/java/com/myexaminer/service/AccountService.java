@@ -3,7 +3,6 @@ package com.myexaminer.service;
 import com.myexaminer.model.Account;
 
 import com.myexaminer.repository.AccountRepository;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Log4j2
 @Service
 public class AccountService {
 

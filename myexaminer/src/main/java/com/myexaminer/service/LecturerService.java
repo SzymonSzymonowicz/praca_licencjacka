@@ -1,11 +1,10 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.Account;
 import com.myexaminer.model.Lecturer;
-import com.myexaminer.model.Student;
 import com.myexaminer.repository.LecturerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -25,6 +24,6 @@ public class LecturerService {
     public Lecturer returnLecturerById(int idLecturer){
         Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
 
-        return lecturerById.get();
+        return lecturerById.orElseThrow(() -> new NoSuchElementException("There is no Lecturer in database that you were looking for."));
     }
 }

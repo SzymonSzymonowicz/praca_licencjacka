@@ -1,14 +1,11 @@
 package com.myexaminer.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myexaminer.exerciseTypes.ReceivedExercise;
 import com.myexaminer.model.ArchiveExercise;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.model.IndividualExam;
 import com.myexaminer.modelDTO.ArchiveExerciseDTO;
 import com.myexaminer.repository.ArchiveExerciseRepository;
 import lombok.extern.log4j.Log4j2;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,12 +20,10 @@ public class ArchiveExerciseService {
 
     private final ArchiveExerciseRepository archiveExerciseRepository;
     private final ExamService examService;
-    private final IndividualExamService individualExamService;
 
-    public ArchiveExerciseService(ArchiveExerciseRepository archiveExerciseRepository, ExamService examService, IndividualExamService individualExamService){
+    public ArchiveExerciseService(ArchiveExerciseRepository archiveExerciseRepository, ExamService examService){
         this.archiveExerciseRepository = archiveExerciseRepository;
         this.examService = examService;
-        this.individualExamService = individualExamService;
     }
 
     public void exerciseSave(ArchiveExercise archiveExercise) {

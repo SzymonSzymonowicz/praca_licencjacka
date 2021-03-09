@@ -1,12 +1,11 @@
 package com.myexaminer.service;
 
 import com.myexaminer.model.Exam;
-import com.myexaminer.model.Exercise;
-import com.myexaminer.modelDTO.ExamDTO;
 import com.myexaminer.repository.ExamRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ExamService {
@@ -28,7 +27,7 @@ public class ExamService {
     public Exam returnExamById(int idExam){
         Optional<Exam> examById = examRepository.findByIdExam(idExam);
 
-        return examById.get();
+        return examById.orElseThrow(() -> new NoSuchElementException("There is no Exam in database that you were looking for."));
     }
 
     public Iterable<Exam> returnAllExams(){

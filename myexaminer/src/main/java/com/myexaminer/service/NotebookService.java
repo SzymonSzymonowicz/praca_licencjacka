@@ -1,6 +1,5 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.Account;
 import com.myexaminer.model.Notebook;
 import com.myexaminer.repository.NotebookRepository;
 import org.springframework.stereotype.Service;

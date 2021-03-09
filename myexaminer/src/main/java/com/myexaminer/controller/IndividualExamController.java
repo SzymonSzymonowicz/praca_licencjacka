@@ -7,7 +7,6 @@ import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.modelDTO.LecturerIndividualExamView;
 import com.myexaminer.service.IndividualExamService;
 import com.myexaminer.service.TeachingGroupService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@Log4j2
 @Controller
 @RequestMapping(path="/individualExam")
 public class IndividualExamController {
@@ -42,7 +40,7 @@ public class IndividualExamController {
             Set<Exam> exams = teachingGroup.getExams();
             for (Exam exam: exams){
                 for(Student student: teachingGroup.getStudents()) {
-                    Optional<IndividualExam> individualExam = individualExamService.returnIndividualExamByIdStudentAndIdExam(student.getIdStudent(), exam.getIdExam());
+                    Optional<IndividualExam> individualExam = individualExamService.returnOptionalIndividualExamByIdStudentAndIdExam(student.getIdStudent(), exam.getIdExam());
                     if(individualExam.isPresent()) {
                         if (!individualExam.get().isChecked()) {
                             individualExamViewList.add(new LecturerIndividualExamView(
