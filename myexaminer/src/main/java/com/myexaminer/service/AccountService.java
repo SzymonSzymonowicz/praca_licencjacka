@@ -35,13 +35,7 @@ public class AccountService {
     public boolean accountExistsByEmail(String email){
         Optional<Account> accountByEmail = accountRepository.findByEmail(email);
 
-        if(accountByEmail.isPresent()){
-            log.info("Account with given email -> {} <- ALREADY EXISTS", email);
-            return true;
-        }
-        else {
-            return false;
-        }
+        return accountByEmail.isPresent();
     }
 
     public boolean checkCredentials(Account account){

@@ -1,6 +1,5 @@
 package com.myexaminer.service;
 
-import com.google.gson.Gson;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.repository.ExerciseRepository;
 import org.json.JSONObject;
