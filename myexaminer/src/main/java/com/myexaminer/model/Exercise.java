@@ -1,8 +1,15 @@
 package com.myexaminer.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "exercise")
 public class Exercise {
@@ -22,44 +29,9 @@ public class Exercise {
     @OneToMany(mappedBy="exercise")
     private List<ArchiveExercise> archiveExercises;
 
-    public int getIdExercise() {
-        return idExercise;
-    }
-
-    public void setIdExercise(int idExercise) {
-        this.idExercise = idExercise;
-    }
-
-    public String getExerciseBody() {
-        return exerciseBody;
-    }
-
-    public void setExerciseBody(String exerciseBody) {
-        this.exerciseBody = exerciseBody;
-    }
-
-    public Exam getExam() {
-        return exam;
-    }
-
-    public void setExam(Exam exam) {
-        this.exam = exam;
-    }
-
-    public List<ArchiveExercise> getArchiveExercises() {
-        return archiveExercises;
-    }
-
-    public void setArchiveExercises(List<ArchiveExercise> archiveExercises) {
-        this.archiveExercises = archiveExercises;
-    }
-
     public Exercise(String exerciseBody, Exam exam, List<ArchiveExercise> archiveExercises) {
         this.exerciseBody = exerciseBody;
         this.exam = exam;
         this.archiveExercises = archiveExercises;
-    }
-
-    public Exercise() {
     }
 }

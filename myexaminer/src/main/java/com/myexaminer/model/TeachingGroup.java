@@ -1,10 +1,17 @@
 package com.myexaminer.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "teaching_group")
 public class TeachingGroup {
@@ -40,75 +47,8 @@ public class TeachingGroup {
     @OneToMany(mappedBy="teachingGroup")
     private Set<Exam> exams;
 
-    public int getIdTeachingGroup() {
-        return idTeachingGroup;
-    }
-
-    public void setIdTeachingGroup(int idTeachingGroup) {
-        this.idTeachingGroup = idTeachingGroup;
-    }
-
-    public String getTeachingGroupName() {
-        return teachingGroupName;
-    }
-
-    public void setTeachingGroupName(String teachingGroupName) {
-        this.teachingGroupName = teachingGroupName;
-    }
-
-    public String getAccessCode() {
-        return accessCode;
-    }
-
-    public void setAccessCode(String accessCode) {
-        this.accessCode = accessCode;
-    }
-
-    public Date getTeachingGroupDateOfStarting() {
-        return teachingGroupDateOfStarting;
-    }
-
-    public void setTeachingGroupDateOfStarting(Date teachingGroupDateOfStarting) {
-        this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
-    }
-
-    public Lecturer getLecturer() {
-        return lecturer;
-    }
-
-    public void setLecturer(Lecturer lecturer) {
-        this.lecturer = lecturer;
-    }
-
-    public Set<Student> getUsers() {
-        return students;
-    }
-
-    public void setUsers(Set<Student> students) {
-        this.students = students;
-    }
-
     public void addToUsers(Student student) {
         students.add(student);
-    }
-
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
-
-    public Set<Exam> getExams() {
-        return exams;
-    }
-
-    public void setExams(Set<Exam> exams) {
-        this.exams = exams;
-    }
-
-    public TeachingGroup() {
     }
 
     public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, Lecturer lecturer, Set<Student> students, Set<Exam> exams) {

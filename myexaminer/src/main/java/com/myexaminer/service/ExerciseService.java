@@ -1,10 +1,11 @@
 package com.myexaminer.service;
 
-import com.google.gson.Gson;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.repository.ExerciseRepository;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,7 +28,7 @@ public class ExerciseService {
     public Exercise returnExerciseById(int idExercise){
         Optional<Exercise> exerciseById = exerciseRepository.findByIdExercise(idExercise);
 
-        return exerciseById.get();
+        return exerciseById.orElseThrow(() -> new NoSuchElementException("There is no Exercise in database that you were looking for."));
     }
 
     public Iterable<Exercise> returnAllExercises(){
@@ -36,7 +37,7 @@ public class ExerciseService {
 
     public String getExerciseType(int idExercise){
         JSONObject obj = new JSONObject(
-                exerciseRepository.findByIdExercise(idExercise).get().getExerciseBody());
+                returnExerciseById(idExercise).getExerciseBody());
         return obj.getString("type");
     }
 }

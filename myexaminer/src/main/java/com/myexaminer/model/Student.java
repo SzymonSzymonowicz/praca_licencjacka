@@ -1,11 +1,17 @@
 package com.myexaminer.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "student")
 public class Student {
@@ -39,9 +45,6 @@ public class Student {
     @OneToMany(mappedBy="student")
     private List<IndividualExam> individualExams;
 
-    public Student() {
-    }
-
     public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
         this.idStudent = idStudent;
         this.firstName = firstName;
@@ -50,70 +53,6 @@ public class Student {
         this.faculty = faculty;
         this.fieldOfStudy = fieldOfStudy;
         this.teachingGroups = new HashSet<>();
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public int getIdStudent() {
-        return idStudent;
-    }
-
-    public void setIdStudent(int idStudent) {
-        this.idStudent = idStudent;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getIndex() {
-        return index;
-    }
-
-    public void setIndex(String index) {
-        this.index = index;
-    }
-
-    public String getFaculty() {
-        return faculty;
-    }
-
-    public void setFaculty(String faculty) {
-        this.faculty = faculty;
-    }
-
-    public String getFieldOfStudy() {
-        return fieldOfStudy;
-    }
-
-    public void setFieldOfStudy(String fieldOfStudy) {
-        this.fieldOfStudy = fieldOfStudy;
-    }
-
-    public Set<TeachingGroup> getTeachingGroups() {
-        return teachingGroups;
-    }
-
-    public void setTeachingGroups(Set<TeachingGroup> teachingGroups) {
-        this.teachingGroups = teachingGroups;
     }
 
     public void addToTeachingGroups(TeachingGroup teachingGroup) {

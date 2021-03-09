@@ -4,8 +4,10 @@ import com.myexaminer.model.Account;
 
 import com.myexaminer.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -45,9 +47,9 @@ public class AccountService {
         return true;
     }
 
-    public Optional<Account> returnAccountByEmail(String email){
+    public Account returnAccountByEmail(String email){
         Optional<Account> accountByEmail = accountRepository.findByEmail(email);
 
-        return accountByEmail;
+        return accountByEmail.orElseThrow(() -> new UsernameNotFoundException("Could not find account with given email"));
     }
 }
