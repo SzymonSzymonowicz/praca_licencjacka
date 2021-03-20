@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Log4j2
 @Controller
-@RequestMapping(path="/lecturer")
+@RequestMapping(path="/lecturers")
 public class LecturerController {
 
     private final LecturerService lecturerService;
@@ -25,7 +25,7 @@ public class LecturerController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addNewLecturer (@RequestBody Lecturer lecturer) {
+    public ResponseEntity<HttpStatus> addLecturer(@RequestBody Lecturer lecturer) {
         if(!accountService.accountExistsById(lecturer.getIdLecturer())) {
             log.info("Account with given ID -> {} <- DOES NOT EXIST", lecturer.getIdLecturer());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

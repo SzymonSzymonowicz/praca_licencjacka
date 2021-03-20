@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Log4j2
 @Controller
-@RequestMapping(path="/teachinggroup")
+@RequestMapping(path="/groups")
 public class TeachingGroupController {
     private final TeachingGroupService teachingGroupService;
     private final LecturerService lecturerService;
@@ -28,7 +28,7 @@ public class TeachingGroupController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addNewTeachingGroup (@RequestBody TeachingGroup teachingGroup) {
+    public ResponseEntity<HttpStatus> addTeachingGroup(@RequestBody TeachingGroup teachingGroup) {
         if(teachingGroupService.teachingGroupExistsById(teachingGroup.getIdTeachingGroup())){
             log.info("Group with given ID -> {} <- ALREADY EXISTS", teachingGroup.getIdTeachingGroup());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -50,7 +50,7 @@ public class TeachingGroupController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping(path = "/addStudent")
+    @PostMapping(path = "/student")
     public ResponseEntity<HttpStatus> addStudentToGroup (@RequestParam int idTeachingGroup, @RequestParam int idStudent) {
         if(!teachingGroupService.teachingGroupExistsById(idTeachingGroup)){
             log.info("Group with given ID -> {} <- DOES NOT EXIST", idTeachingGroup);

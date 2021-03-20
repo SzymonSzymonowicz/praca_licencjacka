@@ -30,7 +30,12 @@ public class ArchiveExerciseController {
         this.checkingExercisesService = checkingExercisesService;
     }
 
-    @PostMapping("/createExerciseArchive")
+    @GetMapping("/exercises")
+    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Integer idExam, @RequestParam(required = false) Integer idIndExam, HttpServletRequest request){
+        return checkingExercisesService.returnCheckedExercises(idExam, idIndExam, request);
+    }
+
+    @PostMapping("/exercises")
     public ResponseEntity<HttpStatus> createExerciseArchive(@RequestBody TwoIdObject twoIdObject) {
         int idStudent = twoIdObject.getIdStudent();
         int idExam = twoIdObject.getIdExam();
@@ -48,7 +53,7 @@ public class ArchiveExerciseController {
         }
     }
 
-    @PutMapping("/checkExercises")
+    @PutMapping("/check")
     public ResponseEntity<HttpStatus> checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam, HttpServletRequest request) throws JsonProcessingException {
 
         checkingExercisesService.checkExercises(
@@ -61,8 +66,4 @@ public class ArchiveExerciseController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/getExercises")
-    public @ResponseBody Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Integer idExam, @RequestParam(required = false) Integer idIndExam, HttpServletRequest request){
-        return checkingExercisesService.returnCheckedExercises(idExam, idIndExam, request);
-    }
 }

@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Controller
-@RequestMapping(path="/individualExam")
+@RequestMapping(path="/individual-exams")
 public class IndividualExamController {
 
     private final IndividualExamService individualExamService;
@@ -30,7 +30,7 @@ public class IndividualExamController {
         this.teachingGroupService = teachingGroupService;
     }
 
-    @GetMapping(path = "/examsToCheck")
+    @GetMapping(path = "/group")
     @ResponseBody
     public List<LecturerIndividualExamView> getIndividualsFromLecturerGroup(HttpServletRequest request){
         List<TeachingGroup> teachingGroups = teachingGroupService.returnTeachingGroupsByLecturerId(1);

@@ -30,10 +30,10 @@ export default function Exams({exams}, props) {
     setExpanded(isExpanded ? panel : false);
   };
 
-  //"archive/createExerciseArchive" POST
+  //"archive/exercises" POST
 
   function createAnswersForExam(idStudent, idExam){
-    fetch('http://localhost:8080/archive/createExerciseArchive', {
+    fetch('http://localhost:8080/archive/exercises', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

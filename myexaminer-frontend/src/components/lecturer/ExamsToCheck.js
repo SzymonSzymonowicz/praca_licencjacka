@@ -36,7 +36,7 @@ export default function ExamsToCheck(props) {
 
   async function fetchAllIndividualExams() {
     try {
-      const result = await fetch('http://localhost:8080/individualExam/examsToCheck', {
+      const result = await fetch('http://localhost:8080/individual-exams/group', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

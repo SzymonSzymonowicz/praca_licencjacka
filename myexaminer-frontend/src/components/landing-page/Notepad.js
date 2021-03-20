@@ -48,7 +48,7 @@ export default function Notepad({classes}, props) {
 
   const editNotebook = async () => {
     try {
-      const result = await fetch('http://localhost:8080/notebook/edit', {
+      const result = await fetch('http://localhost:8080/notebook', {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',

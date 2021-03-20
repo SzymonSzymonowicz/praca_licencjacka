@@ -26,7 +26,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addNewAccount (@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<HttpStatus> addAccount(@RequestBody RegisterDTO registerDTO) {
         if(accountService.accountExistsByEmail(registerDTO.getEmail())){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -49,7 +49,7 @@ public class AccountController {
         return ResponseEntity.ok("Connection succeeded");
     }
 
-    @GetMapping("/getRole")
+    @GetMapping("/role")
     @ResponseBody
     public List<Role> role(HttpServletRequest request){
         return accountService.returnAccountByEmail(request.getUserPrincipal().getName()).getRoles();

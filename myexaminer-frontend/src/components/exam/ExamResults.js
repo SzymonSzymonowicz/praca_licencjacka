@@ -26,7 +26,7 @@ export default function ExamResults(props) {
     try {
       let answArr = []
 
-      const result = await fetch('http://localhost:8080/archive/getExercises?idExam=' + id, {
+      const result = await fetch('http://localhost:8080/archive/exercises?idExam=' + id, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -53,7 +53,7 @@ export default function ExamResults(props) {
 
   async function fetchTasks() {
     try {
-      const result = await fetch('http://localhost:8080/exercise/' + id, {
+      const result = await fetch('http://localhost:8080/exercises/' + id, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

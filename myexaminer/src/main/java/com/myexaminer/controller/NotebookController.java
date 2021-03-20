@@ -28,7 +28,7 @@ public class NotebookController {
         return notebookService.returnNotebookByUserEmail(request.getUserPrincipal().getName()).getNotebookBody();
     }
 
-    @PutMapping(path="/edit")
+    @PutMapping
     public ResponseEntity<HttpStatus> editNotebookContent(HttpServletRequest request, @RequestBody GenericOneValue content){
         String user = request.getUserPrincipal().getName();
         String notebookContent;

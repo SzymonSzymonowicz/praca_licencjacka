@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Log4j2
 @Controller
-@RequestMapping(path="/student")
+@RequestMapping(path="/students")
 public class StudentController {
     private final StudentService studentService;
     private final AccountService accountService;
@@ -22,7 +22,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addNewStudent (@RequestBody Student student) {
+    public ResponseEntity<HttpStatus> addStudent(@RequestBody Student student) {
         if(!accountService.accountExistsById(student.getIdStudent())) {
             log.info("Account with given ID -> {} <- DOES NOT EXIST", student.getIdStudent());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

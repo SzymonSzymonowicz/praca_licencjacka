@@ -32,7 +32,7 @@ export default function Exam() {
 /*  const idStudent = 2;*/
 
   React.useEffect(() => {
-    fetch('http://localhost:8080/exercise/' + id, {
+    fetch('http://localhost:8080/exercises/' + id, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -77,7 +77,7 @@ export default function Exam() {
   }, [id])
 
   function saveAnswers(receivedExercises, idIndividualExam, idExam){
-    fetch('http://localhost:8080/archive/checkExercises', {
+    fetch('http://localhost:8080/archive/check', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',

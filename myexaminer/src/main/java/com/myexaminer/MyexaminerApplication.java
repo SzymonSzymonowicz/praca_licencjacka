@@ -22,17 +22,14 @@ public class MyexaminerApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/account").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/account/login").allowedMethods("*").allowedOrigins(LOCALHOST);
-				registry.addMapping("/account/getRole").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/account/role").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/archive/check").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/archive/exercises").allowedMethods("*").allowedOrigins(LOCALHOST);
 				registry.addMapping("/exam/{idGroup}").allowedOrigins(LOCALHOST);
-				registry.addMapping("/exam/getExamStatus").allowedOrigins(LOCALHOST);
-				registry.addMapping("/exam/changeExamStatus").allowedMethods("*").allowedOrigins(LOCALHOST);
-				registry.addMapping("/exercise/{idExam}").allowedOrigins(LOCALHOST);
-				registry.addMapping("/archive/checkExercises").allowedMethods("*").allowedOrigins(LOCALHOST);
-				registry.addMapping("/archive/createExerciseArchive").allowedOrigins(LOCALHOST);
-				registry.addMapping("/archive/getExercises").allowedOrigins(LOCALHOST);
+				registry.addMapping("/exam/status").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/exercises/{idExam}").allowedOrigins(LOCALHOST);
+				registry.addMapping("/individual-exams/group").allowedOrigins(LOCALHOST);
 				registry.addMapping("/notebook").allowedMethods("*").allowedOrigins(LOCALHOST);
-				registry.addMapping("/notebook/edit").allowedMethods("*").allowedOrigins(LOCALHOST);
-				registry.addMapping("/individualExam/examsToCheck").allowedOrigins(LOCALHOST);
 			}
 		};
 	}

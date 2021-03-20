@@ -57,7 +57,7 @@ export default function SignIn(props) {
   }
     /*sessionStorage.setItem('USER_SESSION_ROLE', email)*/
     const getRole = () => {
-        fetch('http://localhost:8080/account/getRole', {
+        fetch('http://localhost:8080/account/role', {
             method: 'GET',
             headers:{
                 'Accept': 'application/json',

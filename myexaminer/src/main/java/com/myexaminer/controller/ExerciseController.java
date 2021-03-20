@@ -19,7 +19,7 @@ import java.util.stream.StreamSupport;
 
 @Log4j2
 @Controller
-@RequestMapping(path="/exercise")
+@RequestMapping(path="/exercises")
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
@@ -28,19 +28,6 @@ public class ExerciseController {
     public ExerciseController(IndividualExamService individualExamService, ExerciseService exerciseService) {
         this.exerciseService = exerciseService;
         this.individualExamService = individualExamService;
-    }
-
-    @PostMapping
-    public ResponseEntity<HttpStatus> addNewExercise (@RequestBody Exercise exercise) {
-        if(exerciseService.exerciseExistsById(exercise.getIdExercise())){
-            log.info("Exercise with given ID -> {} <- ALREADY EXISTS", exercise.getIdExercise());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        exerciseService.exerciseSave(exercise);
-        log.info("Exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
-
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping
@@ -58,6 +45,19 @@ public class ExerciseController {
         return returnedExercise;
     }
 
+    @PostMapping
+    public ResponseEntity<HttpStatus> addExercise(@RequestBody Exercise exercise) {
+        if(exerciseService.exerciseExistsById(exercise.getIdExercise())){
+            log.info("Exercise with given ID -> {} <- ALREADY EXISTS", exercise.getIdExercise());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        exerciseService.exerciseSave(exercise);
+        log.info("Exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/{idExam}")
     public @ResponseBody Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Integer idExam, HttpServletRequest request) {
         if(request.getUserPrincipal().getName().equals("dianaLektor@gmail.com")) {
@@ -73,7 +73,7 @@ public class ExerciseController {
         }
     }
 
-    @PostMapping("/saveExercises")
+    @PostMapping("/save")
     public ResponseEntity<HttpStatus> saveExercises(@RequestBody List<ReceivedExercise> receivedExerciseList){
         for(ReceivedExercise exercise: receivedExerciseList){
             String type = exerciseService.getExerciseType(exercise.getIdExercise());

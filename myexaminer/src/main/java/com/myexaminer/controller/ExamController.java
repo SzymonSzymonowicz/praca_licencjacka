@@ -26,19 +26,6 @@ public class ExamController {
         this.examService = examService;
     }
 
-    @PostMapping
-    public ResponseEntity<HttpStatus> addNewExam (@RequestBody Exam exam) {
-        if(examService.examExistsById(exam.getIdExam())){
-            log.info("Exam with given ID -> {} <- ALREADY EXISTS", exam.getIdExam());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        examService.examSave(exam);
-        log.info("Exam with ID -> {} <- has been ADDED", exam.getIdExam());
-
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
     @GetMapping
     public @ResponseBody Exam getExam (@RequestBody Map<String, Integer> map_idExam) {
         Integer idExam = map_idExam.get("idExam");
@@ -54,6 +41,19 @@ public class ExamController {
         return returnedExam;
     }
 
+    @PostMapping
+    public ResponseEntity<HttpStatus> addExam(@RequestBody Exam exam) {
+        if(examService.examExistsById(exam.getIdExam())){
+            log.info("Exam with given ID -> {} <- ALREADY EXISTS", exam.getIdExam());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        examService.examSave(exam);
+        log.info("Exam with ID -> {} <- has been ADDED", exam.getIdExam());
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/{idGroup}")
     public @ResponseBody Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
         return StreamSupport.stream(examService.returnAllExams().spliterator(), false).
@@ -61,7 +61,12 @@ public class ExamController {
                 map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
     }
 
-    @PutMapping("/changeExamStatus")
+    @GetMapping("/status")
+    public @ResponseBody Exam.Status getExamStatus(@RequestBody GenericOneValue idExam){
+        return examService.returnExamById((Integer) idExam.getFirstValue()).getStatus();
+    }
+
+    @PutMapping("/status")
     public ResponseEntity<HttpStatus> changeExamStatus(@RequestBody GenericTwoValues genericTwoValues){
         Integer idExam = (Integer) genericTwoValues.getFirstValue();
         Exam.Status status = Exam.Status.valueOf((String) genericTwoValues.getSecondValue());
@@ -72,10 +77,5 @@ public class ExamController {
         examService.examSave(exam);
 
         return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @GetMapping("/getExamStatus")
-    public @ResponseBody Exam.Status getExamStatus(@RequestBody GenericOneValue idExam){
-        return examService.returnExamById((Integer) idExam.getFirstValue()).getStatus();
     }
 }
