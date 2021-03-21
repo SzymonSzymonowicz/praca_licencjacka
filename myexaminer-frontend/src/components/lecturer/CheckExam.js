@@ -25,7 +25,7 @@ export default function CheckExam(props) {
     try {
       let answArr = []
 
-      const result = await fetch('http://localhost:8080/archive/getExercises?idIndExam=' + id, {
+      const result = await fetch('http://localhost:8080/archive/exercises?idIndExam=' + id, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -52,7 +52,7 @@ export default function CheckExam(props) {
 
   async function fetchTasks() {
     try {
-      const result = await fetch('http://localhost:8080/exercise/' + id, {
+      const result = await fetch('http://localhost:8080/exercises/' + id, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -79,7 +79,7 @@ export default function CheckExam(props) {
 
   async function saveAnswers() {
     try {
-      const result = await fetch('http://localhost:8080/archive/checkExercises', {
+      const result = await fetch('http://localhost:8080/archive/check', {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',

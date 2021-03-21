@@ -36,7 +36,7 @@ export default function ExamsToCheck(props) {
 
   async function fetchAllIndividualExams() {
     try {
-      const result = await fetch('http://localhost:8080/individualExam/examsToCheck', {
+      const result = await fetch('http://localhost:8080/individual-exams/group', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -91,44 +91,3 @@ export default function ExamsToCheck(props) {
     </>
   )
 }
-
-/*
-const dummyData = [
-  {
-      "idIndividualExam": 3,
-      "examName": "Łatwy sprawdzian",
-      "examDescription": "Bardzo łatwy sprawdzian, prosze się nauczyć łatwych rzeczy",
-      "examAvailableDate": "2021-01-20T12:15:00.000+00:00",
-      "idTeachingGroup": 1,
-      "nameTeachingGroup": "Grupa DT2 angielski",
-      "studentIndex": "250558"
-  },
-  {
-      "idIndividualExam": 4,
-      "examName": "Łatwy sprawdzian",
-      "examDescription": "Bardzo łatwy sprawdzian, prosze się nauczyć łatwych rzeczy",
-      "examAvailableDate": "2021-01-20T12:15:00.000+00:00",
-      "idTeachingGroup": 1,
-      "nameTeachingGroup": "Grupa DT2 angielski",
-      "studentIndex": "250123"
-  },
-  {
-      "idIndividualExam": 1,
-      "examName": "Trudny sprawdzian",
-      "examDescription": "Bardzo trudny sprawdzian, prosze się nauczyć trudnych rzeczy",
-      "examAvailableDate": "2020-12-24T10:10:10.000+00:00",
-      "idTeachingGroup": 1,
-      "nameTeachingGroup": "Grupa DT2 angielski",
-      "studentIndex": "250558"
-  },
-  {
-      "idIndividualExam": 2,
-      "examName": "Trudny sprawdzian",
-      "examDescription": "Bardzo trudny sprawdzian, prosze się nauczyć trudnych rzeczy",
-      "examAvailableDate": "2020-12-24T10:10:10.000+00:00",
-      "idTeachingGroup": 1,
-      "nameTeachingGroup": "Grupa DT2 angielski",
-      "studentIndex": "250123"
-  }
-]
-*/

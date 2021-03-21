@@ -6,18 +6,19 @@ import com.myexaminer.modelDTO.GenericOneValue;
 import com.myexaminer.modelDTO.GenericTwoValues;
 import com.myexaminer.service.ExamService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Log4j2
-@Controller
-@RequestMapping(path="/exam")
+@RestController
+@RequestMapping(path = "/exam")
 public class ExamController {
 
     private final ExamService examService;
@@ -26,56 +27,28 @@ public class ExamController {
         this.examService = examService;
     }
 
-    @PostMapping
-    public ResponseEntity<HttpStatus> addNewExam (@RequestBody Exam exam) {
-        if(examService.examExistsById(exam.getIdExam())){
-            log.info("Exam with given ID -> {} <- ALREADY EXISTS", exam.getIdExam());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        examService.examSave(exam);
-        log.info("Exam with ID -> {} <- has been ADDED", exam.getIdExam());
-
-        return ResponseEntity.ok(HttpStatus.OK);
+    @GetMapping
+    public Exam getExam(@RequestBody Map<String, Integer> map_idExam) {
+        return examService.getExam(map_idExam);
     }
 
-    @GetMapping
-    public @ResponseBody Exam getExam (@RequestBody Map<String, Integer> map_idExam) {
-        Integer idExam = map_idExam.get("idExam");
-        if(!examService.examExistsById(idExam)){
-            log.info("Exam with given ID -> {} <- DOES NOT EXIST", idExam);
-            return null;
-        }
-
-        Exam returnedExam = examService.returnExamById(idExam);
-
-        log.info("Exam with ID -> {} <- HAS BEEN RETURNED", returnedExam.getIdExam());
-
-        return returnedExam;
+    @PostMapping
+    public void addExam(@RequestBody Exam exam) {
+        examService.createExam(exam);
     }
 
     @GetMapping("/{idGroup}")
-    public @ResponseBody Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
-        return StreamSupport.stream(examService.returnAllExams().spliterator(), false).
-                filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
-                map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
+    public Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
+        return examService.getExamDTOSByIdGroup(idGroup);
     }
 
-    @PutMapping("/changeExamStatus")
-    public ResponseEntity<HttpStatus> changeExamStatus(@RequestBody GenericTwoValues genericTwoValues){
-        Integer idExam = (Integer) genericTwoValues.getFirstValue();
-        Exam.Status status = Exam.Status.valueOf((String) genericTwoValues.getSecondValue());
-
-        Exam exam = examService.returnExamById(idExam);
-        exam.setStatus(status);
-
-        examService.examSave(exam);
-
-        return ResponseEntity.ok(HttpStatus.OK);
+    @GetMapping("/status")
+    public Exam.Status getExamStatus(@RequestBody GenericOneValue idExam) {
+        return examService.getStatus(idExam);
     }
 
-    @GetMapping("/getExamStatus")
-    public @ResponseBody Exam.Status getExamStatus(@RequestBody GenericOneValue idExam){
-        return examService.returnExamById((Integer) idExam.getFirstValue()).getStatus();
+    @PutMapping("/status")
+    public void changeExamStatus(@RequestBody GenericTwoValues genericTwoValues) {
+        examService.updateExamStatus(genericTwoValues);
     }
 }
