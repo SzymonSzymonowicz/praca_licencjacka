@@ -11,36 +11,55 @@ import java.util.Optional;
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
+    private AccountService accountService;
 
-    public StudentService(StudentRepository studentRepository){this.studentRepository = studentRepository;}
+    public StudentService(StudentRepository studentRepository, AccountService accountService) {
+        this.studentRepository = studentRepository;
+        this.accountService = accountService;
+    }
 
-    public void studentSave(Student student) { studentRepository.save(student); }
+    public void studentSave(Student student) {
+        studentRepository.save(student);
+    }
 
-    public boolean studentExistsById(int idStudent){
+    public boolean studentExistsById(int idStudent) {
         Optional<Student> userById = studentRepository.findByIdStudent(idStudent);
 
         return userById.isPresent();
     }
 
-    public Student returnStudentById(int idStudent){
+    public Student returnStudentById(int idStudent) {
         Optional<Student> studentById = studentRepository.findByIdStudent(idStudent);
 
         return studentById.get();
     }
 
-    public boolean studentExistsByIndex(String index){
+    public boolean studentExistsByIndex(String index) {
         Optional<Student> accountByEmail = studentRepository.findByIndex(index);
 
-        if(accountByEmail.isPresent()){
+        if (accountByEmail.isPresent()) {
             log.info("Student with given index -> {} <- ALREADY EXISTS", index);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public Iterable<Student> returnAllStudents(){
+    public Iterable<Student> returnAllStudents() {
         return studentRepository.findAll();
+    }
+
+    public void createStudent(Student student) {
+        if (!accountService.accountExistsById(student.getIdStudent())) {
+            log.info("Account with given ID -> {} <- DOES NOT EXIST", student.getIdStudent());
+            return;
+        }
+        if (studentExistsById(student.getIdStudent())) {
+            log.info("Student with given ID -> {} <- ALREADY EXISTS", student.getIdStudent());
+            return;
+        }
+
+        studentSave(student);
+        log.info("Student with ID -> {} <- has been ADDED", student.getIdStudent());
     }
 }

@@ -1,45 +1,33 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.model.Student;
-import com.myexaminer.service.AccountService;
 import com.myexaminer.service.StudentService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Log4j2
-@Controller
-@RequestMapping(path="/students")
+@RestController
+@RequestMapping(path = "/students")
 public class StudentController {
     private final StudentService studentService;
-    private final AccountService accountService;
 
-    public StudentController(StudentService studentService, AccountService accountService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
-        this.accountService = accountService;
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addStudent(@RequestBody Student student) {
-        if(!accountService.accountExistsById(student.getIdStudent())) {
-            log.info("Account with given ID -> {} <- DOES NOT EXIST", student.getIdStudent());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        if(studentService.studentExistsById(student.getIdStudent())){
-            log.info("Student with given ID -> {} <- ALREADY EXISTS", student.getIdStudent());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        studentService.studentSave(student);
-        log.info("Student with ID -> {} <- has been ADDED", student.getIdStudent());
-        return ResponseEntity.ok(HttpStatus.OK);
+    public void addStudent(@RequestBody Student student) {
+        studentService.createStudent(student);
     }
 
-
     @GetMapping("/all")
-    public @ResponseBody Iterable<Student> getStudents() {
+    public @ResponseBody
+    Iterable<Student> getStudents() {
         return studentService.returnAllStudents();
     }
 

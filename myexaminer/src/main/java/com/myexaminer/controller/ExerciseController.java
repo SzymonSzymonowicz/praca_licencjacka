@@ -6,95 +6,45 @@ import com.myexaminer.modelDTO.ExerciseDTO;
 import com.myexaminer.service.ExerciseService;
 import com.myexaminer.service.IndividualExamService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Log4j2
-@Controller
-@RequestMapping(path="/exercises")
+@RestController
+@RequestMapping(path = "/exercises")
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
-    private final IndividualExamService individualExamService;
 
-    public ExerciseController(IndividualExamService individualExamService, ExerciseService exerciseService) {
+    public ExerciseController(ExerciseService exerciseService) {
         this.exerciseService = exerciseService;
-        this.individualExamService = individualExamService;
     }
 
     @GetMapping
-    public @ResponseBody Exercise getExercise (@RequestBody Map<String, Integer> map_idExercise) {
-        Integer idExercise = map_idExercise.get("idExercise");
-        if(!exerciseService.exerciseExistsById(idExercise)){
-            log.info("Exercise with given ID -> {} <- DOES NOT EXIST", idExercise);
-            return null;
-        }
-
-        Exercise returnedExercise = exerciseService.returnExerciseById(idExercise);
-
-        log.info("Exercise with ID -> {} <- HAS BEEN RETURNED", returnedExercise.getIdExercise());
-
-        return returnedExercise;
+    public Exercise getExercise(@RequestBody Map<String, Integer> map_idExercise) {
+        return exerciseService.getExercise(map_idExercise);
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> addExercise(@RequestBody Exercise exercise) {
-        if(exerciseService.exerciseExistsById(exercise.getIdExercise())){
-            log.info("Exercise with given ID -> {} <- ALREADY EXISTS", exercise.getIdExercise());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        exerciseService.exerciseSave(exercise);
-        log.info("Exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
-
-        return ResponseEntity.ok(HttpStatus.OK);
+    public void addExercise(@RequestBody Exercise exercise) {
+        exerciseService.createExercise(exercise);
     }
 
     @GetMapping("/{idExam}")
-    public @ResponseBody Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Integer idExam, HttpServletRequest request) {
-        if(request.getUserPrincipal().getName().equals("dianaLektor@gmail.com")) {
-            return StreamSupport.stream(exerciseService.returnAllExercises().spliterator(), false).
-                    filter(exercise -> exercise.getExam().getIdExam() == individualExamService.returnIndividualExamById(idExam).getMainExam().getIdExam()).
-                    map(exercise -> new ExerciseDTO(exercise)).collect(Collectors.toList());
-        }
-        else {
-        return StreamSupport.stream(exerciseService.returnAllExercises().spliterator(), false).
-                filter(exercise -> exercise.getExam().getIdExam() == idExam).
-                map(exercise -> new ExerciseDTO(exercise)).collect(Collectors.toList());
-
-        }
+    public Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Integer idExam, HttpServletRequest request) {
+        return exerciseService.getExerciseDTOList(idExam, request);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<HttpStatus> saveExercises(@RequestBody List<ReceivedExercise> receivedExerciseList){
-        for(ReceivedExercise exercise: receivedExerciseList){
-            String type = exerciseService.getExerciseType(exercise.getIdExercise());
-            switch (type) {
-                case "L":
-                    System.out.println(exercise.getAnswer());
-                    break;
-                case "Z": {
-                    String x = (String) exercise.getAnswer();
-                    System.out.println(x.split(", ")[1]);
-                    break;
-                }
-                case "O": {
-                    String x = (String) exercise.getAnswer();
-                    System.out.println(x);
-                    break;
-                }
-            }
-        }
-
-        return ResponseEntity.ok(HttpStatus.OK);
+    public void saveExercises(@RequestBody List<ReceivedExercise> receivedExerciseList) {
+        exerciseService.saveExercises(receivedExerciseList);
     }
-
 }

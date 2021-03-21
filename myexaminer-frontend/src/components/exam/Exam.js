@@ -152,23 +152,3 @@ export default function Exam() {
     </form>
     )
 }
-
-  // const fixedTasks = [
-  //   {
-  //     type: "O",
-  //     points: 5,
-  //     instruction: "Całka powierzchniowa z rogu gabriela",
-  //   },
-  //   {
-  //     type: "Z",
-  //     points: 1,
-  //     instruction: "ABCD?",
-  //     answers: ["Yep, T", "Nopers, F", "Lubie placki, F", "Heeheheerbata, F"]
-  //   },
-  //   {
-  //     type: "L",
-  //     points: 3,
-  //     instruction: "Wpisz odpowiednie słowa",
-  //     fill: "Welcome to the <blank>! <blank> in the jar. Sultans of <blank>."
-  //   }
-  // ]

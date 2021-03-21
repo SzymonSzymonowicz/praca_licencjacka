@@ -3,15 +3,21 @@ package com.myexaminer.controller;
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Role;
 import com.myexaminer.modelDTO.RegisterDTO;
-import com.myexaminer.service.*;
-import org.springframework.http.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import com.myexaminer.service.AccountService;
+import com.myexaminer.service.RegistrationService;
+import com.myexaminer.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path="/account")
 public class AccountController {
 
@@ -40,7 +46,6 @@ public class AccountController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
     @PostMapping(path = "/login")
     public ResponseEntity<?> login (@RequestBody Account account) {
         if(!accountService.checkCredentials(account)) {
@@ -50,7 +55,6 @@ public class AccountController {
     }
 
     @GetMapping("/role")
-    @ResponseBody
     public List<Role> role(HttpServletRequest request){
         return accountService.returnAccountByEmail(request.getUserPrincipal().getName()).getRoles();
     }

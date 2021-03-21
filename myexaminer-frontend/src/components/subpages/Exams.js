@@ -104,22 +104,3 @@ export default function Exams({exams}, props) {
     </>
   )
 }
-
-// const fixedExams = [
-//   {
-//     "id": 0,
-//     "title": "Idiomy",
-//     "description": "Słówka z rodziału VI<br/> Present perfect, past simple, past perfect",
-//     "date": "11-12-2020",
-//     "hour": "13:30",
-//     "duration": "45 min"
-//   },
-//   {
-//     "id": 1,
-//     "title": "Idiomy",
-//     "description": "Słówka z rodziału VI<br/>Czasy<ul><li>Present perfect</li><li>past simple</li><li>past perfect</li></ul>",
-//     "date": "11-12-2020",
-//     "hour": "13:30",
-//     "duration": "45 min"
-//   }
-// ]
