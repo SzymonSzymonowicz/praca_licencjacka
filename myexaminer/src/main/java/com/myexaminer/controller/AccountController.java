@@ -3,11 +3,19 @@ package com.myexaminer.controller;
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Role;
 import com.myexaminer.modelDTO.RegisterDTO;
+import com.myexaminer.security.jwt.JwtUtils;
+import com.myexaminer.security.payload.JwtResponse;
+import com.myexaminer.security.service.AccountDetails;
 import com.myexaminer.service.AccountService;
 import com.myexaminer.service.RegistrationService;
 import com.myexaminer.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/account")
@@ -25,33 +35,58 @@ public class AccountController {
     private final RegistrationService registrationService;
     private final StudentService studentService;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
     public AccountController(AccountService accountService, RegistrationService registrationService, StudentService studentService) {
         this.accountService = accountService;
         this.registrationService = registrationService;
         this.studentService = studentService;
     }
 
+    // TODO Validation for registerDTO
     @PostMapping
-    public ResponseEntity<HttpStatus> addAccount(@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<?> createAccount(@RequestBody RegisterDTO registerDTO) {
         if (accountService.accountExistsByEmail(registerDTO.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Error: This email is already used!");
         }
 
         if (studentService.studentExistsByIndex(registerDTO.getIndex())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Error: This student index is already used!");
         }
 
         registrationService.registerNewStudentToDatabase(registerDTO);
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping(path = "/login")
     public ResponseEntity<?> login(@RequestBody Account account) {
-        if (!accountService.checkCredentials(account)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok("Connection succeeded");
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(account.getEmail(), account.getPassword())
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        AccountDetails accountDetails = (AccountDetails) authentication.getPrincipal();
+        List<String> roles = accountDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(JwtResponse.builder()
+                .token(jwt)
+                .id(accountDetails.getId())
+                .email(accountDetails.getUsername())
+                .roles(roles)
+                .build());
     }
 
     @GetMapping("/role")

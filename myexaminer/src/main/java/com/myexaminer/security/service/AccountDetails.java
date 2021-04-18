@@ -17,6 +17,8 @@ public class AccountDetails implements UserDetails {
     // TODO think about other fields that may come useful on frontend
     private final Account account;
 
+    private final Integer id;
+
     private final String email;
 
     private final List<GrantedAuthority> authorities;
@@ -28,9 +30,14 @@ public class AccountDetails implements UserDetails {
 
         return new AccountDetails(
                 account,
+                account.getAccountId(),
                 account.getEmail(),
                 authorities
         );
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override

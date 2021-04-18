@@ -3,6 +3,7 @@ package com.myexaminer.controller;
 import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.service.TeachingGroupService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class TeachingGroupController {
         this.teachingGroupService = teachingGroupService;
     }
 
+    @PreAuthorize("hasRole('LECTURER')")
     @PostMapping
     public void addTeachingGroup(@RequestBody TeachingGroup teachingGroup) {
         teachingGroupService.createTeachingGroup(teachingGroup);
