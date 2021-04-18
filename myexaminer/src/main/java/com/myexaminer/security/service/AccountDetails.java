@@ -1,7 +1,8 @@
-package com.myexaminer.details;
+package com.myexaminer.security.service;
 
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,35 +10,42 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class AccountDetails implements UserDetails {
-
+    // TODO think about other fields that may come useful on frontend
     private final Account account;
 
-    public AccountDetails(Account account){
-        this.account = account;
+    private final String email;
+
+    private final List<GrantedAuthority> authorities;
+
+    public static AccountDetails build(Account account) {
+        List<GrantedAuthority> authorities = account.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
+
+        return new AccountDetails(
+                account,
+                account.getEmail(),
+                authorities
+        );
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<Role> roles = account.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-
         return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
     public String getPassword() {
         return account.getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return account.getEmail();
     }
 
     @Override
@@ -55,6 +63,7 @@ public class AccountDetails implements UserDetails {
         return true;
     }
 
+    // TODO email verification account.isVerificated
     @Override
     public boolean isEnabled() {
         return true;

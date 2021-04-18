@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping(path="/account")
+@RequestMapping(path = "/account")
 public class AccountController {
 
     private final AccountService accountService;
@@ -33,11 +33,11 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<HttpStatus> addAccount(@RequestBody RegisterDTO registerDTO) {
-        if(accountService.accountExistsByEmail(registerDTO.getEmail())){
+        if (accountService.accountExistsByEmail(registerDTO.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        if(studentService.studentExistsByIndex(registerDTO.getIndex())){
+        if (studentService.studentExistsByIndex(registerDTO.getIndex())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -47,15 +47,15 @@ public class AccountController {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<?> login (@RequestBody Account account) {
-        if(!accountService.checkCredentials(account)) {
+    public ResponseEntity<?> login(@RequestBody Account account) {
+        if (!accountService.checkCredentials(account)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok("Connection succeeded");
     }
 
     @GetMapping("/role")
-    public List<Role> role(HttpServletRequest request){
-        return accountService.returnAccountByEmail(request.getUserPrincipal().getName()).getRoles();
+    public Set<Role> role(HttpServletRequest request) {
+        return accountService.getAccountByEmail(request.getUserPrincipal().getName()).getRoles();
     }
 }

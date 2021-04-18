@@ -1,13 +1,12 @@
 package com.myexaminer.service;
 
 import com.myexaminer.model.Account;
-
 import com.myexaminer.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -15,7 +14,9 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
-    public AccountService(AccountRepository accountRepository){this.accountRepository = accountRepository;}
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -24,19 +25,19 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public boolean accountExistsById(int idAccount){
-        Optional<Account> accountById = accountRepository.findByidAccount(idAccount);
+    public boolean accountExistsById(int accountId) {
+        Optional<Account> accountById = accountRepository.findById(accountId);
 
         return accountById.isPresent();
     }
 
-    public boolean accountExistsByEmail(String email){
+    public boolean accountExistsByEmail(String email) {
         Optional<Account> accountByEmail = accountRepository.findByEmail(email);
 
         return accountByEmail.isPresent();
     }
 
-    public boolean checkCredentials(Account account){
+    public boolean checkCredentials(Account account) {
         Optional<Account> accountFromDB = accountRepository.findByEmail(account.getEmail());
 
         if (accountFromDB.isEmpty()
@@ -47,9 +48,8 @@ public class AccountService {
         return true;
     }
 
-    public Account returnAccountByEmail(String email){
-        Optional<Account> accountByEmail = accountRepository.findByEmail(email);
-
-        return accountByEmail.orElseThrow(() -> new UsernameNotFoundException("Could not find account with given email"));
+    public Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Account with email: " + email));
     }
 }

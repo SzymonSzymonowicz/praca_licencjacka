@@ -28,8 +28,8 @@ public class AccountControllerTest {
     void init() {
         account1 = new Account("testowy@gmail.com", "haslo", "Tak?", "Nie");
         account2 = new Account("testowy@gmail.com", "haslo", "Tak?", "Nie");
-        account1.setIdAccount(1);
-        account2.setIdAccount(2);
+        account1.setAccountId(1);
+        account2.setAccountId(2);
     }*/
 
 /*    @Test
