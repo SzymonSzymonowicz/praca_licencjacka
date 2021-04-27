@@ -31,24 +31,8 @@ public class CheckingExercisesService {
     public void checkExercises(List<ReceivedExercise> receivedExerciseList, Integer idIndividualExam, Integer idExam, HttpServletRequest request) throws JsonProcessingException {
         for (ReceivedExercise receivedExercise : receivedExerciseList) {
             int idExercise = receivedExercise.getIdExercise();
-            int idStudent;
-            ArchiveExercise archiveExercise;
+            ArchiveExercise archiveExercise = checkIfStudentOrLectorAndReturnArchiveExercise(idExam, idExercise, idIndividualExam, request);
             String type = exerciseService.getExerciseType(idExercise);
-            if (idExam == null) {
-                archiveExercise = archiveExerciseService
-                        .returnArchiveExerciseByExerciseAndIndividualExam(
-                                idExercise,
-                                idIndividualExam
-                        );
-            } else {
-                idStudent = accountService.getAccountByEmail(request.getUserPrincipal().getName()).getAccountId();
-                archiveExercise = archiveExerciseService
-                        .returnArchiveExerciseByExerciseAndIndividualExam(
-                                idExercise,
-                                individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).getIdIndividualExam()
-                        );
-            }
-
             archiveExercise.setLecturerComment(receivedExercise.getLecturerComment());
             Object receivedAnswer = receivedExercise.getAnswer();
             switch (type) {
@@ -86,6 +70,26 @@ public class CheckingExercisesService {
                 individualExamService.setIndividualExamToChecked(idIndividualExam);
             }
         }
+    }
+
+    public ArchiveExercise checkIfStudentOrLectorAndReturnArchiveExercise(Integer idExam, Integer idExercise, Integer idIndividualExam,  HttpServletRequest request){
+        ArchiveExercise archiveExercise;
+        if (idExam == null) {
+            archiveExercise = archiveExerciseService
+                    .returnArchiveExerciseByExerciseAndIndividualExam(
+                            idExercise,
+                            idIndividualExam
+                    );
+        } else {
+            int idStudent = accountService.getAccountByEmail(request.getUserPrincipal().getName()).getAccountId();
+            archiveExercise = archiveExerciseService
+                    .returnArchiveExerciseByExerciseAndIndividualExam(
+                            idExercise,
+                            individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).getIdIndividualExam()
+                    );
+        }
+
+        return archiveExercise;
     }
 
     public List<ArchiveExerciseDTO> returnCheckedExercises(Integer idExam, Integer idIndExam, HttpServletRequest request) {
