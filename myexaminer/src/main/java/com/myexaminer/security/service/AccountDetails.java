@@ -40,6 +40,14 @@ public class AccountDetails implements UserDetails {
         return id;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
