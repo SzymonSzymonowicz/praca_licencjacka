@@ -6,6 +6,7 @@ import com.myexaminer.repository.TeachingGroupRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,10 +34,19 @@ public class TeachingGroupService {
         return teachingGroupById.isPresent();
     }
 
-    public TeachingGroup returnTeachingGroupById(int idTeachingGroup) {
+    public TeachingGroup getTeachingGroupById(int idTeachingGroup) {
         Optional<TeachingGroup> teachingGroup = teachingGroupRepository.findByidTeachingGroup(idTeachingGroup);
 
-        return teachingGroup.get();
+        return teachingGroup.orElseThrow(() -> new EntityNotFoundException("Group with id " + idTeachingGroup + " does not exist!"));
+    }
+
+    public TeachingGroup getTeachingGroupByStudentId(int studentId) {
+        Student student = studentService.getStudentById(studentId);
+
+        return teachingGroupRepository
+                .findByStudentsContaining(student)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("There is no group containing student with id " + studentId  + "."));
     }
 
     public boolean teachingGroupExistsByName(String teachingGroupName) {
@@ -46,11 +56,11 @@ public class TeachingGroupService {
     }
 
     public void addStudentToTeachingGroup(int idTeachingGroup, int idStudent) {
-        TeachingGroup teachingGroup = returnTeachingGroupById(idTeachingGroup);
+        TeachingGroup teachingGroup = getTeachingGroupById(idTeachingGroup);
 
-        Student student = studentService.returnStudentById(idStudent);
+        Student student = studentService.getStudentById(idStudent);
 
-        teachingGroup.addToUsers(student);
+        teachingGroup.addStudent(student);
 
         teachingGroupSave(teachingGroup);
 
@@ -63,7 +73,7 @@ public class TeachingGroupService {
         return teachingGroupRepository.findByLecturerAccountEmail(email);
     }
 
-    public List<TeachingGroup> returnTeachingGroupsByLecturerId(int id) {
+    public List<TeachingGroup> getTeachingGroupsByLecturerId(int id) {
         return teachingGroupRepository.findByLecturerIdLecturer(id);
     }
 
@@ -101,5 +111,16 @@ public class TeachingGroupService {
 
         addStudentToTeachingGroup(idTeachingGroup, idStudent);
         log.info("Student with ID -> {} <- has been ADDED to TeachingGroup with ID -> {} <-", idStudent, idTeachingGroup);
+    }
+
+    public void removeStudentFromGroup(int groupId, int studentId) {
+        TeachingGroup group = getTeachingGroupById(groupId);
+        group.removeStudent(studentService.getStudentById(studentId));
+        teachingGroupRepository.save(group);
+    }
+
+    public void deleteGroup(int groupId) {
+//        TeachingGroup group = getTeachingGroupById(groupId);
+        teachingGroupRepository.deleteById(groupId);
     }
 }

@@ -47,8 +47,12 @@ public class TeachingGroup {
     @OneToMany(mappedBy="teachingGroup")
     private Set<Exam> exams;
 
-    public void addToUsers(Student student) {
+    public void addStudent(Student student) {
         students.add(student);
+    }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
     }
 
     public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, Lecturer lecturer, Set<Student> students, Set<Exam> exams) {
