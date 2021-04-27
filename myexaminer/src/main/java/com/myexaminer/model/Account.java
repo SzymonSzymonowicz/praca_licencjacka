@@ -6,29 +6,31 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
-    private int idAccount;
+    private int accountId;
 
+    @Column(unique = true)
     private String email;
+
     private String password;
 
+    // TODO check and if needed REPLACE boolean names to fit lombok getters setters
     @Column(name = "is_verificated")
     private boolean isVerificated;
 
-    @Column(name = "recovery_question")
     private String recoveryQuestion;
 
-    @Column(name = "recovery_answer")
     private String recoveryAnswer;
 
     @Column(name = "is_lecturer")
@@ -42,7 +44,7 @@ public class Account {
             joinColumns = @JoinColumn(name = "fk_account_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_role_id")
     )
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     public Account(String email, String password, String recoveryQuestion, String recoveryAnswer) {
         this.email = email;
@@ -60,7 +62,7 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "idaccount=" + idAccount +
+                "accountId=" + accountId +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", is_verificated=" + isVerificated +

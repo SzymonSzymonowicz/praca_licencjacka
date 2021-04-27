@@ -5,6 +5,7 @@ import com.myexaminer.repository.StudentRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Log4j2
@@ -28,10 +29,10 @@ public class StudentService {
         return userById.isPresent();
     }
 
-    public Student returnStudentById(int idStudent) {
+    public Student getStudentById(int idStudent) {
         Optional<Student> studentById = studentRepository.findByIdStudent(idStudent);
 
-        return studentById.get();
+        return studentById.orElseThrow(() -> new EntityNotFoundException("Student with id " + idStudent + "does not exist!"));
     }
 
     public boolean studentExistsByIndex(String index) {

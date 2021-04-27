@@ -49,7 +49,7 @@ public class IndividualExamService {
     }
 
     public IndividualExam createOrGetIndividualExamAndReturn(int idStudent, int idExam) {
-        Student student = studentService.returnStudentById(idStudent);
+        Student student = studentService.getStudentById(idStudent);
         Exam exam = examService.returnExamById(idExam);
         Optional<IndividualExam> individualExamOpt = returnOptionalIndividualExamByIdStudentAndIdExam(idStudent, idExam);
         IndividualExam individualExam;
@@ -71,7 +71,7 @@ public class IndividualExamService {
     }
 
     public List<LecturerIndividualExamView> getLecturerIndividualExamViews(HttpServletRequest request) {
-        List<TeachingGroup> teachingGroups = teachingGroupService.returnTeachingGroupsByLecturerId(1);
+        List<TeachingGroup> teachingGroups = teachingGroupService.getTeachingGroupsByLecturerId(1);
 
         List<LecturerIndividualExamView> individualExamViewList = new ArrayList<>();
 

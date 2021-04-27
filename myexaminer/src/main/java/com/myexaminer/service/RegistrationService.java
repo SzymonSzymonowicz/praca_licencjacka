@@ -1,5 +1,6 @@
 package com.myexaminer.service;
 
+import com.myexaminer.enums.RoleEnum;
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Notebook;
 import com.myexaminer.model.Student;
@@ -38,12 +39,12 @@ public class RegistrationService {
                 registerDTO.getRecoveryQuestion(),
                 registerDTO.getRecoveryAnswer()
         );
-        newAccount.addToRoles(roleService.returnRoleByName("STUDENT"));
+        newAccount.addToRoles(roleService.getRoleByName(RoleEnum.ROLE_STUDENT));
         accountService.accountSave(newAccount);
-        log.info("Account with ID -> {} <- has been CREATED and SAVED to database", newAccount.getIdAccount());
+        log.info("Account with ID -> {} <- has been CREATED and SAVED to database", newAccount.getAccountId());
 
         Student newStudent = new Student(
-                newAccount.getIdAccount(),
+                newAccount.getAccountId(),
                 registerDTO.getFirstName(),
                 registerDTO.getLastName(),
                 registerDTO.getIndex(),

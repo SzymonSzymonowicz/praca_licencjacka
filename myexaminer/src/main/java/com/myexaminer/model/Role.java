@@ -1,37 +1,45 @@
 package com.myexaminer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.myexaminer.enums.RoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private int idRole;
+    private int roleId;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum name;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    private List<Account> accounts = new ArrayList<>();
+    private Set<Account> accounts = new HashSet<>();
 
-    public void addToAccounts(Account account){
+    public void addAccount(Account account){
         accounts.add(account);
+        account.getRoles().add(this);
     }
-
-    public Role(String name, List<Account> accounts) {
-        this.name = name;
-        this.accounts = accounts;
+    public void removeAccount(Account account){
+        accounts.remove(account);
+        account.getRoles().remove(this);
     }
 }
