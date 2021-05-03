@@ -14,4 +14,5 @@ public interface TeachingGroupRepository extends JpaRepository<TeachingGroup, In
     Optional<TeachingGroup> findByStudentsContaining(Student student);
     List<TeachingGroup> findByLecturerAccountEmail(String email);
     List<TeachingGroup> findByLecturerIdLecturer(int id);
+    Optional<TeachingGroup> findByAccessCode(String accessCode);
 }

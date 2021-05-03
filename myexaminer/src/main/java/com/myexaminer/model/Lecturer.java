@@ -19,7 +19,7 @@ public class Lecturer {
     private int idLecturer;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "fk_account_id")
     Account account;
 
     @Column(name = "first_name")

@@ -9,4 +9,5 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     long deleteByIdStudent(int idStudent);
     Optional<Student> findByIdStudent(int idStudent);
     Optional<Student> findByIndex(String index);
+    Optional<Student> findByAccountEmail(String email);
 }

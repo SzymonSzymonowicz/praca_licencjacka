@@ -1,28 +1,34 @@
 package com.myexaminer.service;
 
+import com.myexaminer.model.Lecturer;
 import com.myexaminer.model.Student;
 import com.myexaminer.model.TeachingGroup;
+import com.myexaminer.modelDTO.AccessCodeDTO;
+import com.myexaminer.modelDTO.TeachingGroupDTO;
 import com.myexaminer.repository.TeachingGroupRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class TeachingGroupService {
 
     private final TeachingGroupRepository teachingGroupRepository;
     private final StudentService studentService;
-    private LecturerService lecturerService;
-
-    public TeachingGroupService(TeachingGroupRepository teachingGroupRepository, StudentService studentService, LecturerService lecturerService) {
-        this.teachingGroupRepository = teachingGroupRepository;
-        this.studentService = studentService;
-        this.lecturerService = lecturerService;
-    }
+    private final LecturerService lecturerService;
 
     public void teachingGroupSave(TeachingGroup teachingGroup) {
         teachingGroupRepository.save(teachingGroup);
@@ -32,6 +38,10 @@ public class TeachingGroupService {
         Optional<TeachingGroup> teachingGroupById = teachingGroupRepository.findByidTeachingGroup(idTeachingGroup);
 
         return teachingGroupById.isPresent();
+    }
+
+    public List<TeachingGroup> findAllGroups(){
+        return teachingGroupRepository.findAll();
     }
 
     public TeachingGroup getTeachingGroupById(int idTeachingGroup) {
@@ -77,22 +87,20 @@ public class TeachingGroupService {
         return teachingGroupRepository.findByLecturerIdLecturer(id);
     }
 
-    public void createTeachingGroup(TeachingGroup teachingGroup) {
-        if (teachingGroupExistsById(teachingGroup.getIdTeachingGroup())) {
-            log.info("Group with given ID -> {} <- ALREADY EXISTS", teachingGroup.getIdTeachingGroup());
-            // throw EntityExistsException  --- > status conflict
-            return;
+    public void createTeachingGroup(TeachingGroupDTO teachingGroupDTO, Authentication authentication) {
+        if (teachingGroupExistsByName(teachingGroupDTO.getTeachingGroupName())) {
+            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroupDTO.getTeachingGroupName());
+            throw new EntityExistsException("Group with given name ->" + teachingGroupDTO.getTeachingGroupName() + "<- ALREADY EXISTS");
         }
 
-        if (!lecturerService.lecturerExistsById(teachingGroup.getLecturer().getIdLecturer())) {
-            log.info("Lecturer with given ID -> {} <- DOES NOT EXIST", teachingGroup.getLecturer().getIdLecturer());
-            return;
-        }
+        Lecturer lecturer = lecturerService.findLecturerByEmail(authentication.getName());
 
-        if (teachingGroupExistsByName(teachingGroup.getTeachingGroupName())) {
-            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroup.getTeachingGroupName());
-            return;
-        }
+        TeachingGroup teachingGroup = TeachingGroup.builder()
+                .teachingGroupName(teachingGroupDTO.getTeachingGroupName())
+                .teachingGroupDateOfStarting(LocalDateTime.now())
+                .accessCode(RandomStringUtils.randomAlphanumeric(8))
+                .lecturer(lecturer)
+                .build();
 
         teachingGroupSave(teachingGroup);
         log.info("Group with ID -> {} <- has been ADDED", teachingGroup.getIdTeachingGroup());
@@ -120,7 +128,21 @@ public class TeachingGroupService {
     }
 
     public void deleteGroup(int groupId) {
-//        TeachingGroup group = getTeachingGroupById(groupId);
         teachingGroupRepository.deleteById(groupId);
+        log.info("TeachingGroup with ID -> {} <- has been deleted", groupId);
+    }
+
+    public TeachingGroup findTeachingGroupByAccessCode(String code){
+        return teachingGroupRepository.findByAccessCode(code).orElseThrow(() -> new NoSuchElementException("There is no teaching group with given code -> " + code));
+    }
+
+    public ResponseEntity addStudentToGroupByCode(AccessCodeDTO accessCodeDTO, Authentication authentication){
+        TeachingGroup teachingGroup = findTeachingGroupByAccessCode(accessCodeDTO.getCode());
+        Student student = studentService.findStudentByEmail(authentication.getName());
+
+        teachingGroup.addStudent(student);
+        teachingGroupRepository.save(teachingGroup);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Student " + authentication.getName() + " has been added to teaching group");
     }
 }
