@@ -48,4 +48,8 @@ public class LecturerService {
         lecturerSave(lecturer);
         log.info("Lecturer with ID -> {} <- has been ADDED", lecturer.getIdLecturer());
     }
+
+    public Lecturer findLecturerByEmail(String email){
+        return lecturerRepository.findByAccount_Email(email).orElseThrow(() -> new NoSuchElementException("There is no lecturer with email -> " + email));
+    }
 }

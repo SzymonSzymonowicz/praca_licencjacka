@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Log4j2
@@ -62,5 +63,9 @@ public class StudentService {
 
         studentSave(student);
         log.info("Student with ID -> {} <- has been ADDED", student.getIdStudent());
+    }
+
+    public Student findStudentByEmail(String email){
+        return studentRepository.findByAccountEmail(email).orElseThrow(() -> new NoSuchElementException("There is no student with given email -> " + email));
     }
 }

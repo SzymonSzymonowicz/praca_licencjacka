@@ -1,11 +1,10 @@
 package com.myexaminer.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +12,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "teaching_group")
 public class TeachingGroup {
     @Id
@@ -27,11 +28,11 @@ public class TeachingGroup {
     private String accessCode;
 
     @Column(name = "teaching_group_date_of_starting")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date teachingGroupDateOfStarting;
+    private LocalDateTime teachingGroupDateOfStarting;
 
     @ManyToOne
     @JoinColumn(name="fk_lecturer_account_id", nullable=false)
+    @JsonIgnore
     private Lecturer lecturer;
 
     @ManyToMany(cascade = {
@@ -42,9 +43,11 @@ public class TeachingGroup {
             joinColumns = @JoinColumn(name = "fk_teaching_group_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_student_account_id")
     )
+    @JsonIgnore
     private Set<Student> students = new HashSet<>();
 
     @OneToMany(mappedBy="teachingGroup")
+    @JsonIgnore
     private Set<Exam> exams;
 
     public void addStudent(Student student) {
@@ -53,14 +56,5 @@ public class TeachingGroup {
 
     public void removeStudent(Student student) {
         students.remove(student);
-    }
-
-    public TeachingGroup(String teachingGroupName, String accessCode, Date teachingGroupDateOfStarting, Lecturer lecturer, Set<Student> students, Set<Exam> exams) {
-        this.teachingGroupName = teachingGroupName;
-        this.accessCode = accessCode;
-        this.teachingGroupDateOfStarting = teachingGroupDateOfStarting;
-        this.lecturer = lecturer;
-        this.students = students;
-        this.exams = exams;
     }
 }
