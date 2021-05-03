@@ -2,14 +2,15 @@ package com.myexaminer.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myexaminer.enums.RoleEnum;
 import com.myexaminer.exerciseTypes.ReceivedExercise;
 import com.myexaminer.model.ArchiveExercise;
 import com.myexaminer.model.IndividualExam;
 import com.myexaminer.modelDTO.ArchiveExerciseDTO;
 import org.json.JSONObject;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -28,10 +29,10 @@ public class CheckingExercisesService {
         this.archiveExerciseService = archiveExerciseService;
     }
 
-    public void checkExercises(List<ReceivedExercise> receivedExerciseList, Integer idIndividualExam, Integer idExam, HttpServletRequest request) throws JsonProcessingException {
+    public void checkExercises(List<ReceivedExercise> receivedExerciseList, Integer idIndividualExam, Integer idExam, Authentication authentication) throws JsonProcessingException {
         for (ReceivedExercise receivedExercise : receivedExerciseList) {
             int idExercise = receivedExercise.getIdExercise();
-            ArchiveExercise archiveExercise = checkIfStudentOrLectorAndReturnArchiveExercise(idExam, idExercise, idIndividualExam, request);
+            ArchiveExercise archiveExercise = checkIfStudentOrLectorAndReturnArchiveExercise(idExam, idExercise, idIndividualExam, authentication);
             String type = exerciseService.getExerciseType(idExercise);
             archiveExercise.setLecturerComment(receivedExercise.getLecturerComment());
             Object receivedAnswer = receivedExercise.getAnswer();
@@ -66,13 +67,13 @@ public class CheckingExercisesService {
             archiveExercise.setLecturerComment(receivedExercise.getLecturerComment());
             archiveExerciseService.exerciseSave(archiveExercise);
 
-            if (request.getUserPrincipal().getName().equals("dianaLektor@gmail.com")) {
+            if (authentication != null && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(RoleEnum.ROLE_LECTURER.name()))) {
                 individualExamService.setIndividualExamToChecked(idIndividualExam);
             }
         }
     }
 
-    public ArchiveExercise checkIfStudentOrLectorAndReturnArchiveExercise(Integer idExam, Integer idExercise, Integer idIndividualExam,  HttpServletRequest request){
+    public ArchiveExercise checkIfStudentOrLectorAndReturnArchiveExercise(Integer idExam, Integer idExercise, Integer idIndividualExam,  Authentication authentication){
         ArchiveExercise archiveExercise;
         if (idExam == null) {
             archiveExercise = archiveExerciseService
@@ -81,7 +82,7 @@ public class CheckingExercisesService {
                             idIndividualExam
                     );
         } else {
-            int idStudent = accountService.getAccountByEmail(request.getUserPrincipal().getName()).getAccountId();
+            int idStudent = accountService.getAccountByEmail(authentication.getName()).getAccountId();
             archiveExercise = archiveExerciseService
                     .returnArchiveExerciseByExerciseAndIndividualExam(
                             idExercise,
@@ -92,11 +93,11 @@ public class CheckingExercisesService {
         return archiveExercise;
     }
 
-    public List<ArchiveExerciseDTO> returnCheckedExercises(Integer idExam, Integer idIndExam, HttpServletRequest request) {
+    public List<ArchiveExerciseDTO> returnCheckedExercises(Integer idExam, Integer idIndExam, Authentication authentication) {
 
         List<ArchiveExerciseDTO> archiveExerciseDTOS;
         if (idIndExam == null) {
-            int idStudent = accountService.getAccountByEmail(request.getUserPrincipal().getName()).getAccountId();
+            int idStudent = accountService.getAccountByEmail(authentication.getName()).getAccountId();
             int idIndividualExam = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).getIdIndividualExam();
             archiveExerciseDTOS = archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(idExam, idIndividualExam);
         } else {

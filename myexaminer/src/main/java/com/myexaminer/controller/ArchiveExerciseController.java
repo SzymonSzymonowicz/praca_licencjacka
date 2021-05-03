@@ -6,6 +6,7 @@ import com.myexaminer.modelDTO.ArchiveExerciseDTO;
 import com.myexaminer.modelDTO.TwoIdObject;
 import com.myexaminer.service.ArchiveExerciseService;
 import com.myexaminer.service.CheckingExercisesService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,8 +30,8 @@ public class ArchiveExerciseController {
     }
 
     @GetMapping("/exercises")
-    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Integer idExam, @RequestParam(required = false) Integer idIndExam, HttpServletRequest request) {
-        return checkingExercisesService.returnCheckedExercises(idExam, idIndExam, request);
+    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Integer idExam, @RequestParam(required = false) Integer idIndExam, Authentication authentication) {
+        return checkingExercisesService.returnCheckedExercises(idExam, idIndExam, authentication);
     }
 
     @PostMapping("/exercises")
@@ -39,12 +40,12 @@ public class ArchiveExerciseController {
     }
 
     @PutMapping("/check")
-    public void checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam, HttpServletRequest request) throws JsonProcessingException {
+    public void checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam, Authentication authentication) throws JsonProcessingException {
         checkingExercisesService.checkExercises(
                 receivedExercisesWithIdIndividualExam.getReceivedExercises(),
                 receivedExercisesWithIdIndividualExam.getIdIndividualExam(),
                 receivedExercisesWithIdIndividualExam.getIdExam(),
-                request
+                authentication
         );
     }
 }
