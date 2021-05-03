@@ -9,7 +9,6 @@ import com.myexaminer.repository.IndividualExamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,7 +21,7 @@ public class IndividualExamService {
     private final IndividualExamRepository individualExamRepository;
     private final StudentService studentService;
     private final ExamService examService;
-    private TeachingGroupService teachingGroupService;
+    private final TeachingGroupService teachingGroupService;
 
     public IndividualExamService(IndividualExamRepository individualExamRepository, StudentService studentService, ExamService examService, TeachingGroupService teachingGroupService) {
         this.individualExamRepository = individualExamRepository;
@@ -70,7 +69,7 @@ public class IndividualExamService {
         individualExamSave(individualExam);
     }
 
-    public List<LecturerIndividualExamView> getLecturerIndividualExamViews(HttpServletRequest request) {
+    public List<LecturerIndividualExamView> getLecturerIndividualExamViews() {
         List<TeachingGroup> teachingGroups = teachingGroupService.getTeachingGroupsByLecturerId(1);
 
         List<LecturerIndividualExamView> individualExamViewList = new ArrayList<>();
