@@ -8,22 +8,11 @@ import { default as MuiLink } from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Copyright from "components/login-page/Copyright";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { loginUrl, roleUrl } from "router/urls";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <MuiLink color="inherit" href="https://material-ui.com/">
-        MyExaminer.pl
-      </MuiLink>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 export default function SignIn(props) {
   const classes = props.className;

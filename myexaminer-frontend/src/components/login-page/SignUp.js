@@ -4,27 +4,15 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { default as MuiLink } from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Copyright from "components/login-page/Copyright";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { registerUrl } from "router/urls";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <MuiLink color="inherit" href="https://material-ui.com/">
-        MyExaminer.pl
-      </MuiLink>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 export default function SignUp(props) {
   const classes = props.className;
