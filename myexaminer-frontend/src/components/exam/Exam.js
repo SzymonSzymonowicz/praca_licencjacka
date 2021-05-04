@@ -5,23 +5,8 @@ import FillBlanksTask from 'components/exam/FillBlanksTask'
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { archiveCheckUrl, exercisesUrl } from 'router/urls';
+import { shuffle } from 'utils/shuffle';
 
-
-//The Fisher-Yates (aka Knuth) Shuffle
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
 
 export default function Exam() {
   let { id } = useParams();
@@ -29,8 +14,6 @@ export default function Exam() {
 
   const [tasks, setTasks] = React.useState([]);
   const [answered, setAnswered] = React.useState([]);
-
-/*  const idStudent = 2;*/
 
   React.useEffect(() => {
     fetch(exercisesUrl + id, {
@@ -56,18 +39,9 @@ export default function Exam() {
           task.exerciseBody.answers = shuffle(task.exerciseBody.answers)
         return task
       })
-      // tasksJson.map(task => {
-      //   if(task.type === "Z"){
-      //     task.answers = shuffle(task.answers)
-      //     console.log("elo")
-      //     return task
-      //   }else
-      //     return task
-      // })
       console.log(tasksJson)
       setTasks(tasksJson);
 
-      //.map((_, i) => ({idExercise: i, answer: null}))
       console.log(answArr)
       setAnswered(answArr)
     })
