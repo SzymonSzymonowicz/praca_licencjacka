@@ -4,6 +4,7 @@ import OpenTask from 'components/exam/OpenTask'
 import FillBlanksTask from 'components/exam/FillBlanksTask'
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom';
+import { archiveCheckUrl, exercisesUrl } from 'router/urls';
 
 
 //The Fisher-Yates (aka Knuth) Shuffle
@@ -32,7 +33,7 @@ export default function Exam() {
 /*  const idStudent = 2;*/
 
   React.useEffect(() => {
-    fetch('http://localhost:8080/exercises/' + id, {
+    fetch(exercisesUrl + id, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -77,7 +78,7 @@ export default function Exam() {
   }, [id])
 
   function saveAnswers(receivedExercises, idIndividualExam, idExam){
-    fetch('http://localhost:8080/archive/check', {
+    fetch(archiveCheckUrl, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',

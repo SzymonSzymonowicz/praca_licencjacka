@@ -5,6 +5,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
+import { archiveExcercisesUrl } from 'router/urls';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -33,7 +34,7 @@ export default function Exams({exams}, props) {
   //"archive/exercises" POST
 
   function createAnswersForExam(idStudent, idExam){
-    fetch('http://localhost:8080/archive/exercises', {
+    fetch(archiveExcercisesUrl, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

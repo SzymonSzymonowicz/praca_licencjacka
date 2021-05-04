@@ -5,7 +5,7 @@ import FillBlanksTask from 'components/exam/FillBlanksTask'
 import Comment from 'components/exam/Comment'
 import React from 'react'
 import { useParams, useHistory } from 'react-router-dom';
-
+import { checkedExercisesForExamIdUrl, exercisesUrl } from 'router/urls';
 
 
 export default function ExamResults(props) {
@@ -26,7 +26,7 @@ export default function ExamResults(props) {
     try {
       let answArr = []
 
-      const result = await fetch('http://localhost:8080/archive/exercises?idExam=' + id, {
+      const result = await fetch(checkedExercisesForExamIdUrl + id, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -53,7 +53,7 @@ export default function ExamResults(props) {
 
   async function fetchTasks() {
     try {
-      const result = await fetch('http://localhost:8080/exercises/' + id, {
+      const result = await fetch(exercisesUrl + id, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

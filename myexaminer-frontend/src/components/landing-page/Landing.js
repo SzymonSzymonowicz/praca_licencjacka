@@ -19,6 +19,7 @@ import Lesson from "../group/Lesson";
 import ExamResults from 'components/exam/ExamResults';
 import ExamsToCheck from 'components/lecturer/ExamsToCheck';
 import CheckExam from 'components/lecturer/CheckExam';
+import { examUrl } from 'router/urls';
 
 
 const drawerWidth = 240;
@@ -102,7 +103,7 @@ export default function Landing(props) {
 
   const groupId = 1
   useEffect(() => {
-    fetch('http://localhost:8080/exam/' + groupId, {
+    fetch(examUrl + groupId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

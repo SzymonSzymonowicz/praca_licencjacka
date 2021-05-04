@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
+import { individualExamsForGroupUrl } from 'router/urls';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,7 @@ export default function ExamsToCheck(props) {
 
   async function fetchAllIndividualExams() {
     try {
-      const result = await fetch('http://localhost:8080/individual-exams/group', {
+      const result = await fetch(individualExamsForGroupUrl, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

@@ -3,6 +3,7 @@ import Fab from '@material-ui/core/Fab';
 import {default as NoteIcon} from '@material-ui/icons/LibraryBooks';
 import { useLocation} from 'react-router-dom';
 import { Popover, TextField } from '@material-ui/core';
+import { notebookUrl } from 'router/urls';
 
 export default function Notepad({classes}, props) {
   const [notes, setNotes] = useState("");
@@ -24,7 +25,7 @@ export default function Notepad({classes}, props) {
   useEffect(() => {
     const fetchNotepadContent = async () => { 
       try {
-        const result = await fetch('http://localhost:8080/notebook', {
+        const result = await fetch(notebookUrl, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
@@ -48,7 +49,7 @@ export default function Notepad({classes}, props) {
 
   const editNotebook = async () => {
     try {
-      const result = await fetch('http://localhost:8080/notebook', {
+      const result = await fetch(notebookUrl, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',

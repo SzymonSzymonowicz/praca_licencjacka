@@ -1,43 +1,51 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import {default as MuiLink} from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { Link } from 'react-router-dom';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { default as MuiLink } from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
-
+import { registerUrl } from "router/urls";
 
 function Copyright() {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
-        <MuiLink color="inherit" href="https://material-ui.com/">
-          MyExaminer.pl
-        </MuiLink>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
-
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <MuiLink color="inherit" href="https://material-ui.com/">
+        MyExaminer.pl
+      </MuiLink>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
 export default function SignUp(props) {
-  const classes = props.className
-  const history = useHistory()
+  const classes = props.className;
+  const history = useHistory();
 
-  function registerUser(email, password, recoveryQuestion, recoveryAnswer,
-    firstName, lastName, index, faculty, fieldOfStudy){
-    fetch('http://localhost:8080/account', {
-      method: 'POST',
+  function registerUser(
+    email,
+    password,
+    recoveryQuestion,
+    recoveryAnswer,
+    firstName,
+    lastName,
+    index,
+    faculty,
+    fieldOfStudy
+  ) {
+    fetch(registerUrl, {
+      method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: email,
@@ -48,31 +56,49 @@ export default function SignUp(props) {
         lastName: lastName,
         index: index,
         faculty: faculty,
-        fieldOfStudy: fieldOfStudy
-      })
-    }).then(function (response) {
-      if (response.status === 200) {
-        console.log("User REGISTERED SUCCESSFULLY!")
-        history.push("/")
-      } else if (response.status === 422 ){
-        console.log("Given email ALREADY EXISTS!")
-      } else {
-        console.log("Something went wrong!")
-      }
-    }).catch(function (error) {
-      console.log("error")
+        fieldOfStudy: fieldOfStudy,
+      }),
     })
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log("User REGISTERED SUCCESSFULLY!");
+          history.push("/");
+        } else if (response.status === 422) {
+          console.log("Given email ALREADY EXISTS!");
+        } else {
+          console.log("Something went wrong!");
+        }
+      })
+      .catch(function (error) {
+        console.log("error");
+      });
   }
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     let form = event.target;
-    
-    console.table([{"email": form.email.value, "password": form.password.value, "recoveryQuestion": form.recoveryQuestion.value, "recoveryAnswer": form.recoveryAnswer.value}])
 
-    registerUser(form.email.value, form.password.value, form.recoveryQuestion.value, form.recoveryAnswer.value,
-      form.firstName.value, form.lastName.value, form.index.value, form.faculty.value, form.fieldOfStudy.value)
-  }
+    console.table([
+      {
+        email: form.email.value,
+        password: form.password.value,
+        recoveryQuestion: form.recoveryQuestion.value,
+        recoveryAnswer: form.recoveryAnswer.value,
+      },
+    ]);
+
+    registerUser(
+      form.email.value,
+      form.password.value,
+      form.recoveryQuestion.value,
+      form.recoveryAnswer.value,
+      form.firstName.value,
+      form.lastName.value,
+      form.index.value,
+      form.faculty.value,
+      form.fieldOfStudy.value
+    );
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -203,9 +229,7 @@ export default function SignUp(props) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link to="/">
-                Już posiadasz konto? Zaloguj się
-              </Link>
+              <Link to="/">Już posiadasz konto? Zaloguj się</Link>
             </Grid>
           </Grid>
         </form>
