@@ -20,6 +20,8 @@ import ExamResults from 'components/exam/ExamResults';
 import ExamsToCheck from 'components/lecturer/ExamsToCheck';
 import CheckExam from 'components/lecturer/CheckExam';
 import { examUrl } from 'router/urls';
+import { logout, getCurrentAccount, hasRole } from "services/auth-service";
+import authHeader from 'services/auth-header';
 
 
 const drawerWidth = 240;
@@ -105,11 +107,7 @@ export default function Landing(props) {
   useEffect(() => {
     fetch(examUrl + groupId, {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-      }
+      headers: authHeader()
     }).then(function (response) {
       if (response.status === 200) {
         return response.json()
@@ -195,9 +193,10 @@ export default function Landing(props) {
     setAnchorEl(null);
   };
 
-  const email_user = sessionStorage.getItem('USER_SESSION_EMAIL')
+  const email_user = sessionStorage.getItem('USER_SESSION_EMAIL');
 
-  const userRole = sessionStorage.getItem('USER_SESSION_ROLE')
+  // tutaj
+  const isLecturer = hasRole("ROLE_LECTURER");
 
   return (
     <div className={classes.root}>
@@ -253,7 +252,7 @@ export default function Landing(props) {
               <MenuItem onClick={handleMenuClose}>Moje konto</MenuItem>
               <MenuItem onClick={() => {
                 handleMenuClose();
-                sessionStorage.clear();
+                logout();
                 history.push("/");
                 }}>Wyloguj</MenuItem>
             </Menu>
@@ -282,7 +281,7 @@ export default function Landing(props) {
           let prevListLength = 0
           if(listIndex !== 0)
             prevListLength = array[listIndex - 1].length
-          if(listIndex !== array.length-1 || userRole === "LECTURER")
+          if(listIndex !== array.length-1 || isLecturer)
             return (<div key={listIndex}>
               <Divider />
               <List>
@@ -310,7 +309,7 @@ export default function Landing(props) {
           <Switch>
             <Route exact path={`${match.path}`}>
               <Typography paragraph variant='h2'>
-                {`Witaj ${email_user} !`}
+                {`Witaj ${getCurrentAccount()?.email} !`}
               </Typography>
               <Tiles setSelectedIndex={setSelectedIndex}/>
             </Route>
@@ -335,10 +334,10 @@ export default function Landing(props) {
             <Route path={`${match.path}/examresults/:id`}>
               <ExamResults/>
             </Route>
-            {userRole === "LECTURER" && <Route path={`${match.path}/examstocheck`}>
+            {isLecturer && <Route path={`${match.path}/examstocheck`}>
               <ExamsToCheck/>
             </Route>}
-            {userRole === "LECTURER" && <Route path={`${match.path}/checkexam/:id`}>
+            {isLecturer && <Route path={`${match.path}/checkexam/:id`}>
               <CheckExam/>
             </Route>}
             <Route path={`${match.path}/lesson/`}>

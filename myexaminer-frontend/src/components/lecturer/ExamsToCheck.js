@@ -5,6 +5,7 @@ import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
 import { individualExamsForGroupUrl } from 'router/urls';
+import authHeader from 'services/auth-header';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,11 +40,7 @@ export default function ExamsToCheck(props) {
     try {
       const result = await fetch(individualExamsForGroupUrl, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        }
+        headers: authHeader()
       })
       const data = await result.json()
 

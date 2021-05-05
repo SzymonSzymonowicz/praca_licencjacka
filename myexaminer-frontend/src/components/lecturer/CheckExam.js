@@ -6,6 +6,7 @@ import Comment from 'components/exam/Comment'
 import React from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { individualExamExercisesUrl, exercisesUrl, archiveCheckUrl } from 'router/urls';
+import authHeader from 'services/auth-header';
 
 
 export default function CheckExam(props) {
@@ -28,11 +29,7 @@ export default function CheckExam(props) {
 
       const result = await fetch(individualExamExercisesUrl + id, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        }
+        headers: authHeader()
       })
       const data = await result.json()
 
@@ -55,11 +52,7 @@ export default function CheckExam(props) {
     try {
       const result = await fetch(exercisesUrl + id, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        }
+        headers: authHeader()
       })
       
       const data = await result.json()
@@ -82,11 +75,7 @@ export default function CheckExam(props) {
     try {
       const result = await fetch(archiveCheckUrl, {
         method: 'PUT',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        },
+        headers: authHeader(),
         body: JSON.stringify({
           idIndividualExam: id,
           receivedExercises: answered
@@ -161,8 +150,3 @@ export default function CheckExam(props) {
     </form>
     )
 }
-
-
-
-
-

@@ -3,7 +3,6 @@ export const domain = "http://localhost:8080";
 // AccountController
 export const loginUrl = domain + "/account/login";
 export const registerUrl = domain + "/account";
-export const roleUrl = domain + "/account/role";
 
 // ExamController
 export const examUrl = domain + "/exam/";

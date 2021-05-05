@@ -6,6 +6,7 @@ import React from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { archiveCheckUrl, exercisesUrl } from 'router/urls';
 import { shuffle } from 'utils/shuffle';
+import authHeader from 'services/auth-header';
 
 
 export default function Exam() {
@@ -18,11 +19,7 @@ export default function Exam() {
   React.useEffect(() => {
     fetch(exercisesUrl + id, {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-      }
+      headers: authHeader()
     }).then(function (response) {
       if (response.status === 200) {
         return response.json()

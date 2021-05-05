@@ -6,6 +6,7 @@ import Comment from 'components/exam/Comment'
 import React from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { checkedExercisesForExamIdUrl, exercisesUrl } from 'router/urls';
+import authHeader from 'services/auth-header';
 
 
 export default function ExamResults(props) {
@@ -28,11 +29,7 @@ export default function ExamResults(props) {
 
       const result = await fetch(checkedExercisesForExamIdUrl + id, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        }
+        headers: authHeader()
       })
       const data = await result.json()
 
@@ -55,11 +52,7 @@ export default function ExamResults(props) {
     try {
       const result = await fetch(exercisesUrl + id, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        }
+        headers: authHeader()
       })
       
       const data = await result.json()

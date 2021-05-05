@@ -11,71 +11,18 @@ import Container from "@material-ui/core/Container";
 import Copyright from "components/login-page/Copyright";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
-import { registerUrl } from "router/urls";
+import { register } from "services/auth-service";
 
 
 export default function SignUp(props) {
   const classes = props.className;
   const history = useHistory();
 
-  function registerUser(
-    email,
-    password,
-    recoveryQuestion,
-    recoveryAnswer,
-    firstName,
-    lastName,
-    index,
-    faculty,
-    fieldOfStudy
-  ) {
-    fetch(registerUrl, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        recoveryQuestion: recoveryQuestion,
-        recoveryAnswer: recoveryAnswer,
-        firstName: firstName,
-        lastName: lastName,
-        index: index,
-        faculty: faculty,
-        fieldOfStudy: fieldOfStudy,
-      }),
-    })
-      .then(function (response) {
-        if (response.status === 200) {
-          console.log("User REGISTERED SUCCESSFULLY!");
-          history.push("/");
-        } else if (response.status === 422) {
-          console.log("Given email ALREADY EXISTS!");
-        } else {
-          console.log("Something went wrong!");
-        }
-      })
-      .catch(function (error) {
-        console.log("error");
-      });
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault();
     let form = event.target;
 
-    console.table([
-      {
-        email: form.email.value,
-        password: form.password.value,
-        recoveryQuestion: form.recoveryQuestion.value,
-        recoveryAnswer: form.recoveryAnswer.value,
-      },
-    ]);
-
-    registerUser(
+    register(
       form.email.value,
       form.password.value,
       form.recoveryQuestion.value,
@@ -85,7 +32,20 @@ export default function SignUp(props) {
       form.index.value,
       form.faculty.value,
       form.fieldOfStudy.value
-    );
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        console.log("User REGISTERED SUCCESSFULLY!");
+        history.push("/");
+      } else if (response.status === 422) {
+        console.log("Given email ALREADY EXISTS!");
+      } else {
+        console.log("Something went wrong!");
+      }
+    })
+    .catch((error) => {
+      console.log("error: " + error);
+    });
   };
 
   return (
