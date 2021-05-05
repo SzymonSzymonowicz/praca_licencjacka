@@ -4,23 +4,10 @@ import OpenTask from 'components/exam/OpenTask'
 import FillBlanksTask from 'components/exam/FillBlanksTask'
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom';
+import { archiveCheckUrl, exercisesUrl } from 'router/urls';
+import { shuffle } from 'utils/shuffle';
+import authHeader from 'services/auth-header';
 
-
-//The Fisher-Yates (aka Knuth) Shuffle
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
 
 export default function Exam() {
   let { id } = useParams();
@@ -29,16 +16,10 @@ export default function Exam() {
   const [tasks, setTasks] = React.useState([]);
   const [answered, setAnswered] = React.useState([]);
 
-/*  const idStudent = 2;*/
-
   React.useEffect(() => {
-    fetch('http://localhost:8080/exercises/' + id, {
+    fetch(exercisesUrl + id, {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-      }
+      headers: authHeader()
     }).then(function (response) {
       if (response.status === 200) {
         return response.json()
@@ -55,18 +36,9 @@ export default function Exam() {
           task.exerciseBody.answers = shuffle(task.exerciseBody.answers)
         return task
       })
-      // tasksJson.map(task => {
-      //   if(task.type === "Z"){
-      //     task.answers = shuffle(task.answers)
-      //     console.log("elo")
-      //     return task
-      //   }else
-      //     return task
-      // })
       console.log(tasksJson)
       setTasks(tasksJson);
 
-      //.map((_, i) => ({idExercise: i, answer: null}))
       console.log(answArr)
       setAnswered(answArr)
     })
@@ -77,7 +49,7 @@ export default function Exam() {
   }, [id])
 
   function saveAnswers(receivedExercises, idIndividualExam, idExam){
-    fetch('http://localhost:8080/archive/check', {
+    fetch(archiveCheckUrl, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',

@@ -5,7 +5,8 @@ import FillBlanksTask from 'components/exam/FillBlanksTask'
 import Comment from 'components/exam/Comment'
 import React from 'react'
 import { useParams, useHistory } from 'react-router-dom';
-
+import { checkedExercisesForExamIdUrl, exercisesUrl } from 'router/urls';
+import authHeader from 'services/auth-header';
 
 
 export default function ExamResults(props) {
@@ -26,13 +27,9 @@ export default function ExamResults(props) {
     try {
       let answArr = []
 
-      const result = await fetch('http://localhost:8080/archive/exercises?idExam=' + id, {
+      const result = await fetch(checkedExercisesForExamIdUrl + id, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        }
+        headers: authHeader()
       })
       const data = await result.json()
 
@@ -53,13 +50,9 @@ export default function ExamResults(props) {
 
   async function fetchTasks() {
     try {
-      const result = await fetch('http://localhost:8080/exercises/' + id, {
+      const result = await fetch(exercisesUrl + id, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
-        }
+        headers: authHeader()
       })
       
       const data = await result.json()
