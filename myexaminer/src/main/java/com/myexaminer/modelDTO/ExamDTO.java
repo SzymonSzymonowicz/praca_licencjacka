@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.myexaminer.component.DateUtils.parseDateToString;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -31,7 +33,7 @@ public class ExamDTO {
         this.idExam = exam.getIdExam();
         this.examName = exam.getExamName();
         this.examDescription = exam.getExamDescription();
-/*        this.examAvailableDate = exam.getExamAvailableDate();*/
+        this.examAvailableDate = parseDateToString(exam.getExamAvailableDate());
         this.examDurationTime = exam.getExamDurationTime();
         this.examStatus = exam.getStatus().name();
     }

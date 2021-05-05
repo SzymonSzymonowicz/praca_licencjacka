@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +64,7 @@ public class ExamService {
         return returnedExam;
     }
 
-    public void createExam(ExamDTO examDTO, Integer id) {
+    public void createExam(ExamDTO examDTO, Integer id) throws ParseException {
         Exam exam = Exam.mapExamDTOToExam(examDTO);
         exam.setStatusToHidden();
 

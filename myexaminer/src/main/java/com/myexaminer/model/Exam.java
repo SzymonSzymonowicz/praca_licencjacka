@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+
+import static com.myexaminer.component.DateUtils.parseStringToDate;
 
 @Getter
 @Setter
@@ -79,10 +82,10 @@ public class Exam {
         setStatus(Status.HIDDEN);
     }
 
-    public static Exam mapExamDTOToExam(ExamDTO examDTO){
+    public static Exam mapExamDTOToExam(ExamDTO examDTO) throws ParseException {
         return Exam.builder()
                 .examName(examDTO.getExamName())
-                .examAvailableDate(examDTO.getExamAvailableDate())
+                .examAvailableDate(parseStringToDate(examDTO.getExamAvailableDate()))
                 .examDescription(examDTO.getExamDescription())
                 .examDurationTime(examDTO.getExamDurationTime())
                 .build();
