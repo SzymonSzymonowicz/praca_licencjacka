@@ -50,6 +50,11 @@ public class AccountService {
 
     public Account getAccountByEmail(String email) {
         return accountRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Account with email: " + email));
+                .orElseThrow(() -> new EntityNotFoundException("Account with email: " + email + " doesn't exist."));
+    }
+
+    public Account getAccountById(Integer accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account with id: " + accountId + " doesn't exist."));
     }
 }

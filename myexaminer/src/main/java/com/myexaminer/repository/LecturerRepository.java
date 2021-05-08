@@ -9,4 +9,5 @@ public interface LecturerRepository extends JpaRepository<Lecturer, Integer> {
     long deleteByIdLecturer(int idLecturer);
     Optional<Lecturer> findByIdLecturer(int idLecturer);
     Optional<Lecturer> findByAccount_Email(String email);
+    Optional<Lecturer> findByAccountId(int accountId);
 }

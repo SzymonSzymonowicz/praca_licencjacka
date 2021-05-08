@@ -82,7 +82,7 @@ public class CheckingExercisesService {
                             idIndividualExam
                     );
         } else {
-            int idStudent = accountService.getAccountByEmail(authentication.getName()).getAccountId();
+            int idStudent = accountService.getAccountByEmail(authentication.getName()).getId();
             archiveExercise = archiveExerciseService
                     .returnArchiveExerciseByExerciseAndIndividualExam(
                             idExercise,
@@ -97,7 +97,7 @@ public class CheckingExercisesService {
 
         List<ArchiveExerciseDTO> archiveExerciseDTOS;
         if (idIndExam == null) {
-            int idStudent = accountService.getAccountByEmail(authentication.getName()).getAccountId();
+            int idStudent = accountService.getAccountByEmail(authentication.getName()).getId();
             int idIndividualExam = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).getIdIndividualExam();
             archiveExerciseDTOS = archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(idExam, idIndividualExam);
         } else {

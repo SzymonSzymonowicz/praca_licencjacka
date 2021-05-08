@@ -1,5 +1,6 @@
 package com.myexaminer.repository;
 
+import com.myexaminer.model.Lecturer;
 import com.myexaminer.model.Student;
 import com.myexaminer.model.TeachingGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,6 @@ public interface TeachingGroupRepository extends JpaRepository<TeachingGroup, In
     List<TeachingGroup> findByLecturerAccountEmail(String email);
     List<TeachingGroup> findByLecturerIdLecturer(int id);
     Optional<TeachingGroup> findByAccessCode(String accessCode);
+    List<TeachingGroup> findAllByStudents(Student student);
+    List<TeachingGroup> findAllByLecturer(Lecturer lecturer);
 }
