@@ -6,6 +6,7 @@ import com.myexaminer.modelDTO.GenericOneValue;
 import com.myexaminer.modelDTO.GenericTwoValues;
 import com.myexaminer.service.ExamService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.Map;
 
 @Log4j2
@@ -32,9 +34,10 @@ public class ExamController {
         return examService.getExam(map_idExam);
     }
 
-    @PostMapping
-    public void addExam(@RequestBody Exam exam) {
-        examService.createExam(exam);
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PostMapping("/{idGroup}")
+    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable int idGroup) throws ParseException {
+        examService.createExam(examDTO, idGroup);
     }
 
     @GetMapping("/{idGroup}")

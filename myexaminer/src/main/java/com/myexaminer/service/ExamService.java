@@ -1,29 +1,34 @@
 package com.myexaminer.service;
 
 import com.myexaminer.model.Exam;
+import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.modelDTO.ExamDTO;
 import com.myexaminer.modelDTO.GenericOneValue;
 import com.myexaminer.modelDTO.GenericTwoValues;
 import com.myexaminer.repository.ExamRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class ExamService {
 
     private final ExamRepository examRepository;
-
-    public ExamService(ExamRepository examRepository) {
-        this.examRepository = examRepository;
-    }
+    private final TeachingGroupService teachingGroupService;
 
     public void examSave(Exam exam) {
         examRepository.save(exam);
@@ -59,11 +64,12 @@ public class ExamService {
         return returnedExam;
     }
 
-    public void createExam(Exam exam) {
-        if (examExistsById(exam.getIdExam())) {
-            log.info("Exam with given ID -> {} <- ALREADY EXISTS", exam.getIdExam());
-            return;
-        }
+    public void createExam(ExamDTO examDTO, Integer id) throws ParseException {
+        Exam exam = Exam.mapExamDTOToExam(examDTO);
+        exam.setStatusToHidden();
+
+        TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(id);
+        exam.setTeachingGroup(teachingGroup);
 
         examSave(exam);
         log.info("Exam with ID -> {} <- has been ADDED", exam.getIdExam());
@@ -72,7 +78,7 @@ public class ExamService {
     public List<ExamDTO> getExamDTOSByIdGroup(int idGroup) {
         return StreamSupport.stream(returnAllExams().spliterator(), false).
                 filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
-                map(exam -> new ExamDTO(exam)).collect(Collectors.toList());
+                map(ExamDTO::new).collect(Collectors.toList());
     }
 
     public Exam.Status getStatus(GenericOneValue idExam) {

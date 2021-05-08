@@ -54,8 +54,8 @@ public class TeachingGroupController {
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping(path = "/students")
-    public ResponseEntity addStudentToGroupByCode(@RequestBody AccessCodeDTO accessCodeDTO, Authentication authentication){
-        return teachingGroupService.addStudentToGroupByCode(accessCodeDTO, authentication);
+    public ResponseEntity addStudentToGroupByCode(@RequestBody String accessCode, Authentication authentication){
+        return teachingGroupService.addStudentToGroupByCode(accessCode, authentication);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
