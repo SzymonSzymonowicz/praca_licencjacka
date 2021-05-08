@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,7 +19,7 @@ public class LecturerIndividualExamView {
 
     private String examDescription;
 
-    private Date examAvailableDate;
+    private LocalDateTime examAvailableDate;
 
     private int idTeachingGroup;
 

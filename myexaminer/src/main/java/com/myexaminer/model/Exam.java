@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.text.ParseException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.myexaminer.component.DateUtils.parseStringToDate;
@@ -36,7 +35,7 @@ public class Exam {
     private String examDescription;
 
     @Column(name = "exam_available_date")
-    private Date examAvailableDate;
+    private LocalDateTime examAvailableDate;
 
     @Column(name = "exam_duration_time")
     private Integer examDurationTime;
@@ -84,7 +83,27 @@ public class Exam {
         setStatus(Status.HIDDEN);
     }
 
-    public static Exam mapExamDTOToExam(ExamDTO examDTO) throws ParseException {
+    public void setStatusToDraft(){
+        setStatus(Status.DRAFT);
+    }
+
+    public void setStatusToClosed(){
+        setStatus(Status.CLOSED);
+    }
+
+    public void setStatusToOpen(){
+        setStatus(Status.OPEN);
+    }
+
+    public void setStatusToChecked(){
+        setStatus(Status.CHECKED);
+    }
+
+    public boolean isClosed(){return getStatus().equals(Status.CLOSED);}
+
+    public boolean isOpened(){return getStatus().equals(Status.OPEN);}
+
+    public static Exam mapExamDTOToExam(ExamDTO examDTO){
         return Exam.builder()
                 .examName(examDTO.getExamName())
                 .examAvailableDate(parseStringToDate(examDTO.getExamAvailableDate()))

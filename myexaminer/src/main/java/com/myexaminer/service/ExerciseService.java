@@ -124,6 +124,8 @@ public class ExerciseService {
                 .build();
 
         exerciseRepository.save(exercise);
+
+        log.info("Open exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
     }
 
     public void createExerciseTypeZ(ClosedExercise closedExercise, Integer examId) throws JsonProcessingException {
@@ -136,5 +138,7 @@ public class ExerciseService {
                 .build();
 
         exerciseRepository.save(exercise);
+
+        log.info("Closed exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
     }
 }

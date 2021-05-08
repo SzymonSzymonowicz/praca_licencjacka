@@ -10,15 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -64,9 +59,9 @@ public class ExamService {
         return returnedExam;
     }
 
-    public void createExam(ExamDTO examDTO, Integer id) throws ParseException {
+    public void createExam(ExamDTO examDTO, Integer id){
         Exam exam = Exam.mapExamDTOToExam(examDTO);
-        exam.setStatusToHidden();
+        exam.setStatusToDraft();
 
         TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(id);
         exam.setTeachingGroup(teachingGroup);

@@ -2,20 +2,17 @@ package com.myexaminer.component;
 
 import org.springframework.stereotype.Component;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 @Component
 public class DateUtils {
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static Date parseStringToDate(String date) throws ParseException {
-        return dateFormat.parse(date);
+    public static LocalDateTime parseStringToDate(String date){
+        return LocalDateTime.parse(date, formatter);
     }
 
-    public static String parseDateToString(Date date){
+    public static String parseDateToString(LocalDateTime date){
         return date.toString();
     }
 
