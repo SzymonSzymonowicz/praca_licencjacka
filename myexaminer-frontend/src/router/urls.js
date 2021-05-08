@@ -21,3 +21,6 @@ export const notebookUrl = domain + "/notebook";
 
 // IndividualExamsController
 export const individualExamsForGroupUrl = domain + "/individual-exams/group";
+
+// TeachingGroupController
+export const groupsForAccountUrl = (id) => domain + "/groups/account/" + id;

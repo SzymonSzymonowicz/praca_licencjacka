@@ -18,19 +18,17 @@ export default function SignIn(props) {
   const classes = props.className;
   const history = useHistory();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    login(event.target.email.value, event.target.password.value)
-    .then(response => {
-      // old code may be useless
-      if (response.status === 200) {
-        console.log("User loggged in!");
-        history.push("/landing");
-      } else if (response.status === 401) {
-        console.log("UNAUTHORIZED!");
-      } else {
-        console.log("Something went wrong!");
-      }});
+    const response = await login(event.target.email.value, event.target.password.value);
+
+    if (response.status === 200) {
+      history.push("/landing");
+    }  else if (response.status === 401) {
+      console.log("UNAUTHORIZED!");
+    } else {
+      console.log("Something went wrong!");
+    }
   };
 
   return (

@@ -21,7 +21,7 @@ export default function Tiles(props) {
       "image": "group-of-students.jpg",
       "imgTitle": "group of students learning",
       "description": "Przejdz do strony grup",
-      "path": "group"
+      "path": "groups"
     },
     {
       "header": "Egzaminy",

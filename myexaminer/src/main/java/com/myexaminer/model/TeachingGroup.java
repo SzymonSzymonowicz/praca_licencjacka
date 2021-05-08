@@ -22,7 +22,7 @@ public class TeachingGroup {
     private int idTeachingGroup;
 
     @Column(name = "teaching_group_name")
-    private String teachingGroupName;
+    private String name;
 
     @Column(name = "access_code")
     private String accessCode;

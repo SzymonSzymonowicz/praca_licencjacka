@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class TeachingGroupDTO {
 
-    private String teachingGroupName;
+    private String name;
 
 }

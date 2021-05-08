@@ -32,7 +32,7 @@ public class TeachingGroupController {
 //    }
 //
 
-    @GetMapping("/{accountId}")
+    @GetMapping("/account/{accountId}")
     public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Integer accountId) {
         return teachingGroupService.getTeachingGroupByAccountId(accountId);
     }

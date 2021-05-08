@@ -65,7 +65,7 @@ public class TeachingGroupService {
     }
 
     public boolean teachingGroupExistsByName(String teachingGroupName) {
-        Optional<TeachingGroup> teachingGroupExistsByName = teachingGroupRepository.findByTeachingGroupName(teachingGroupName);
+        Optional<TeachingGroup> teachingGroupExistsByName = teachingGroupRepository.findByName(teachingGroupName);
 
         return teachingGroupExistsByName.isPresent();
     }
@@ -93,15 +93,15 @@ public class TeachingGroupService {
     }
 
     public void createTeachingGroup(TeachingGroupDTO teachingGroupDTO, Authentication authentication) {
-        if (teachingGroupExistsByName(teachingGroupDTO.getTeachingGroupName())) {
-            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroupDTO.getTeachingGroupName());
-            throw new EntityExistsException("Group with given name ->" + teachingGroupDTO.getTeachingGroupName() + "<- ALREADY EXISTS");
+        if (teachingGroupExistsByName(teachingGroupDTO.getName())) {
+            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroupDTO.getName());
+            throw new EntityExistsException("Group with given name ->" + teachingGroupDTO.getName() + "<- ALREADY EXISTS");
         }
 
         Lecturer lecturer = lecturerService.findLecturerByEmail(authentication.getName());
 
         TeachingGroup teachingGroup = TeachingGroup.builder()
-                .teachingGroupName(teachingGroupDTO.getTeachingGroupName())
+                .name(teachingGroupDTO.getName())
                 .teachingGroupDateOfStarting(LocalDateTime.now())
                 .accessCode(RandomStringUtils.randomAlphanumeric(8))
                 .lecturer(lecturer)
