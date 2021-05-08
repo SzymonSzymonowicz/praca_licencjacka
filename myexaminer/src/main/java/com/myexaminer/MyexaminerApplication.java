@@ -36,6 +36,7 @@ public class MyexaminerApplication {
 				registry.addMapping("/exercises/{idExam}").allowedOrigins(LOCALHOST);
 				registry.addMapping("/individual-exams/group").allowedOrigins(LOCALHOST);
 				registry.addMapping("/notebook").allowedMethods("*").allowedOrigins(LOCALHOST);
+				registry.addMapping("/groups/account/{accountId}").allowedMethods("*").allowedOrigins(LOCALHOST);
 			}
 		};
 	}

@@ -5,6 +5,7 @@ import com.myexaminer.repository.LecturerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -51,5 +52,10 @@ public class LecturerService {
 
     public Lecturer findLecturerByEmail(String email){
         return lecturerRepository.findByAccount_Email(email).orElseThrow(() -> new NoSuchElementException("There is no lecturer with email -> " + email));
+    }
+
+    public Lecturer getLecturerByAccountId(int accountId) {
+        return lecturerRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Lecturer of account id: " + accountId + "does not exist!"));
     }
 }

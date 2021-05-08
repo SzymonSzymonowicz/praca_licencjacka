@@ -30,7 +30,7 @@ public class AccountDetails implements UserDetails {
 
         return new AccountDetails(
                 account,
-                account.getAccountId(),
+                account.getId(),
                 account.getEmail(),
                 authorities
         );

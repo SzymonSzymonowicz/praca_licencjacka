@@ -10,8 +10,8 @@ const login = (email, password) => {
       email: email,
       password: password,
     }),
-  }).then((response) => {
-    response.clone().json().then((data) => {
+  }).then(async (response) => {
+    await response.clone().json().then((data) => {
       if (data.token) {
         localStorage.setItem("account", JSON.stringify(data));
       }

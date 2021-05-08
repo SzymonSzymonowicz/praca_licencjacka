@@ -31,6 +31,12 @@ public class TeachingGroupController {
 //        return teachingGroupService.getTeachingGroupsByLecturerId(lecturerId);
 //    }
 //
+
+    @GetMapping("/account/{accountId}")
+    public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Integer accountId) {
+        return teachingGroupService.getTeachingGroupByAccountId(accountId);
+    }
+
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping
     public void addTeachingGroup(@RequestBody TeachingGroupDTO teachingGroupDTO, Authentication authentication) {

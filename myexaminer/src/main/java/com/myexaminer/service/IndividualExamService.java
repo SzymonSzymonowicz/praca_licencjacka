@@ -87,7 +87,7 @@ public class IndividualExamService {
                                     exam.getExamDescription(),
                                     exam.getExamAvailableDate(),
                                     teachingGroup.getIdTeachingGroup(),
-                                    teachingGroup.getTeachingGroupName(),
+                                    teachingGroup.getName(),
                                     student.getIndex()
                             ));
                         }
@@ -108,7 +108,7 @@ public class IndividualExamService {
 //                                    exam.getExamDescription(),
 //                                    exam.getExamAvailableDate(),
 //                                    teachingGroup.getIdTeachingGroup(),
-//                                    teachingGroup.getTeachingGroupName(),
+//                                    teachingGroup.getName(),
 //                                    student.getIndex()
 //                            ));
 //                        }

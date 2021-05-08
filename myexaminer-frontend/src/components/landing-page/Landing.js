@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Landing(props) {
+export default function Landing() {
   const [exams, setExams] = useState([])
 
   const groupId = 1
@@ -140,7 +140,7 @@ export default function Landing(props) {
       {
         "name": "Grupy",
         "icon": <GroupIcon/>,
-        "subpage": "group"
+        "subpage": "groups"
       },
       {
         "name": "Egzaminy",
@@ -193,9 +193,8 @@ export default function Landing(props) {
     setAnchorEl(null);
   };
 
-  const email_user = sessionStorage.getItem('USER_SESSION_EMAIL');
+  const accountEmail = getCurrentAccount().email;
 
-  // tutaj
   const isLecturer = hasRole("ROLE_LECTURER");
 
   return (
@@ -222,7 +221,7 @@ export default function Landing(props) {
           <Typography variant="h6" noWrap className={classes.title}>
             My Examiner
           </Typography>
-          <Typography>{email_user ? email_user : ""}</Typography>
+          <Typography>{accountEmail ? accountEmail : ""}</Typography>
           <div>
             <IconButton
                   aria-label="account of current user"
@@ -313,7 +312,7 @@ export default function Landing(props) {
               </Typography>
               <Tiles setSelectedIndex={setSelectedIndex}/>
             </Route>
-            <Route path={`${match.path}/group`}>
+            <Route path={`${match.path}/groups`}>
               <Groups/>
             </Route>
             <Route path={`${match.path}/exams`}>

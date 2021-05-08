@@ -1,6 +1,9 @@
 package com.myexaminer.service;
 
+import com.myexaminer.enums.RoleEnum;
+import com.myexaminer.model.Account;
 import com.myexaminer.model.Lecturer;
+import com.myexaminer.model.Role;
 import com.myexaminer.model.Student;
 import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.modelDTO.AccessCodeDTO;
@@ -20,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 @Log4j2
 @Service
@@ -29,6 +33,7 @@ public class TeachingGroupService {
     private final TeachingGroupRepository teachingGroupRepository;
     private final StudentService studentService;
     private final LecturerService lecturerService;
+    private final AccountService accountService;
 
     public void teachingGroupSave(TeachingGroup teachingGroup) {
         teachingGroupRepository.save(teachingGroup);
@@ -60,7 +65,7 @@ public class TeachingGroupService {
     }
 
     public boolean teachingGroupExistsByName(String teachingGroupName) {
-        Optional<TeachingGroup> teachingGroupExistsByName = teachingGroupRepository.findByTeachingGroupName(teachingGroupName);
+        Optional<TeachingGroup> teachingGroupExistsByName = teachingGroupRepository.findByName(teachingGroupName);
 
         return teachingGroupExistsByName.isPresent();
     }
@@ -88,15 +93,15 @@ public class TeachingGroupService {
     }
 
     public void createTeachingGroup(TeachingGroupDTO teachingGroupDTO, Authentication authentication) {
-        if (teachingGroupExistsByName(teachingGroupDTO.getTeachingGroupName())) {
-            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroupDTO.getTeachingGroupName());
-            throw new EntityExistsException("Group with given name ->" + teachingGroupDTO.getTeachingGroupName() + "<- ALREADY EXISTS");
+        if (teachingGroupExistsByName(teachingGroupDTO.getName())) {
+            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroupDTO.getName());
+            throw new EntityExistsException("Group with given name ->" + teachingGroupDTO.getName() + "<- ALREADY EXISTS");
         }
 
         Lecturer lecturer = lecturerService.findLecturerByEmail(authentication.getName());
 
         TeachingGroup teachingGroup = TeachingGroup.builder()
-                .teachingGroupName(teachingGroupDTO.getTeachingGroupName())
+                .name(teachingGroupDTO.getName())
                 .teachingGroupDateOfStarting(LocalDateTime.now())
                 .accessCode(RandomStringUtils.randomAlphanumeric(8))
                 .lecturer(lecturer)
@@ -145,5 +150,21 @@ public class TeachingGroupService {
         teachingGroupRepository.save(teachingGroup);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Student " + authentication.getName() + " has been added to teaching group");
+    }
+
+    public List<TeachingGroup> getTeachingGroupByAccountId(Integer accountId) {
+        Account account = accountService.getAccountById(accountId);
+
+        if (account.hasRole(RoleEnum.ROLE_STUDENT)) {
+            Student student = studentService.getStudentByAccountId(account.getId());
+
+            return teachingGroupRepository.findAllByStudents(student);
+        } else if (account.hasRole(RoleEnum.ROLE_LECTURER)) {
+            Lecturer lecturer = lecturerService.getLecturerByAccountId(account.getId());
+
+            return teachingGroupRepository.findAllByLecturer(lecturer);
+        }
+
+        throw new EntityNotFoundException("Your account doesn't posses required roles. Contact administrators of the application.");
     }
 }

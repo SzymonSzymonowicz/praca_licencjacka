@@ -2,6 +2,7 @@ package com.myexaminer.service;
 
 import com.myexaminer.model.Student;
 import com.myexaminer.repository.StudentRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,11 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class StudentService {
-    private final StudentRepository studentRepository;
-    private AccountService accountService;
 
-    public StudentService(StudentRepository studentRepository, AccountService accountService) {
-        this.studentRepository = studentRepository;
-        this.accountService = accountService;
-    }
+    private final StudentRepository studentRepository;
+    private final AccountService accountService;
 
     public void studentSave(Student student) {
         studentRepository.save(student);
@@ -34,6 +32,11 @@ public class StudentService {
         Optional<Student> studentById = studentRepository.findByIdStudent(idStudent);
 
         return studentById.orElseThrow(() -> new EntityNotFoundException("Student with id " + idStudent + "does not exist!"));
+    }
+
+    public Student getStudentByAccountId(int accountId) {
+        return studentRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Student of account id: " + accountId + "does not exist!"));
     }
 
     public boolean studentExistsByIndex(String index) {

@@ -41,10 +41,10 @@ public class RegistrationService {
         );
         newAccount.addToRoles(roleService.getRoleByName(RoleEnum.ROLE_STUDENT));
         accountService.accountSave(newAccount);
-        log.info("Account with ID -> {} <- has been CREATED and SAVED to database", newAccount.getAccountId());
+        log.info("Account with ID -> {} <- has been CREATED and SAVED to database", newAccount.getId());
 
         Student newStudent = new Student(
-                newAccount.getAccountId(),
+                newAccount.getId(),
                 registerDTO.getFirstName(),
                 registerDTO.getLastName(),
                 registerDTO.getIndex(),

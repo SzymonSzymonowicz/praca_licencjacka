@@ -1,5 +1,6 @@
 package com.myexaminer.repository;
 
+import com.myexaminer.model.Lecturer;
 import com.myexaminer.model.Student;
 import com.myexaminer.model.TeachingGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,9 +13,11 @@ import java.util.Optional;
 public interface TeachingGroupRepository extends JpaRepository<TeachingGroup, Integer> {
     long deleteByidTeachingGroup(int idTeachingGroup);
     Optional<TeachingGroup> findByidTeachingGroup(int idTeachingGroup);
-    Optional<TeachingGroup> findByTeachingGroupName(String teachingGroupName);
+    Optional<TeachingGroup> findByName(String name);
     Optional<TeachingGroup> findByStudentsContaining(Student student);
     List<TeachingGroup> findByLecturerAccountEmail(String email);
     List<TeachingGroup> findByLecturerIdLecturer(int id);
     Optional<TeachingGroup> findByAccessCode(String accessCode);
+    List<TeachingGroup> findAllByStudents(Student student);
+    List<TeachingGroup> findAllByLecturer(Lecturer lecturer);
 }
