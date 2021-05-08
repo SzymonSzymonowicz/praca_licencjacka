@@ -1,5 +1,7 @@
 package com.myexaminer.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +13,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "exercise")
 public class Exercise {
 
@@ -28,10 +32,4 @@ public class Exercise {
 
     @OneToMany(mappedBy="exercise")
     private List<ArchiveExercise> archiveExercises;
-
-    public Exercise(String exerciseBody, Exam exam, List<ArchiveExercise> archiveExercises) {
-        this.exerciseBody = exerciseBody;
-        this.exam = exam;
-        this.archiveExercises = archiveExercises;
-    }
 }

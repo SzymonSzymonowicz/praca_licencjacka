@@ -1,11 +1,17 @@
 package com.myexaminer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myexaminer.exerciseTypes.ClosedExercise;
+import com.myexaminer.exerciseTypes.OpenExercise;
 import com.myexaminer.exerciseTypes.ReceivedExercise;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.modelDTO.ExerciseDTO;
 import com.myexaminer.repository.ExerciseRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +24,12 @@ import java.util.stream.StreamSupport;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
-    private IndividualExamService individualExamService;
-
-    public ExerciseService(ExerciseRepository exerciseRepository, IndividualExamService individualExamService) {
-        this.exerciseRepository = exerciseRepository;
-        this.individualExamService = individualExamService;
-    }
+    private final IndividualExamService individualExamService;
+    private final ExamService examService;
 
     public void exerciseSave(Exercise exercise) {
         exerciseRepository.save(exercise);
@@ -109,5 +112,29 @@ public class ExerciseService {
                 }
             }
         }
+    }
+
+    public void createExerciseTypeO(OpenExercise openExercise, Integer examId) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String exerciseBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openExercise);
+
+        Exercise exercise = Exercise.builder()
+                .exam(examService.returnExamById(examId))
+                .exerciseBody(exerciseBody)
+                .build();
+
+        exerciseRepository.save(exercise);
+    }
+
+    public void createExerciseTypeZ(ClosedExercise closedExercise, Integer examId) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String exerciseBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(closedExercise);
+
+        Exercise exercise = Exercise.builder()
+                .exam(examService.returnExamById(examId))
+                .exerciseBody(exerciseBody)
+                .build();
+
+        exerciseRepository.save(exercise);
     }
 }

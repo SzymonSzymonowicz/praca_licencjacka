@@ -133,11 +133,12 @@ public class TeachingGroupService {
     }
 
     public TeachingGroup findTeachingGroupByAccessCode(String code){
-        return teachingGroupRepository.findByAccessCode(code).orElseThrow(() -> new NoSuchElementException("There is no teaching group with given code -> " + code));
+        TeachingGroup teachingGroup = teachingGroupRepository.getOne(1);
+        return teachingGroupRepository.findByAccessCode(teachingGroup.getAccessCode()).orElseThrow(() -> new NoSuchElementException("There is no teaching group with given code -> " + code));
     }
 
-    public ResponseEntity addStudentToGroupByCode(AccessCodeDTO accessCodeDTO, Authentication authentication){
-        TeachingGroup teachingGroup = findTeachingGroupByAccessCode(accessCodeDTO.getCode());
+    public ResponseEntity addStudentToGroupByCode(String accessCode, Authentication authentication){
+        TeachingGroup teachingGroup = findTeachingGroupByAccessCode(accessCode);
         Student student = studentService.findStudentByEmail(authentication.getName());
 
         teachingGroup.addStudent(student);

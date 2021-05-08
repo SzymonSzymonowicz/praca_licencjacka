@@ -48,6 +48,8 @@ public class Exam {
         OPEN,
         @JsonProperty("CLOSED")
         CLOSED,
+        @JsonProperty("DRAFT")
+        DRAFT,
         @JsonProperty("CHECKED")
         CHECKED;
     }
