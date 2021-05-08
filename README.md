@@ -17,6 +17,7 @@ Our web application's purpose is to be a way of support for lecturers in learnin
 - checking exams by lecturer
 - checked exam results with students answers and lecturer's comments (for student)
 - every student and lecturer got their own notepad
+- token based login
 
 ## Ideas for new features:
 - creating exams
@@ -26,7 +27,6 @@ Our web application's purpose is to be a way of support for lecturers in learnin
 - lecture creator
 - grades charts
 - exams time restriction
-- token based login
 - google translator (?)
 
 
