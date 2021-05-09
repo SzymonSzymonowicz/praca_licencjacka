@@ -247,7 +247,7 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/jetbrains+all,gradle,react,node,visualstudiocode
 
-application.properties
+application-local.properties
 myexaminer/**/HELP.md
 myexaminer-frontend/**/HELP.md
 myexaminer-frontend/**/README.md
