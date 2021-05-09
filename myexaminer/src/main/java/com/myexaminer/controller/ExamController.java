@@ -1,5 +1,6 @@
 package com.myexaminer.controller;
 
+import com.myexaminer.enums.Status;
 import com.myexaminer.model.Exam;
 import com.myexaminer.modelDTO.ExamDTO;
 import com.myexaminer.modelDTO.GenericOneValue;
@@ -46,7 +47,7 @@ public class ExamController {
     }
 
     @GetMapping("/status")
-    public Exam.Status getExamStatus(@RequestBody GenericOneValue idExam) {
+    public Status getExamStatus(@RequestBody GenericOneValue idExam) {
         return examService.getStatus(idExam);
     }
 

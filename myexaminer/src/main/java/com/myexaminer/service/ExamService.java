@@ -1,5 +1,6 @@
 package com.myexaminer.service;
 
+import com.myexaminer.enums.Status;
 import com.myexaminer.model.Exam;
 import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.modelDTO.ExamDTO;
@@ -76,13 +77,13 @@ public class ExamService {
                 map(ExamDTO::new).collect(Collectors.toList());
     }
 
-    public Exam.Status getStatus(GenericOneValue idExam) {
+    public Status getStatus(GenericOneValue idExam) {
         return returnExamById((Integer) idExam.getFirstValue()).getStatus();
     }
 
     public void updateExamStatus(GenericTwoValues genericTwoValues) {
         Integer idExam = (Integer) genericTwoValues.getFirstValue();
-        Exam.Status status = Exam.Status.valueOf((String) genericTwoValues.getSecondValue());
+        Status status = Status.valueOf((String) genericTwoValues.getSecondValue());
 
         Exam exam = returnExamById(idExam);
         exam.setStatus(status);

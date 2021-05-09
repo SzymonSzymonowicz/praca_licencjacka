@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "notebook")
 public class Notebook {
 
     @Id
@@ -18,7 +17,7 @@ public class Notebook {
     @Column(name = "notebook_id")
     private int idNotebook;
 
-    @Column(name = "notebook_body")
+    @Column(name = "notebook_body", columnDefinition="longtext")
     private String notebookBody;
 
     @OneToOne(cascade = CascadeType.ALL)

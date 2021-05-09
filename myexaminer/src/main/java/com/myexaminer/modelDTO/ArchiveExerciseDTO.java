@@ -20,7 +20,7 @@ public class ArchiveExerciseDTO {
     private String lecturerComment;
 
     public ArchiveExerciseDTO(ArchiveExercise archiveExercise) {
-        this.idArchiveExercise = archiveExercise.getIdArchiveExercise();
+        this.idArchiveExercise = archiveExercise.getId();
         this.idExercise = archiveExercise.getExercise().getIdExercise();
         this.idIndividualExam = archiveExercise.getIndividualExam().getIdIndividualExam();
         this.gainedPoints = archiveExercise.getGainedPoints();

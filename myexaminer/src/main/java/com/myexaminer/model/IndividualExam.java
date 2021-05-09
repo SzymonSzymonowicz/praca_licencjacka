@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "individual_exam")
 public class IndividualExam {
 
     @Id
@@ -31,7 +30,6 @@ public class IndividualExam {
     @OneToMany(mappedBy="individualExam")
     private List<ArchiveExercise> archiveExercises;
 
-    @Column(name = "is_checked")
     private boolean isChecked;
 
     public IndividualExam(Exam mainExam, Student student) {

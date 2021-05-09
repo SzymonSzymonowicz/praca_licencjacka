@@ -60,7 +60,7 @@ public class ArchiveExerciseService {
 
             exerciseSave(archiveExercise);
 
-            log.info("ArchiveExercise with ID -> {} <- has been CREATED and SAVED to database", archiveExercise.getIdArchiveExercise());
+            log.info("ArchiveExercise with ID -> {} <- has been CREATED and SAVED to database", archiveExercise.getId());
         }
     }
 

@@ -13,7 +13,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "student")
 public class Student {
 
     @Id
@@ -24,19 +23,15 @@ public class Student {
     @JoinColumn(name = "fk_account_id")
     Account account;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "student_index")
     private String index;
 
-    @Column(name = "faculty")
     private String faculty;
 
-    @Column(name = "field_of_study")
     private String fieldOfStudy;
 
     @ManyToMany(mappedBy = "students")

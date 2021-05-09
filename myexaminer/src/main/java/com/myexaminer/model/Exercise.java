@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
-@Table(name = "exercise")
 public class Exercise {
 
     @Id
@@ -23,7 +22,7 @@ public class Exercise {
     @Column(name = "exercise_id")
     private int idExercise;
 
-    @Column(name = "exercise_body")
+    @Column(columnDefinition="json")
     private String exerciseBody;
 
     @ManyToOne
