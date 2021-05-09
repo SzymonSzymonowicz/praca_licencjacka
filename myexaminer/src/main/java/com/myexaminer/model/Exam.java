@@ -1,6 +1,7 @@
 package com.myexaminer.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.myexaminer.enums.Status;
 import com.myexaminer.modelDTO.ExamDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,6 @@ import static com.myexaminer.component.DateUtils.parseStringToDate;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "exam")
 public class Exam {
 
     @Id
@@ -28,30 +28,13 @@ public class Exam {
     @Column(name = "exam_id")
     private Integer idExam;
 
-    @Column(name = "exam_name")
     private String examName;
 
-    @Column(name = "exam_description")
-    private String examDescription;
+    private String description;
 
-    @Column(name = "exam_available_date")
-    private LocalDateTime examAvailableDate;
+    private LocalDateTime availableDate;
 
-    @Column(name = "exam_duration_time")
-    private Integer examDurationTime;
-
-    public enum Status {
-        @JsonProperty("HIDDEN")
-        HIDDEN,
-        @JsonProperty("OPEN")
-        OPEN,
-        @JsonProperty("CLOSED")
-        CLOSED,
-        @JsonProperty("DRAFT")
-        DRAFT,
-        @JsonProperty("CHECKED")
-        CHECKED;
-    }
+    private Integer duration;
 
     @Column(name = "exam_status")
     @Enumerated(EnumType.STRING)
@@ -72,9 +55,9 @@ public class Exam {
         return "Exam{" +
                 "idExam=" + idExam +
                 ", examName='" + examName + '\'' +
-                ", examDescription='" + examDescription + '\'' +
-                ", examAvailableDate=" + examAvailableDate +
-                ", examDurationTime=" + examDurationTime +
+                ", examDescription='" + description + '\'' +
+                ", examAvailableDate=" + availableDate +
+                ", examDurationTime=" + duration +
                 ", teachingGroup=" + teachingGroup.getIdTeachingGroup() +
                 '}';
     }
@@ -106,9 +89,9 @@ public class Exam {
     public static Exam mapExamDTOToExam(ExamDTO examDTO){
         return Exam.builder()
                 .examName(examDTO.getExamName())
-                .examAvailableDate(parseStringToDate(examDTO.getExamAvailableDate()))
-                .examDescription(examDTO.getExamDescription())
-                .examDurationTime(examDTO.getExamDurationTime())
+                .availableDate(parseStringToDate(examDTO.getExamAvailableDate()))
+                .description(examDTO.getExamDescription())
+                .duration(examDTO.getExamDurationTime())
                 .build();
     }
 }

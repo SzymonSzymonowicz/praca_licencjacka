@@ -33,7 +33,7 @@ public class ExamScheduler {
     }
 
     private void checkDateAndCloseExam(Exam exam){
-        int dateValue = exam.getExamAvailableDate().plusMinutes(exam.getExamDurationTime()).compareTo(LocalDateTime.now());
+        int dateValue = exam.getAvailableDate().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
         if(dateValue <= 0){
             exam.setStatusToClosed();
             examRepository.save(exam);
@@ -42,8 +42,8 @@ public class ExamScheduler {
     }
 
     private void checkDateAndOpenExam(Exam exam){
-        int dateValue1 = exam.getExamAvailableDate().compareTo(LocalDateTime.now());
-        int dateValue2 = exam.getExamAvailableDate().plusMinutes(exam.getExamDurationTime()).compareTo(LocalDateTime.now());
+        int dateValue1 = exam.getAvailableDate().compareTo(LocalDateTime.now());
+        int dateValue2 = exam.getAvailableDate().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
         if(dateValue1 <= 0 && dateValue2 > 0){
             exam.setStatusToOpen();
             examRepository.save(exam);

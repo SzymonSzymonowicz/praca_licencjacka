@@ -10,12 +10,11 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "archive_exercise")
 public class ArchiveExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "archive_exercise_id")
-    private int idArchiveExercise;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name="fk_exercise_id", nullable=false)
@@ -25,13 +24,11 @@ public class ArchiveExercise {
     @JoinColumn(name="fk_individual_exam_id", nullable=false)
     private IndividualExam individualExam;
 
-    @Column(name = "gained_points")
     private Integer gainedPoints;
 
-    @Column(name = "answer")
+    @Column(columnDefinition="json")
     private String answer;
 
-    @Column(name = "lecturer_comment")
     private String lecturerComment;
 
     public ArchiveExercise(Exercise exercise, IndividualExam individualExam, Integer gainedPoints, String answer, String lecturerComment){

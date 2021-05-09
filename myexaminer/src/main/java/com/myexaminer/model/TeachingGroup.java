@@ -14,7 +14,6 @@ import java.util.Set;
 @Entity
 @Builder
 @AllArgsConstructor
-@Table(name = "teaching_group")
 public class TeachingGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +23,9 @@ public class TeachingGroup {
     @Column(name = "teaching_group_name")
     private String name;
 
-    @Column(name = "access_code")
     private String accessCode;
 
-    @Column(name = "teaching_group_date_of_starting")
-    private LocalDateTime teachingGroupDateOfStarting;
+    private LocalDateTime startingDate;
 
     @ManyToOne
     @JoinColumn(name="fk_lecturer_account_id", nullable=false)

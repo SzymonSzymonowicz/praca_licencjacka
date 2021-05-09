@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "lecturer")
 public class Lecturer {
 
     @Id
@@ -22,29 +21,16 @@ public class Lecturer {
     @JoinColumn(name = "fk_account_id")
     Account account;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "home_page")
     private String homePage;
 
-    @Column(name = "contact_email")
     private String contactEmail;
 
     @OneToMany(mappedBy="lecturer")
     private List<TeachingGroup> teachingGroups;
-
-    public Lecturer(Account account, String firstName, String lastName, String homePage, String contactEmail, List<TeachingGroup> teachingGroups) {
-        this.account = account;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.homePage = homePage;
-        this.contactEmail = contactEmail;
-        this.teachingGroups = teachingGroups;
-    }
 
     @Override
     public String toString() {

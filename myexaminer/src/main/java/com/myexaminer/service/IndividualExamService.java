@@ -84,8 +84,8 @@ public class IndividualExamService {
                             individualExamViewList.add(new LecturerIndividualExamView(
                                     individualExam.get().getIdIndividualExam(),
                                     exam.getExamName(),
-                                    exam.getExamDescription(),
-                                    exam.getExamAvailableDate(),
+                                    exam.getDescription(),
+                                    exam.getAvailableDate(),
                                     teachingGroup.getIdTeachingGroup(),
                                     teachingGroup.getName(),
                                     student.getIndex()
@@ -106,7 +106,7 @@ public class IndividualExamService {
 //                                    individualExam.get().getIdIndividualExam(),
 //                                    exam.getExamName(),
 //                                    exam.getExamDescription(),
-//                                    exam.getExamAvailableDate(),
+//                                    exam.getAvailableDate(),
 //                                    teachingGroup.getIdTeachingGroup(),
 //                                    teachingGroup.getName(),
 //                                    student.getIndex()

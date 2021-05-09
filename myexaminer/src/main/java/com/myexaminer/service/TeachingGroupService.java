@@ -102,7 +102,7 @@ public class TeachingGroupService {
 
         TeachingGroup teachingGroup = TeachingGroup.builder()
                 .name(teachingGroupDTO.getName())
-                .teachingGroupDateOfStarting(LocalDateTime.now())
+                .startingDate(LocalDateTime.now())
                 .accessCode(RandomStringUtils.randomAlphanumeric(8))
                 .lecturer(lecturer)
                 .build();

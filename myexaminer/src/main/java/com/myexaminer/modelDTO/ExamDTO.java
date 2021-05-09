@@ -32,9 +32,9 @@ public class ExamDTO {
     public ExamDTO(Exam exam) {
         this.idExam = exam.getIdExam();
         this.examName = exam.getExamName();
-        this.examDescription = exam.getExamDescription();
-        this.examAvailableDate = parseDateToString(exam.getExamAvailableDate());
-        this.examDurationTime = exam.getExamDurationTime();
+        this.examDescription = exam.getDescription();
+        this.examAvailableDate = parseDateToString(exam.getAvailableDate());
+        this.examDurationTime = exam.getDuration();
         this.examStatus = exam.getStatus().name();
     }
 
