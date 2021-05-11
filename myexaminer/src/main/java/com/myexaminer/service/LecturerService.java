@@ -24,13 +24,13 @@ public class LecturerService {
         lecturerRepository.save(lecturer);
     }
 
-    public boolean lecturerExistsById(int idLecturer) {
+    public boolean lecturerExistsById(Long idLecturer) {
         Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
 
         return lecturerById.isPresent();
     }
 
-    public Lecturer returnLecturerById(int idLecturer) {
+    public Lecturer returnLecturerById(Long idLecturer) {
         Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
 
         return lecturerById.orElseThrow(() -> new NoSuchElementException("There is no Lecturer in database that you were looking for."));
@@ -54,7 +54,7 @@ public class LecturerService {
         return lecturerRepository.findByAccount_Email(email).orElseThrow(() -> new NoSuchElementException("There is no lecturer with email -> " + email));
     }
 
-    public Lecturer getLecturerByAccountId(int accountId) {
+    public Lecturer getLecturerByAccountId(Long accountId) {
         return lecturerRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new EntityNotFoundException("Lecturer of account id: " + accountId + "does not exist!"));
     }

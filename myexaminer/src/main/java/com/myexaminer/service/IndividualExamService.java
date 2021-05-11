@@ -34,20 +34,20 @@ public class IndividualExamService {
         individualExamRepository.save(individualExam);
     }
 
-    public IndividualExam returnIndividualExamById(int idIndividualExam) {
+    public IndividualExam returnIndividualExamById(Long idIndividualExam) {
         return individualExamRepository.findByIdIndividualExam(idIndividualExam);
     }
 
-    public Optional<IndividualExam> returnOptionalIndividualExamByIdStudentAndIdExam(int idStudent, int idExam) {
+    public Optional<IndividualExam> returnOptionalIndividualExamByIdStudentAndIdExam(Long idStudent, Long idExam) {
         return individualExamRepository.findByStudentIdStudentAndMainExamIdExam(idStudent, idExam);
     }
 
-    public IndividualExam returnIndividualExamByIdStudentAndIdExam(int idStudent, int idExam) {
+    public IndividualExam returnIndividualExamByIdStudentAndIdExam(Long idStudent, Long idExam) {
         return returnOptionalIndividualExamByIdStudentAndIdExam(idStudent, idExam)
                 .orElseThrow(() -> new NoSuchElementException("There is no Individual Exam in database that you were looking for."));
     }
 
-    public IndividualExam createOrGetIndividualExamAndReturn(int idStudent, int idExam) {
+    public IndividualExam createOrGetIndividualExamAndReturn(Long idStudent, Long idExam) {
         Student student = studentService.getStudentById(idStudent);
         Exam exam = examService.returnExamById(idExam);
         Optional<IndividualExam> individualExamOpt = returnOptionalIndividualExamByIdStudentAndIdExam(idStudent, idExam);
@@ -63,14 +63,14 @@ public class IndividualExamService {
     }
 
     @Transactional
-    public void setIndividualExamToChecked(int idIndividualExam) {
+    public void setIndividualExamToChecked(Long idIndividualExam) {
         IndividualExam individualExam = returnIndividualExamById(idIndividualExam);
         individualExam.setChecked(true);
         individualExamSave(individualExam);
     }
 
-    public List<LecturerIndividualExamView> getLecturerIndividualExamViews() {
-        List<TeachingGroup> teachingGroups = teachingGroupService.getTeachingGroupsByLecturerId(1);
+    public List<LecturerIndividualExamView> getLecturerIndividualExamViews(Long lecturerId) {
+        List<TeachingGroup> teachingGroups = teachingGroupService.getTeachingGroupsByLecturerId(lecturerId);
 
         List<LecturerIndividualExamView> individualExamViewList = new ArrayList<>();
 

@@ -22,19 +22,19 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public boolean studentExistsById(int idStudent) {
+    public boolean studentExistsById(Long idStudent) {
         Optional<Student> userById = studentRepository.findByIdStudent(idStudent);
 
         return userById.isPresent();
     }
 
-    public Student getStudentById(int idStudent) {
+    public Student getStudentById(Long idStudent) {
         Optional<Student> studentById = studentRepository.findByIdStudent(idStudent);
 
         return studentById.orElseThrow(() -> new EntityNotFoundException("Student with id " + idStudent + "does not exist!"));
     }
 
-    public Student getStudentByAccountId(int accountId) {
+    public Student getStudentByAccountId(Long accountId) {
         return studentRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new EntityNotFoundException("Student of account id: " + accountId + "does not exist!"));
     }

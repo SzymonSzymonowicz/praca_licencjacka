@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class ExerciseDTO {
 
-    private int idExercise;
+    private Long idExercise;
 
     private String exerciseBody;
 

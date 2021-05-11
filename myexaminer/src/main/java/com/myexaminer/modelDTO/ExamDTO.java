@@ -13,7 +13,7 @@ import static com.myexaminer.component.DateUtils.parseDateToString;
 @AllArgsConstructor
 public class ExamDTO {
 
-    private Integer idExam;
+    private Long idExam;
 
     @JsonProperty
     private String examName;
@@ -25,7 +25,7 @@ public class ExamDTO {
     private String examAvailableDate;
 
     @JsonProperty
-    private Integer examDurationTime;
+    private Long examDurationTime;
 
     private String examStatus;
 

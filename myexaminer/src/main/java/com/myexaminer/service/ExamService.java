@@ -30,13 +30,13 @@ public class ExamService {
         examRepository.save(exam);
     }
 
-    public boolean examExistsById(int idExam) {
+    public boolean examExistsById(Long idExam) {
         Optional<Exam> examById = examRepository.findByIdExam(idExam);
 
         return examById.isPresent();
     }
 
-    public Exam returnExamById(int idExam) {
+    public Exam returnExamById(Long idExam) {
         Optional<Exam> examById = examRepository.findByIdExam(idExam);
 
         return examById.orElseThrow(() -> new NoSuchElementException("There is no Exam in database that you were looking for."));
@@ -46,8 +46,8 @@ public class ExamService {
         return examRepository.findAll();
     }
 
-    public Exam getExam(Map<String, Integer> map_idExam) {
-        Integer idExam = map_idExam.get("idExam");
+    public Exam getExam(Map<String, Long> map_idExam) {
+        Long idExam = map_idExam.get("idExam");
         if (!examExistsById(idExam)) {
             log.info("Exam with given ID -> {} <- DOES NOT EXIST", idExam);
             return null;
@@ -60,7 +60,7 @@ public class ExamService {
         return returnedExam;
     }
 
-    public void createExam(ExamDTO examDTO, Integer id){
+    public void createExam(ExamDTO examDTO, Long id){
         Exam exam = Exam.mapExamDTOToExam(examDTO);
         exam.setStatusToDraft();
 
@@ -71,18 +71,18 @@ public class ExamService {
         log.info("Exam with ID -> {} <- has been ADDED", exam.getIdExam());
     }
 
-    public List<ExamDTO> getExamDTOSByIdGroup(int idGroup) {
+    public List<ExamDTO> getExamDTOSByIdGroup(Long idGroup) {
         return StreamSupport.stream(returnAllExams().spliterator(), false).
                 filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
                 map(ExamDTO::new).collect(Collectors.toList());
     }
 
     public Status getStatus(GenericOneValue idExam) {
-        return returnExamById((Integer) idExam.getFirstValue()).getStatus();
+        return returnExamById((Long) idExam.getFirstValue()).getStatus();
     }
 
     public void updateExamStatus(GenericTwoValues genericTwoValues) {
-        Integer idExam = (Integer) genericTwoValues.getFirstValue();
+        Long idExam = (Long) genericTwoValues.getFirstValue();
         Status status = Status.valueOf((String) genericTwoValues.getSecondValue());
 
         Exam exam = returnExamById(idExam);

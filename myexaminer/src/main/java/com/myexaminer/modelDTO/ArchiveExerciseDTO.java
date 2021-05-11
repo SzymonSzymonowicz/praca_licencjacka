@@ -7,11 +7,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ArchiveExerciseDTO {
-    private int idArchiveExercise;
+    private Long idArchiveExercise;
 
-    private int idExercise;
+    private Long idExercise;
 
-    private int idIndividualExam;
+    private Long idIndividualExam;
 
     private Integer gainedPoints;
 

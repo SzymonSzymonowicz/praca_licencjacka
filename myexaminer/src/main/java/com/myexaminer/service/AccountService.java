@@ -2,6 +2,7 @@ package com.myexaminer.service;
 
 import com.myexaminer.model.Account;
 import com.myexaminer.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,13 +11,10 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AccountService {
 
     private final AccountRepository accountRepository;
-
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -25,7 +23,7 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public boolean accountExistsById(int accountId) {
+    public boolean accountExistsById(Long accountId) {
         Optional<Account> accountById = accountRepository.findById(accountId);
 
         return accountById.isPresent();
@@ -53,7 +51,7 @@ public class AccountService {
                 .orElseThrow(() -> new EntityNotFoundException("Account with email: " + email + " doesn't exist."));
     }
 
-    public Account getAccountById(Integer accountId) {
+    public Account getAccountById(Long accountId) {
         return accountRepository.findById(accountId)
                 .orElseThrow(() -> new EntityNotFoundException("Account with id: " + accountId + " doesn't exist."));
     }

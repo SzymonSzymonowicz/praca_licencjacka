@@ -31,18 +31,18 @@ public class ExamController {
     }
 
     @GetMapping
-    public Exam getExam(@RequestBody Map<String, Integer> map_idExam) {
+    public Exam getExam(@RequestBody Map<String, Long> map_idExam) {
         return examService.getExam(map_idExam);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/{idGroup}")
-    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable int idGroup) throws ParseException {
+    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) throws ParseException {
         examService.createExam(examDTO, idGroup);
     }
 
     @GetMapping("/{idGroup}")
-    public Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
+    public Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable Long idGroup) {
         return examService.getExamDTOSByIdGroup(idGroup);
     }
 

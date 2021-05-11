@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface IndividualExamRepository extends JpaRepository<IndividualExam, Integer> {
-    long deleteByIdIndividualExam(int idIndividualExam);
-    Optional<IndividualExam> findByStudentIdStudentAndMainExamIdExam(int idStudent, int idExam);
-    IndividualExam findByIdIndividualExam(int idIndividualExam);
+public interface IndividualExamRepository extends JpaRepository<IndividualExam, Long> {
+    long deleteByIdIndividualExam(Long idIndividualExam);
+    Optional<IndividualExam> findByStudentIdStudentAndMainExamIdExam(Long idStudent, Long idExam);
+    IndividualExam findByIdIndividualExam(Long idIndividualExam);
 }

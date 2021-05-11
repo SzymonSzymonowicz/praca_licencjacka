@@ -35,13 +35,13 @@ public class ExerciseService {
         exerciseRepository.save(exercise);
     }
 
-    public boolean exerciseExistsById(int idExercise) {
+    public boolean exerciseExistsById(Long idExercise) {
         Optional<Exercise> exerciseById = exerciseRepository.findByIdExercise(idExercise);
 
         return exerciseById.isPresent();
     }
 
-    public Exercise returnExerciseById(int idExercise) {
+    public Exercise returnExerciseById(Long idExercise) {
         Optional<Exercise> exerciseById = exerciseRepository.findByIdExercise(idExercise);
 
         return exerciseById.orElseThrow(() -> new NoSuchElementException("There is no Exercise in database that you were looking for."));
@@ -51,14 +51,14 @@ public class ExerciseService {
         return exerciseRepository.findAll();
     }
 
-    public String getExerciseType(int idExercise) {
+    public String getExerciseType(Long idExercise) {
         JSONObject obj = new JSONObject(
                 returnExerciseById(idExercise).getExerciseBody());
         return obj.getString("type");
     }
 
-    public Exercise getExercise(Map<String, Integer> map_idExercise) {
-        Integer idExercise = map_idExercise.get("idExercise");
+    public Exercise getExercise(Map<String, Long> map_idExercise) {
+        Long idExercise = map_idExercise.get("idExercise");
         if (!exerciseExistsById(idExercise)) {
             log.info("Exercise with given ID -> {} <- DOES NOT EXIST", idExercise);
             return null;
@@ -81,7 +81,7 @@ public class ExerciseService {
         log.info("Exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
     }
 
-    public List<ExerciseDTO> getExerciseDTOList(Integer idExam, HttpServletRequest request) {
+    public List<ExerciseDTO> getExerciseDTOList(Long idExam, HttpServletRequest request) {
         if (request.getUserPrincipal().getName().equals("dianaLektor@gmail.com")) {
             return StreamSupport.stream(returnAllExercises().spliterator(), false).
                     filter(exercise -> exercise.getExam().getIdExam() == individualExamService.returnIndividualExamById(idExam).getMainExam().getIdExam()).
@@ -114,7 +114,7 @@ public class ExerciseService {
         }
     }
 
-    public void createExerciseTypeO(OpenExercise openExercise, Integer examId) throws JsonProcessingException {
+    public void createExerciseTypeO(OpenExercise openExercise, Long examId) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String exerciseBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openExercise);
 
@@ -128,7 +128,7 @@ public class ExerciseService {
         log.info("Open exercise with ID -> {} <- has been ADDED", exercise.getIdExercise());
     }
 
-    public void createExerciseTypeZ(ClosedExercise closedExercise, Integer examId) throws JsonProcessingException {
+    public void createExerciseTypeZ(ClosedExercise closedExercise, Long examId) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String exerciseBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(closedExercise);
 

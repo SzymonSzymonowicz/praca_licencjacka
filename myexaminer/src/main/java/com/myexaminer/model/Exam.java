@@ -1,6 +1,5 @@
 package com.myexaminer.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myexaminer.enums.Status;
 import com.myexaminer.modelDTO.ExamDTO;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exam_id")
-    private Integer idExam;
+    private Long idExam;
 
     private String examName;
 
@@ -34,7 +33,7 @@ public class Exam {
 
     private LocalDateTime availableDate;
 
-    private Integer duration;
+    private Long duration;
 
     @Column(name = "exam_status")
     @Enumerated(EnumType.STRING)

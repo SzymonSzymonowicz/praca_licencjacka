@@ -20,7 +20,7 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_id")
-    private int idExercise;
+    private Long idExercise;
 
     @Column(columnDefinition="json")
     private String exerciseBody;

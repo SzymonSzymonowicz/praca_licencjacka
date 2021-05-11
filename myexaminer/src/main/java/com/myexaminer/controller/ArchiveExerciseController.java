@@ -28,7 +28,7 @@ public class ArchiveExerciseController {
     }
 
     @GetMapping("/exercises")
-    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Integer idExam, @RequestParam(required = false) Integer idIndExam, Authentication authentication) {
+    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Long idExam, @RequestParam(required = false) Long idIndExam, Authentication authentication) {
         return checkingExercisesService.returnCheckedExercises(idExam, idIndExam, authentication);
     }
 

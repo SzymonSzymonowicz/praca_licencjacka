@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ReceivedExercise {
-    private int idExercise;
+    private Long idExercise;
 
-    private int gainedPoints;
+    private Integer gainedPoints;
 
     private String lecturerComment;
 

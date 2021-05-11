@@ -11,7 +11,7 @@ public class ReceivedExercisesWithIdIndividualExam {
 
     private List<ReceivedExercise> receivedExercises;
 
-    private Integer idIndividualExam;
+    private Long idIndividualExam;
 
-    private Integer idExam;
+    private Long idExam;
 }

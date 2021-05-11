@@ -15,7 +15,7 @@ public class Notebook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notebook_id")
-    private int idNotebook;
+    private Long idNotebook;
 
     @Column(name = "notebook_body", columnDefinition="longtext")
     private String notebookBody;

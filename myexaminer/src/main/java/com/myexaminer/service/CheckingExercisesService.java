@@ -29,9 +29,9 @@ public class CheckingExercisesService {
         this.archiveExerciseService = archiveExerciseService;
     }
 
-    public void checkExercises(List<ReceivedExercise> receivedExerciseList, Integer idIndividualExam, Integer idExam, Authentication authentication) throws JsonProcessingException {
+    public void checkExercises(List<ReceivedExercise> receivedExerciseList, Long idIndividualExam, Long idExam, Authentication authentication) throws JsonProcessingException {
         for (ReceivedExercise receivedExercise : receivedExerciseList) {
-            int idExercise = receivedExercise.getIdExercise();
+            Long idExercise = receivedExercise.getIdExercise();
             ArchiveExercise archiveExercise = checkIfStudentOrLectorAndReturnArchiveExercise(idExam, idExercise, idIndividualExam, authentication);
             String type = exerciseService.getExerciseType(idExercise);
             archiveExercise.setLecturerComment(receivedExercise.getLecturerComment());
@@ -73,7 +73,7 @@ public class CheckingExercisesService {
         }
     }
 
-    public ArchiveExercise checkIfStudentOrLectorAndReturnArchiveExercise(Integer idExam, Integer idExercise, Integer idIndividualExam,  Authentication authentication){
+    public ArchiveExercise checkIfStudentOrLectorAndReturnArchiveExercise(Long idExam, Long idExercise, Long idIndividualExam,  Authentication authentication){
         ArchiveExercise archiveExercise;
         if (idExam == null) {
             archiveExercise = archiveExerciseService
@@ -82,7 +82,7 @@ public class CheckingExercisesService {
                             idIndividualExam
                     );
         } else {
-            int idStudent = accountService.getAccountByEmail(authentication.getName()).getId();
+            Long idStudent = accountService.getAccountByEmail(authentication.getName()).getId();
             archiveExercise = archiveExerciseService
                     .returnArchiveExerciseByExerciseAndIndividualExam(
                             idExercise,
@@ -93,12 +93,12 @@ public class CheckingExercisesService {
         return archiveExercise;
     }
 
-    public List<ArchiveExerciseDTO> returnCheckedExercises(Integer idExam, Integer idIndExam, Authentication authentication) {
+    public List<ArchiveExerciseDTO> returnCheckedExercises(Long idExam, Long idIndExam, Authentication authentication) {
 
         List<ArchiveExerciseDTO> archiveExerciseDTOS;
         if (idIndExam == null) {
-            int idStudent = accountService.getAccountByEmail(authentication.getName()).getId();
-            int idIndividualExam = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).getIdIndividualExam();
+            Long idStudent = accountService.getAccountByEmail(authentication.getName()).getId();
+            Long idIndividualExam = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, idExam).getIdIndividualExam();
             archiveExerciseDTOS = archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(idExam, idIndividualExam);
         } else {
             IndividualExam individualExam = individualExamService.returnIndividualExamById(idIndExam);

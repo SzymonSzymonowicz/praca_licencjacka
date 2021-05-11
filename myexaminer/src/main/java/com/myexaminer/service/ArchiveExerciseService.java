@@ -33,18 +33,18 @@ public class ArchiveExerciseService {
         archiveExerciseRepository.save(archiveExercise);
     }
 
-    public Optional<ArchiveExercise> returnOptionalArchiveExerciseByExerciseAndIndividualExam(int idExercise, int idIndividualExam) {
+    public Optional<ArchiveExercise> returnOptionalArchiveExerciseByExerciseAndIndividualExam(Long idExercise, Long idIndividualExam) {
 
         return archiveExerciseRepository.findByExerciseIdExerciseAndIndividualExamIdIndividualExam(idExercise, idIndividualExam);
     }
 
-    public ArchiveExercise returnArchiveExerciseByExerciseAndIndividualExam(int idExercise, int idIndividualExam) {
+    public ArchiveExercise returnArchiveExerciseByExerciseAndIndividualExam(Long idExercise, Long idIndividualExam) {
 
         return returnOptionalArchiveExerciseByExerciseAndIndividualExam(idExercise, idIndividualExam)
                 .orElseThrow(() -> new NoSuchElementException("There is no Archive Exercise in database that you were looking for."));
     }
 
-    public boolean doArchiveExerciseExists(int idExercise, int idIndividualExam) {
+    public boolean doArchiveExerciseExists(Long idExercise, Long idIndividualExam) {
         return returnOptionalArchiveExerciseByExerciseAndIndividualExam(idExercise, idIndividualExam).isPresent();
     }
 
@@ -64,7 +64,7 @@ public class ArchiveExerciseService {
         }
     }
 
-    public List<ArchiveExerciseDTO> archiveExercisesDTOByExamIdAndIdIndividualExam(int idExam, int idIndividualExam) {
+    public List<ArchiveExerciseDTO> archiveExercisesDTOByExamIdAndIdIndividualExam(Long idExam, Long idIndividualExam) {
         List<ArchiveExercise> archiveExerciseList = new ArrayList<>();
         for (Exercise exercise : examService.returnExamById(idExam).getExercises()) {
             archiveExerciseList.add(
@@ -84,8 +84,8 @@ public class ArchiveExerciseService {
     }
 
     public void createExerciseArchive(TwoIdObject twoIdObject) {
-        int idStudent = twoIdObject.getIdStudent();
-        int idExam = twoIdObject.getIdExam();
+        Long idStudent = twoIdObject.getIdStudent();
+        Long idExam = twoIdObject.getIdExam();
 
         IndividualExam individualExam = individualExamService
                 .createOrGetIndividualExamAndReturn(idStudent, idExam);

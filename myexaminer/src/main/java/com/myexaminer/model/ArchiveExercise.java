@@ -14,7 +14,7 @@ public class ArchiveExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "archive_exercise_id")
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name="fk_exercise_id", nullable=false)

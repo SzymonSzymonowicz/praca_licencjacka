@@ -11,7 +11,7 @@ public class ClosedExercise {
 
     private String instruction;
 
-    private Integer points;
+    private Long points;
 
     private List<String> answers;
 }

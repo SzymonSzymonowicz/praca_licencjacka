@@ -17,7 +17,7 @@ public class IndividualExam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "individual_exam_id")
-    private int idIndividualExam;
+    private Long idIndividualExam;
 
     @ManyToOne
     @JoinColumn(name="fk_exam_id", nullable=false)

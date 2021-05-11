@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class TwoIdObject {
 
-    private int idStudent;
+    private Long idStudent;
 
-    private int idExam;
+    private Long idExam;
 }

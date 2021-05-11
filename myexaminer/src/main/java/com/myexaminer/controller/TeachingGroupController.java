@@ -1,7 +1,6 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.modelDTO.AccessCodeDTO;
 import com.myexaminer.modelDTO.TeachingGroupDTO;
 import com.myexaminer.service.TeachingGroupService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class TeachingGroupController {
 //
 
     @GetMapping("/account/{accountId}")
-    public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Integer accountId) {
+    public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Long accountId) {
         return teachingGroupService.getTeachingGroupByAccountId(accountId);
     }
 
@@ -44,17 +43,17 @@ public class TeachingGroupController {
     }
 
     @DeleteMapping(path = "/{group}")
-    public void removeGroup(@PathVariable("group") int groupId) {
+    public void removeGroup(@PathVariable("group") Long groupId) {
         teachingGroupService.deleteGroup(groupId);
     }
 
     @PostMapping(path = "/{group}/students")
-    public void addStudentToGroup(@PathVariable("group") int idTeachingGroup, @RequestParam int idStudent) {
+    public void addStudentToGroup(@PathVariable("group") Long idTeachingGroup, @RequestParam Long idStudent) {
         teachingGroupService.addStudentToGroup(idTeachingGroup, idStudent);
     }
 
     @DeleteMapping(path = "/{group}/students/{id}")
-    public void removeStudentFromGroup(@PathVariable("group") int groupId, @PathVariable("id") int studentId) {
+    public void removeStudentFromGroup(@PathVariable("group") Long groupId, @PathVariable("id") Long studentId) {
         teachingGroupService.removeStudentFromGroup(groupId, studentId);
     }
 

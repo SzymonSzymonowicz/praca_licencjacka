@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class LecturerIndividualExamView {
 
-    private int idIndividualExam;
+    private Long idIndividualExam;
 
     private String examName;
 
@@ -21,7 +21,7 @@ public class LecturerIndividualExamView {
 
     private LocalDateTime examAvailableDate;
 
-    private int idTeachingGroup;
+    private Long idTeachingGroup;
 
     private String nameTeachingGroup;
 

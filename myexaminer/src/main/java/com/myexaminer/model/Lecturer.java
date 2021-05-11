@@ -15,7 +15,7 @@ public class Lecturer {
 
     @Id
     @Column(name = "fk_account_id")
-    private int idLecturer;
+    private Long idLecturer;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")

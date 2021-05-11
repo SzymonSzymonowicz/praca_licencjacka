@@ -34,7 +34,7 @@ public class ExerciseController {
     }
 
     @GetMapping
-    public Exercise getExercise(@RequestBody Map<String, Integer> map_idExercise) {
+    public Exercise getExercise(@RequestBody Map<String, Long> map_idExercise) {
         return exerciseService.getExercise(map_idExercise);
     }
 
@@ -44,7 +44,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/{idExam}")
-    public Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Integer idExam, HttpServletRequest request) {
+    public Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Long idExam, HttpServletRequest request) {
         return exerciseService.getExerciseDTOList(idExam, request);
     }
 
@@ -56,14 +56,14 @@ public class ExerciseController {
     @PostMapping("/create/open/{idExam}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createOpenExercise(@RequestBody OpenExercise openExercise,
-                                     @PathVariable Integer idExam) throws JsonProcessingException {
+                                     @PathVariable Long idExam) throws JsonProcessingException {
         exerciseService.createExerciseTypeO(openExercise, idExam);
     }
 
     @PostMapping("/create/closed/{idExam}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createClosedExercise(@RequestBody ClosedExercise closedExercise,
-                                   @PathVariable Integer idExam) throws JsonProcessingException {
+                                   @PathVariable Long idExam) throws JsonProcessingException {
         exerciseService.createExerciseTypeZ(closedExercise, idExam);
     }
 }

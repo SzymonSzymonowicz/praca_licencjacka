@@ -17,7 +17,7 @@ public class Student {
 
     @Id
     @Column(name = "fk_account_id")
-    private int idStudent;
+    private Long idStudent;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")
@@ -40,7 +40,7 @@ public class Student {
     @OneToMany(mappedBy="student")
     private List<IndividualExam> individualExams;
 
-    public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
+    public Student(Long idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
         this.idStudent = idStudent;
         this.firstName = firstName;
         this.lastName = lastName;

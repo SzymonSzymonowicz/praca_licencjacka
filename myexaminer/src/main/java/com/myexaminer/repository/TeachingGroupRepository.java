@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TeachingGroupRepository extends JpaRepository<TeachingGroup, Integer> {
-    long deleteByidTeachingGroup(int idTeachingGroup);
-    Optional<TeachingGroup> findByidTeachingGroup(int idTeachingGroup);
+public interface TeachingGroupRepository extends JpaRepository<TeachingGroup, Long> {
+    long deleteByidTeachingGroup(Long idTeachingGroup);
+    Optional<TeachingGroup> findByidTeachingGroup(Long idTeachingGroup);
     Optional<TeachingGroup> findByName(String name);
     Optional<TeachingGroup> findByStudentsContaining(Student student);
     List<TeachingGroup> findByLecturerAccountEmail(String email);
-    List<TeachingGroup> findByLecturerIdLecturer(int id);
+    List<TeachingGroup> findByLecturerIdLecturer(Long id);
     Optional<TeachingGroup> findByAccessCode(String accessCode);
     List<TeachingGroup> findAllByStudents(Student student);
     List<TeachingGroup> findAllByLecturer(Lecturer lecturer);

@@ -1,13 +1,11 @@
 package com.myexaminer.security.service;
 
 import com.myexaminer.model.Account;
-import com.myexaminer.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +15,7 @@ public class AccountDetails implements UserDetails {
     // TODO think about other fields that may come useful on frontend
     private final Account account;
 
-    private final Integer id;
+    private final Long id;
 
     private final String email;
 
@@ -36,7 +34,7 @@ public class AccountDetails implements UserDetails {
         );
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
