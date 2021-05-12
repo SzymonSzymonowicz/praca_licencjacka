@@ -36,7 +36,7 @@ public class ExamService {
         return examById.isPresent();
     }
 
-    public Exam returnExamById(Long id) {
+    public Exam getExamById(Long id) {
         Optional<Exam> examById = examRepository.findById(id);
 
         return examById.orElseThrow(() -> new EntityNotFoundException("There is no Exam in database that you were looking for."));
@@ -53,7 +53,7 @@ public class ExamService {
             return null;
         }
 
-        Exam returnedExam = returnExamById(id);
+        Exam returnedExam = getExamById(id);
 
         log.info("Exam with ID -> {} <- HAS BEEN RETURNED", returnedExam.getId());
 
@@ -78,14 +78,14 @@ public class ExamService {
     }
 
     public State getState(GenericOneValue id) {
-        return returnExamById((Long) id.getFirstValue()).getState();
+        return getExamById((Long) id.getFirstValue()).getState();
     }
 
     public void updateExamStatus(GenericTwoValues genericTwoValues) {
         Long id = (Long) genericTwoValues.getFirstValue();
         State state = State.valueOf((String) genericTwoValues.getSecondValue());
 
-        Exam exam = returnExamById(id);
+        Exam exam = getExamById(id);
         exam.setState(state);
 
         examSave(exam);

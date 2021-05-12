@@ -118,7 +118,7 @@ public class ExerciseService {
         String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openExercise);
 
         Exercise exercise = Exercise.builder()
-                .exam(examService.returnExamById(examId))
+                .exam(examService.getExamById(examId))
                 .content(content)
                 .build();
 
@@ -132,7 +132,7 @@ public class ExerciseService {
         String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(closedExercise);
 
         Exercise exercise = Exercise.builder()
-                .exam(examService.returnExamById(examId))
+                .exam(examService.getExamById(examId))
                 .content(content)
                 .build();
 

@@ -91,9 +91,14 @@ public class Exam {
         return getState().equals(State.CLOSED);
     }
 
-    public boolean isOpened() {
+    public boolean isOpen() {
         return getState().equals(State.OPEN);
     }
+
+    public boolean isHidden() {
+        return getState().equals(State.HIDDEN);
+    }
+
 
     public static Exam mapExamDTOToExam(ExamDTO examDTO) {
         return Exam.builder()

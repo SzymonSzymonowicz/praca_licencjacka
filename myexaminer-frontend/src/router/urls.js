@@ -10,8 +10,8 @@ export const examUrl = domain + "/exam/";
 // ArchiveController
 export const archiveExcercisesUrl = domain + "/archive/exercises";
 export const archiveCheckUrl = domain + "/archive/check";
-export const checkedExercisesForExamIdUrl = domain + "/archive/exercises?idExam=";
-export const individualExamExercisesUrl = domain + "/archive/exercises?idIndExam=";
+export const checkedExercisesForExamIdUrl = domain + "/archive/exercises?examId=";
+export const individualExamExercisesUrl = domain + "/archive/exercises?individualExamId=";
 
 // ExercisesController
 export const exercisesUrl = domain + "/exercises/";

@@ -7,6 +7,7 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
 import { archiveExcercisesUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
+import { getCurrentAccount } from 'services/auth-service';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -23,24 +24,46 @@ const useStyles = makeStyles((theme) => ({
 export default function Exams({exams}, props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  
+  // fake state to remount component thus runing fetch on exams
+  // const [update, setUpdate] = React.useState(false);
 
   const history = useHistory()
 
-  const idStudent = 2
+  const studentId = getCurrentAccount()?.id
+
+  // const timeDiffNow = (date) => date.getTime() - Date.now();
+
+  // // 30 secs
+  // const lagMsDelay = 30000;
+  // const times = exams?.map(exam => new Date(exam.examavailableFrom)).filter(date => timeDiffNow(date) > 0).sort((a, b) => a - b);
+
+  // const soonestTime = times[0];
+  // console.log(times);
+
+  // React.useEffect(() => {
+  //   if(soonestTime !== undefined) {
+  //     setTimeout(() => {console.log("Odpalony o " + soonestTime)
+  //       setUpdate(!update);
+  //     }, timeDiffNow(soonestTime) + lagMsDelay);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  //"archive/exercises" POST
-
-  function createAnswersForExam(idStudent, idExam){
+  function createAnswersForExam(studentId, examId){
     fetch(archiveExcercisesUrl, {
       method: 'POST',
-      headers: authHeader(),
+      headers: {
+        ...authHeader(),
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        idStudent: idStudent,
-        idExam: idExam
+        studentId: studentId,
+        examId: examId
       })
     }).then(function (response) {
       if (response.status === 200) {
@@ -59,7 +82,7 @@ export default function Exams({exams}, props) {
   return (
     <>
       {exams.map((exam,index) => {
-        let date = new Date(exam.examAvailableDate);
+        let date = new Date(exam.availableFrom);
         return (
           <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
             <AccordionSummary
@@ -69,30 +92,30 @@ export default function Exams({exams}, props) {
             >
               <Typography className={classes.heading}>Egzamin {index+1}</Typography>
               <Typography className={classes.secondaryHeading}>
-                {exam.examName}
+                {exam.name}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography component="div">
-                <div dangerouslySetInnerHTML={{__html: exam.examDescription}}></div>
+                <div dangerouslySetInnerHTML={{__html: exam.description}}></div>
               </Typography>
             </AccordionDetails>
             
             <AccordionActions>
               <EventIcon/><Typography>{date.toLocaleString().split(',')[0]}</Typography>
               <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]}</Typography>
-              <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.examDurationTime} min.</Typography>
+              <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration} min.</Typography>
               <Button size="small" onClick={() => {
-                  createAnswersForExam(idStudent, exam.idExam);
-                  history.push(`/landing/exam/${exam.idExam}`);
+                  createAnswersForExam(studentId, exam.id);
+                  history.push(`/landing/exam/${exam.id}`);
                 }}
-                {...(exam.examStatus !== "OPEN" && {disabled: true})}    
+                {...(exam.state !== "OPEN" && {disabled: true})}    
               >
               Rozpocznij
               </Button>
               <Button size="small" color="primary"
-                onClick={() => history.push(`/landing/examresults/${exam.idExam}`)}
-                {...(exam.examStatus !== "CHECKED" && {disabled: true})}
+                onClick={() => history.push(`/landing/examresults/${exam.id}`)}
+                {...(exam.state !== "CHECKED" && {disabled: true})}
               >
                 Wyniki
               </Button>

@@ -30,10 +30,10 @@ export default function Exam() {
       let answArr = []
 
       tasksJson.map(task => {
-        answArr.push({idExercise: task["idExercise"], answer: null})
-        task.exerciseBody = JSON.parse(task.exerciseBody)
-        if(task.exerciseBody.type === "Z")
-          task.exerciseBody.answers = shuffle(task.exerciseBody.answers)
+        answArr.push({id: task["id"], answer: null})
+        task.content = JSON.parse(task.content)
+        if(task.content.type === "Z")
+          task.content.answers = shuffle(task.content.answers)
         return task
       })
       console.log(tasksJson)
@@ -48,18 +48,18 @@ export default function Exam() {
     })
   }, [id])
 
-  function saveAnswers(receivedExercises, idIndividualExam, idExam){
+  function saveAnswers(receivedExercises, individualExamId, examId){
     fetch(archiveCheckUrl, {
       method: 'PUT',
       headers: {
-        'Accept': 'application/json',
+        ...authHeader(),
         'Content-Type': 'application/json',
-        'Authorization':'Basic ' + window.btoa(sessionStorage.getItem('USER_SESSION_EMAIL') + ":" + sessionStorage.getItem('USER_SESSION_PASSWORD'))
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         receivedExercises: receivedExercises,
-        idIndividualExam: idIndividualExam,
-        idExam: idExam
+        individualExamId: individualExamId,
+        examId: examId
       })
     }).then(function (response) {
       if (response.status === 200) {
@@ -92,10 +92,10 @@ export default function Exam() {
       spacing={3}
       >
         {tasks.map((task, index) => {
-          let type = task.exerciseBody.type 
-          let points = task.exerciseBody.points 
-          let instruction = task.exerciseBody.instruction 
-          let id = task.idExercise
+          let type = task.content.type 
+          let points = task.content.points 
+          let instruction = task.content.instruction 
+          let id = task.id
 
           if (type === "O") 
             return (
@@ -106,13 +106,13 @@ export default function Exam() {
           else if (type === "Z")
             return (
               <Grid item xs={12} key={index}>
-                <ClosedTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.exerciseBody.answers} index={index}/>
+                <ClosedTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.content.answers} index={index}/>
               </Grid>
             )
           else if (type === "L")
             return (
               <Grid item xs={12} key={index}>
-                <FillBlanksTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.exerciseBody.fill} index={index}/>
+                <FillBlanksTask answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.content.fill} index={index}/>
               </Grid>
             )
           else

@@ -21,7 +21,7 @@ function Comment(props, {lecturerComment, disable}) {
   const handleChange = (event) => {
     setComment(event.target.value);
 
-    props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {...item, lecturerComment: event.target.value} : item))
+    props.setAnswered(props.answered.map(item => item['id'] === props.id ? {...item, lecturerComment: event.target.value} : item))
   };
   
   return (

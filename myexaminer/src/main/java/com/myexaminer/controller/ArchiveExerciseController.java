@@ -28,8 +28,8 @@ public class ArchiveExerciseController {
     }
 
     @GetMapping("/exercises")
-    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Long id, @RequestParam(required = false) Long idIndExam, Authentication authentication) {
-        return checkingExercisesService.returnCheckedExercises(id, idIndExam, authentication);
+    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Long id, @RequestParam(required = false) Long individualExamId, Authentication authentication) {
+        return checkingExercisesService.returnCheckedExercises(id, individualExamId, authentication);
     }
 
     @PostMapping("/exercises")

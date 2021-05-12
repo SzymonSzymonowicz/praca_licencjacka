@@ -29,18 +29,18 @@ public class ArchiveExerciseService {
         archiveExerciseRepository.save(archiveExercise);
     }
 
-    public Optional<ArchiveExercise> returnOptionalArchiveExerciseByExerciseAndIndividualExam(Long exerciseId, Long individualExamId) {
+    public Optional<ArchiveExercise> getOptionalArchiveExerciseByExerciseAndIndividualExam(Long exerciseId, Long individualExamId) {
         return archiveExerciseRepository.findByExerciseIdAndIndividualExamId(exerciseId, individualExamId);
     }
 
-    public ArchiveExercise returnArchiveExerciseByExerciseAndIndividualExam(Long exerciseId, Long individualExamId) {
+    public ArchiveExercise getArchiveExerciseByExerciseAndIndividualExam(Long exerciseId, Long individualExamId) {
 
-        return returnOptionalArchiveExerciseByExerciseAndIndividualExam(exerciseId, individualExamId)
+        return getOptionalArchiveExerciseByExerciseAndIndividualExam(exerciseId, individualExamId)
                 .orElseThrow(() -> new EntityNotFoundException("There is no Archive Exercise in database that you were looking for."));
     }
 
     public boolean doArchiveExerciseExists(Long exerciseId, Long individualExamId) {
-        return returnOptionalArchiveExerciseByExerciseAndIndividualExam(exerciseId, individualExamId).isPresent();
+        return getOptionalArchiveExerciseByExerciseAndIndividualExam(exerciseId, individualExamId).isPresent();
     }
 
     public void createNewArchiveExercises(List<Exercise> exerciseList, IndividualExam individualExam) {
@@ -61,9 +61,9 @@ public class ArchiveExerciseService {
 
     public List<ArchiveExerciseDTO> archiveExercisesDTOByExamIdAndIndividualExamId(Long examId, Long individualExamId) {
         List<ArchiveExercise> archiveExerciseList = new ArrayList<>();
-        for (Exercise exercise : examService.returnExamById(examId).getExercises()) {
+        for (Exercise exercise : examService.getExamById(examId).getExercises()) {
             archiveExerciseList.add(
-                    returnArchiveExerciseByExerciseAndIndividualExam(exercise.getId(), individualExamId)
+                    getArchiveExerciseByExerciseAndIndividualExam(exercise.getId(), individualExamId)
             );
         }
 
@@ -88,11 +88,11 @@ public class ArchiveExerciseService {
                 .createOrGetIndividualExamAndReturn(studentId, examId);
 
         if (doArchiveExerciseExists(
-                examService.returnExamById(examId).getExercises().get(0).getId(),
+                examService.getExamById(examId).getExercises().get(0).getId(),
                 individualExam.getId())) {
             return;
         } else {
-            createNewArchiveExercises(examService.returnExamById(examId).getExercises(), individualExam);
+            createNewArchiveExercises(examService.getExamById(examId).getExercises(), individualExam);
             return;
         }
     }

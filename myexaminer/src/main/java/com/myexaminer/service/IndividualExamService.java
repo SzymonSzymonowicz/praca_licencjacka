@@ -45,7 +45,7 @@ public class IndividualExamService {
 
     public IndividualExam createOrGetIndividualExamAndReturn(Long idStudent, Long idExam) {
         Student student = studentService.getStudentById(idStudent);
-        Exam exam = examService.returnExamById(idExam);
+        Exam exam = examService.getExamById(idExam);
         Optional<IndividualExam> individualExamOpt = getOptionalIndividualExamByStudentIdAndExamId(idStudent, idExam);
         IndividualExam individualExam;
         if (individualExamOpt.isEmpty()) {

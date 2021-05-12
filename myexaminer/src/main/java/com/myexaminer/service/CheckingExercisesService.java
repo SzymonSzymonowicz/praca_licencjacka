@@ -71,16 +71,17 @@ public class CheckingExercisesService {
         ArchiveExercise archiveExercise;
         if (examId == null) {
             archiveExercise = archiveExerciseService
-                    .returnArchiveExerciseByExerciseAndIndividualExam(
+                    .getArchiveExerciseByExerciseAndIndividualExam(
                             exerciseId,
                             individualExamId
                     );
         } else {
             Long idStudent = accountService.getAccountByEmail(authentication.getName()).getId();
+            Long individualExamId1 = individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, examId).getId();
             archiveExercise = archiveExerciseService
-                    .returnArchiveExerciseByExerciseAndIndividualExam(
+                    .getArchiveExerciseByExerciseAndIndividualExam(
                             exerciseId,
-                            individualExamService.returnIndividualExamByIdStudentAndIdExam(idStudent, examId).getId()
+                            individualExamId1
                     );
         }
 

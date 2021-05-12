@@ -36,7 +36,7 @@ export default function ExamResults(props) {
       data.forEach(result => {
         var answer = JSON.parse(result["answer"])["answerJSON"]
 
-        answArr.push({ idExercise: result["idExercise"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
+        answArr.push({ id: result["id"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
       })
 
       // console.log(answArr)
@@ -58,7 +58,7 @@ export default function ExamResults(props) {
       const data = await result.json()
 
       data.map(task => {
-        task.exerciseBody = JSON.parse(task.exerciseBody)
+        task.content = JSON.parse(task.content)
         return task
       })
 
@@ -80,10 +80,10 @@ export default function ExamResults(props) {
     >
       
       {tasks.length && answered.length ? tasks.map((task, index) => {
-        let type = task.exerciseBody.type 
-        let points = task.exerciseBody.points 
-        let instruction = task.exerciseBody.instruction 
-        let id = task.idExercise
+        let type = task.content.type 
+        let points = task.content.points 
+        let instruction = task.content.instruction 
+        let id = task.id
         let lecturerComment = answered[index]["lecturerComment"]
 
         if (type === "O") 
@@ -96,14 +96,14 @@ export default function ExamResults(props) {
         else if (type === "Z")
           return (
             <Grid item xs={12} key={index}>
-              <ClosedTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.exerciseBody.answers} index={index}/>
+              <ClosedTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.content.answers} index={index}/>
               {lecturerComment && <Comment lecturerComment={lecturerComment} disable={true}/>}
             </Grid>
           )
         else if (type === "L")
           return (
             <Grid item xs={12} key={index}>
-              <FillBlanksTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.exerciseBody.fill} index={index}/>
+              <FillBlanksTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} fill={task.content.fill} index={index}/>
               {lecturerComment && <Comment lecturerComment={lecturerComment} disable={true}/>}
             </Grid>
           )

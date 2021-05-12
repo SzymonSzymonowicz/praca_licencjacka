@@ -9,16 +9,16 @@ export default function ClosedTask(props) {
 
   const handleChange = (event) => {
     setValue(event.target.value);
-    if(!props.answered.some(item => item['idExercise'] === props.id))
-      props.setAnswered(props.answered.concat({idExercise: props.id, answer: event.target.value}))
+    if(!props.answered.some(item => item['id'] === props.id))
+      props.setAnswered(props.answered.concat({id: props.id, answer: event.target.value}))
     else
-      props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {idExercise: props.id, answer: event.target.value} : item))
+      props.setAnswered(props.answered.map(item => item['id'] === props.id ? {id: props.id, answer: event.target.value} : item))
   };
 
   const handlePointsChange = (event) => {
     setAssignedPoints(event.target.value);
     
-    props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {...item, gainedPoints: event.target.value} : item))
+    props.setAnswered(props.answered.map(item => item['id'] === props.id ? {...item, gainedPoints: event.target.value} : item))
   };
 
   const pointsString = props.loadValue === true ?  `(${props.answered[props.index]['gainedPoints']} / ${props.points} pkt.)` : `(${props.points} pkt.)`
@@ -27,7 +27,7 @@ export default function ClosedTask(props) {
     ( <TextField inputProps={{style: { textAlign: 'center', width: 40, transform: 'translateY(-4px)' }}} value={assignedPoints} onChange={handlePointsChange}></TextField> {`/ ${props.points} pkt.)`} 
   </>
 
-  const markValue = props.loadValue === true ? props.answered.find(item => item['idExercise'] === props.id)['answer'] : value
+  const markValue = props.loadValue === true ? props.answered.find(item => item['id'] === props.id)['answer'] : value
 
   return (
     <Paper elevation={4} style={{padding: 20}}>
