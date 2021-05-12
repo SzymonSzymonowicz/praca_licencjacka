@@ -1,5 +1,7 @@
 package com.myexaminer.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +18,8 @@ import javax.persistence.ManyToOne;
 @Setter
 @NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 public class ArchiveExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

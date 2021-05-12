@@ -12,12 +12,10 @@ import javax.persistence.EntityNotFoundException;
 
 @Log4j2
 @ControllerAdvice
-@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ExceptionHandlers {
 
     @ExceptionHandler
     public ResponseEntity handleNotFoundException(EntityNotFoundException exception) {
-        log.warn("Polecaiła 404 -->{}<--", exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 }
