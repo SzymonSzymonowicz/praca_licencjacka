@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -41,24 +42,24 @@ public class ArchiveExerciseServiceTest {
     private ArchiveExerciseService archiveExerciseService;
 
     @Test
-    void When_NoArchiveExerciseByExerciseIdAndIndividualExamIf_Throw_NoSuchElementException(){
+    void When_NoArchiveExerciseByExerciseIdAndIndividualExam_Throw_NoSuchElementException(){
         //given
-        when(archiveExerciseRepository.findByExerciseIdExerciseAndIndividualExamIdIndividualExam(1,1)).thenReturn(Optional.empty());
-        when(archiveExerciseService.returnOptionalArchiveExerciseByExerciseAndIndividualExam(1,1)).thenReturn(Optional.empty());
+        when(archiveExerciseRepository.findByExerciseIdAndIndividualExamId(1L,1L)).thenReturn(Optional.empty());
+        when(archiveExerciseService.getOptionalArchiveExerciseByExerciseAndIndividualExam(1L,1L)).thenReturn(Optional.empty());
 
         //when //then
-        assertThrows(NoSuchElementException.class, () -> {
-            archiveExerciseService.returnArchiveExerciseByExerciseAndIndividualExam(1,1);
+        assertThrows(EntityNotFoundException.class, () -> {
+            archiveExerciseService.getArchiveExerciseByExerciseAndIndividualExam(1L,1L);
         });
     }
 
     @Test
     void When_ArchiveExerciseDoesNotExist_Expect_False(){
         //given
-        when(archiveExerciseService.returnOptionalArchiveExerciseByExerciseAndIndividualExam(1,1)).thenReturn(Optional.empty());
+        when(archiveExerciseService.getOptionalArchiveExerciseByExerciseAndIndividualExam(1L,1L)).thenReturn(Optional.empty());
 
         //when
-        boolean result = archiveExerciseService.doArchiveExerciseExists(1,1);
+        boolean result = archiveExerciseService.doArchiveExerciseExists(1L,1L);
 
         //then
         assertThat(result).isFalse();
@@ -68,13 +69,13 @@ public class ArchiveExerciseServiceTest {
     void When_ArchiveExerciseExists_Expect_True(){
         //given
         ArchiveExercise archiveExercise = ArchiveExercise.builder()
-                .id(1)
+                .id(1L)
                 .build();
 
-        when(archiveExerciseService.returnOptionalArchiveExerciseByExerciseAndIndividualExam(1,1)).thenReturn(Optional.of(archiveExercise));
+        when(archiveExerciseService.getOptionalArchiveExerciseByExerciseAndIndividualExam(1L,1L)).thenReturn(Optional.of(archiveExercise));
 
         //when
-        boolean result = archiveExerciseService.doArchiveExerciseExists(1,1);
+        boolean result = archiveExerciseService.doArchiveExerciseExists(1L,1L);
 
         //then
         assertThat(result).isTrue();
@@ -84,15 +85,15 @@ public class ArchiveExerciseServiceTest {
     void When_CreateNewArchiveExercises_Expect_Save(){
         //given
         Exercise exercise1 = Exercise.builder()
-                .idExercise(1)
+                .id(1L)
                 .build();
         Exercise exercise2 = Exercise.builder()
-                .idExercise(2)
+                .id(2L)
                 .build();
         List<Exercise> exerciseList = Arrays.asList(exercise1, exercise2);
 
         IndividualExam individualExam = IndividualExam.builder()
-                .idIndividualExam(1)
+                .id(1L)
                 .build();
 
         ArgumentCaptor<ArchiveExercise> argumentCaptor = ArgumentCaptor.forClass(ArchiveExercise.class);
@@ -103,33 +104,33 @@ public class ArchiveExerciseServiceTest {
         //then
         verify(archiveExerciseRepository, times(2)).save(argumentCaptor.capture());
 
-        assertThat(1).isEqualTo(argumentCaptor.getAllValues().get(0).getExercise().getIdExercise());
-        assertThat(2).isEqualTo(argumentCaptor.getAllValues().get(1).getExercise().getIdExercise());
+        assertThat(1L).isEqualTo(argumentCaptor.getAllValues().get(0).getExercise().getId());
+        assertThat(2L).isEqualTo(argumentCaptor.getAllValues().get(1).getExercise().getId());
     }
 
     @Test
     void When_ArchiveExercisesDTOByExamIdAndIdIndividualExam_Expect_ListOfArchiveExerciseDTO(){
         //given
         Exercise exercise1 = Exercise.builder()
-                .idExercise(1)
+                .id(1L)
                 .build();
         Exercise exercise2 = Exercise.builder()
-                .idExercise(2)
+                .id(2L)
                 .build();
 
         List<Exercise> exerciseList = Arrays.asList(exercise1, exercise2);
 
         Exam exam = Exam.builder()
-                .idExam(1)
+                .id(1L)
                 .exercises(exerciseList)
                 .build();
 
         IndividualExam individualExam = IndividualExam.builder()
-                .idIndividualExam(1)
+                .id(1L)
                 .build();
 
         ArchiveExercise archiveExercise1 = ArchiveExercise.builder()
-                .id(1)
+                .id(1L)
                 .gainedPoints(3)
                 .answer("answer1")
                 .lecturerComment("comment1")
@@ -138,7 +139,7 @@ public class ArchiveExerciseServiceTest {
                 .build();
 
         ArchiveExercise archiveExercise2 = ArchiveExercise.builder()
-                .id(2)
+                .id(2L)
                 .gainedPoints(2)
                 .answer("answer2")
                 .lecturerComment("comment2")
@@ -146,19 +147,19 @@ public class ArchiveExerciseServiceTest {
                 .individualExam(individualExam)
                 .build();
 
-        when(examService.returnExamById(1)).thenReturn(exam);
-        doReturn(Optional.of(archiveExercise1)).when(archiveExerciseRepository).findByExerciseIdExerciseAndIndividualExamIdIndividualExam(1, 1);
-        doReturn(Optional.of(archiveExercise2)).when(archiveExerciseRepository).findByExerciseIdExerciseAndIndividualExamIdIndividualExam(2, 1);
+        when(examService.getExamById(1L)).thenReturn(exam);
+        doReturn(Optional.of(archiveExercise1)).when(archiveExerciseRepository).findByExerciseIdAndIndividualExamId(1L, 1L);
+        doReturn(Optional.of(archiveExercise2)).when(archiveExerciseRepository).findByExerciseIdAndIndividualExamId(2L, 1L);
 
         //when
-        List<ArchiveExerciseDTO> archiveExerciseDTOList = archiveExerciseService.archiveExercisesDTOByExamIdAndIdIndividualExam(1, 1);
+        List<ArchiveExerciseDTO> archiveExerciseDTOList = archiveExerciseService.archiveExercisesDTOByExamIdAndIndividualExamId(1L, 1L);
 
         //then
-        assertThat(archiveExerciseDTOList.get(0).getIdArchiveExercise()).isEqualTo(1);
-        assertThat(archiveExerciseDTOList.get(1).getIdArchiveExercise()).isEqualTo(2);
+        assertThat(archiveExerciseDTOList.get(0).getArchivedId()).isEqualTo(1);
+        assertThat(archiveExerciseDTOList.get(1).getArchivedId()).isEqualTo(2);
 
-        assertThat(archiveExerciseDTOList.get(0).getIdExercise()).isEqualTo(1);
-        assertThat(archiveExerciseDTOList.get(1).getIdExercise()).isEqualTo(2);
+        assertThat(archiveExerciseDTOList.get(0).getExerciseId()).isEqualTo(1);
+        assertThat(archiveExerciseDTOList.get(1).getExerciseId()).isEqualTo(2);
 
         assertThat(archiveExerciseDTOList.get(0).getAnswer()).isEqualTo("answer1");
         assertThat(archiveExerciseDTOList.get(1).getAnswer()).isEqualTo("answer2");
@@ -166,8 +167,8 @@ public class ArchiveExerciseServiceTest {
         assertThat(archiveExerciseDTOList.get(0).getLecturerComment()).isEqualTo("comment1");
         assertThat(archiveExerciseDTOList.get(1).getLecturerComment()).isEqualTo("comment2");
 
-        assertThat(archiveExerciseDTOList.get(0).getIdIndividualExam()).isEqualTo(1);
-        assertThat(archiveExerciseDTOList.get(1).getIdIndividualExam()).isEqualTo(1);
+        assertThat(archiveExerciseDTOList.get(0).getIndividualExamId()).isEqualTo(1);
+        assertThat(archiveExerciseDTOList.get(1).getIndividualExamId()).isEqualTo(1);
 
         assertThat(archiveExerciseDTOList.get(0).getGainedPoints()).isEqualTo(3);
         assertThat(archiveExerciseDTOList.get(1).getGainedPoints()).isEqualTo(2);
