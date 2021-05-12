@@ -19,11 +19,10 @@ public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exercise_id")
-    private Long idExercise;
+    private Long id;
 
     @Column(columnDefinition="json")
-    private String exerciseBody;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name="fk_exam_id", nullable=false)

@@ -7,11 +7,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ArchiveExerciseDTO {
-    private Long idArchiveExercise;
+    private Long archivedId;
 
-    private Long idExercise;
+    private Long exerciseId;
 
-    private Long idIndividualExam;
+    private Long individualExamId;
 
     private Integer gainedPoints;
 
@@ -20,9 +20,9 @@ public class ArchiveExerciseDTO {
     private String lecturerComment;
 
     public ArchiveExerciseDTO(ArchiveExercise archiveExercise) {
-        this.idArchiveExercise = archiveExercise.getId();
-        this.idExercise = archiveExercise.getExercise().getIdExercise();
-        this.idIndividualExam = archiveExercise.getIndividualExam().getIdIndividualExam();
+        this.archivedId = archiveExercise.getId();
+        this.exerciseId = archiveExercise.getExercise().getId();
+        this.individualExamId = archiveExercise.getIndividualExam().getId();
         this.gainedPoints = archiveExercise.getGainedPoints();
         this.answer = archiveExercise.getAnswer();
         this.lecturerComment = archiveExercise.getLecturerComment();

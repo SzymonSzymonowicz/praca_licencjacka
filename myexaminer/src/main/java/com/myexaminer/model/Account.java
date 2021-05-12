@@ -16,10 +16,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 public class Account {
-    // TODO rename column in sql
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
     private Long id;
 
     @Column(unique = true)

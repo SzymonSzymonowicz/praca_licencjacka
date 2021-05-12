@@ -1,9 +1,9 @@
 package com.myexaminer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.myexaminer.exerciseTypes.ReceivedExercisesWithIdIndividualExam;
+import com.myexaminer.exerciseTypes.ReceivedExercisesWithExamInfo;
 import com.myexaminer.modelDTO.ArchiveExerciseDTO;
-import com.myexaminer.modelDTO.TwoIdObject;
+import com.myexaminer.modelDTO.StudentExam;
 import com.myexaminer.service.ArchiveExerciseService;
 import com.myexaminer.service.CheckingExercisesService;
 import org.springframework.security.core.Authentication;
@@ -28,21 +28,21 @@ public class ArchiveExerciseController {
     }
 
     @GetMapping("/exercises")
-    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Long idExam, @RequestParam(required = false) Long idIndExam, Authentication authentication) {
-        return checkingExercisesService.returnCheckedExercises(idExam, idIndExam, authentication);
+    public Iterable<ArchiveExerciseDTO> getExercises(@RequestParam(required = false) Long id, @RequestParam(required = false) Long idIndExam, Authentication authentication) {
+        return checkingExercisesService.returnCheckedExercises(id, idIndExam, authentication);
     }
 
     @PostMapping("/exercises")
-    public void createExerciseArchive(@RequestBody TwoIdObject twoIdObject) {
-        archiveExerciseService.createExerciseArchive(twoIdObject);
+    public void createExerciseArchive(@RequestBody StudentExam studentExam) {
+        archiveExerciseService.createExerciseArchive(studentExam);
     }
 
     @PutMapping("/check")
-    public void checkExercises(@RequestBody ReceivedExercisesWithIdIndividualExam receivedExercisesWithIdIndividualExam, Authentication authentication) throws JsonProcessingException {
+    public void checkExercises(@RequestBody ReceivedExercisesWithExamInfo receivedExercisesWithExamInfo, Authentication authentication) throws JsonProcessingException {
         checkingExercisesService.checkExercises(
-                receivedExercisesWithIdIndividualExam.getReceivedExercises(),
-                receivedExercisesWithIdIndividualExam.getIdIndividualExam(),
-                receivedExercisesWithIdIndividualExam.getIdExam(),
+                receivedExercisesWithExamInfo.getReceivedExercises(),
+                receivedExercisesWithExamInfo.getIndividualExamId(),
+                receivedExercisesWithExamInfo.getExamId(),
                 authentication
         );
     }

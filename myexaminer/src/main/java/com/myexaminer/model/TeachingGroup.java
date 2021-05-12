@@ -17,10 +17,9 @@ import java.util.Set;
 public class TeachingGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "teaching_group_id")
-    private Long idTeachingGroup;
+    private Long id;
 
-    @Column(name = "teaching_group_name")
+    @Column(name = "group_name")
     private String name;
 
     private String accessCode;
@@ -41,6 +40,7 @@ public class TeachingGroup {
             inverseJoinColumns = @JoinColumn(name = "fk_student_account_id")
     )
     @JsonIgnore
+    @Builder.Default
     private Set<Student> students = new HashSet<>();
 
     @OneToMany(mappedBy="teachingGroup")

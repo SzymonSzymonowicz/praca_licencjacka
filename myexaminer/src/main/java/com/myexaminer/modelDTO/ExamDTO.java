@@ -13,29 +13,29 @@ import static com.myexaminer.component.DateUtils.parseDateToString;
 @AllArgsConstructor
 public class ExamDTO {
 
-    private Long idExam;
+    private Long id;
 
     @JsonProperty
-    private String examName;
+    private String name;
 
     @JsonProperty
-    private String examDescription;
+    private String description;
 
     @JsonProperty
-    private String examAvailableDate;
+    private String availableFrom;
 
     @JsonProperty
-    private Long examDurationTime;
+    private Long duration;
 
-    private String examStatus;
+    private String state;
 
     public ExamDTO(Exam exam) {
-        this.idExam = exam.getIdExam();
-        this.examName = exam.getExamName();
-        this.examDescription = exam.getDescription();
-        this.examAvailableDate = parseDateToString(exam.getAvailableDate());
-        this.examDurationTime = exam.getDuration();
-        this.examStatus = exam.getStatus().name();
+        this.id = exam.getId();
+        this.name = exam.getName();
+        this.description = exam.getDescription();
+        this.availableFrom = parseDateToString(exam.getAvailableFrom());
+        this.duration = exam.getDuration();
+        this.state = exam.getState().name();
     }
 
 }

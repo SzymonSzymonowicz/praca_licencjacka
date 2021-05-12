@@ -17,7 +17,7 @@ public class Student {
 
     @Id
     @Column(name = "fk_account_id")
-    private Long idStudent;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")
@@ -40,8 +40,8 @@ public class Student {
     @OneToMany(mappedBy="student")
     private List<IndividualExam> individualExams;
 
-    public Student(Long idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
-        this.idStudent = idStudent;
+    public Student(Long id, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.index = index;
@@ -57,7 +57,7 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "idStudent=" + idStudent +
+                "id=" + id +
                 ", account=" + account +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

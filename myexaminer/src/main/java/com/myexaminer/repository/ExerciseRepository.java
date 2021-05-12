@@ -8,7 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
-    long deleteByIdExercise(Long idExercise);
-    Optional<Exercise> findByIdExercise(Long idExercise);
     List<Exercise> findByExam(Exam exam);
 }

@@ -40,10 +40,10 @@ public class NotebookService {
 
         Notebook notebook = returnNotebookByUserEmail(user);
 
-        notebook.setNotebookBody(notebookContent);
+        notebook.setContent(notebookContent);
 
         notebookSave(notebook);
 
-        log.info("Notebook with ID -> {} <- has been UPDATED by user -> {} <- with value: -> {} <-", notebook.getIdNotebook(), user, notebookContent);
+        log.info("Notebook with ID -> {} <- has been UPDATED by user -> {} <- with value: -> {} <-", notebook.getId(), user, notebookContent);
     }
 }

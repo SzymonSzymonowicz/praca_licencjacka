@@ -6,7 +6,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Log4j2
@@ -24,34 +23,34 @@ public class LecturerService {
         lecturerRepository.save(lecturer);
     }
 
-    public boolean lecturerExistsById(Long idLecturer) {
-        Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
+    public boolean lecturerExistsById(Long id) {
+        Optional<Lecturer> lecturerById = lecturerRepository.findById(id);
 
         return lecturerById.isPresent();
     }
 
-    public Lecturer returnLecturerById(Long idLecturer) {
-        Optional<Lecturer> lecturerById = lecturerRepository.findByIdLecturer(idLecturer);
+    public Lecturer returnLecturerById(Long id) {
+        Optional<Lecturer> lecturerById = lecturerRepository.findById(id);
 
-        return lecturerById.orElseThrow(() -> new NoSuchElementException("There is no Lecturer in database that you were looking for."));
+        return lecturerById.orElseThrow(() -> new EntityNotFoundException("There is no Lecturer in database that you were looking for."));
     }
 
     public void createLecturer(Lecturer lecturer) {
-        if (!accountService.accountExistsById(lecturer.getIdLecturer())) {
-            log.info("Account with given ID -> {} <- DOES NOT EXIST", lecturer.getIdLecturer());
+        if (!accountService.accountExistsById(lecturer.getId())) {
+            log.info("Account with given ID -> {} <- DOES NOT EXIST", lecturer.getId());
             return;
         }
-        if (lecturerExistsById(lecturer.getIdLecturer())) {
-            log.info("Lecturer with given ID -> {} <- ALREADY EXISTS", lecturer.getIdLecturer());
+        if (lecturerExistsById(lecturer.getId())) {
+            log.info("Lecturer with given ID -> {} <- ALREADY EXISTS", lecturer.getId());
             return;
         }
 
         lecturerSave(lecturer);
-        log.info("Lecturer with ID -> {} <- has been ADDED", lecturer.getIdLecturer());
+        log.info("Lecturer with ID -> {} <- has been ADDED", lecturer.getId());
     }
 
     public Lecturer findLecturerByEmail(String email){
-        return lecturerRepository.findByAccount_Email(email).orElseThrow(() -> new NoSuchElementException("There is no lecturer with email -> " + email));
+        return lecturerRepository.findByAccount_Email(email).orElseThrow(() -> new EntityNotFoundException("There is no lecturer with email -> " + email));
     }
 
     public Lecturer getLecturerByAccountId(Long accountId) {

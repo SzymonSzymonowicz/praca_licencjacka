@@ -33,21 +33,21 @@ public class ExamScheduler {
     }
 
     private void checkDateAndCloseExam(Exam exam){
-        int dateValue = exam.getAvailableDate().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
+        int dateValue = exam.getAvailableFrom().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
         if(dateValue <= 0){
-            exam.setStatusToClosed();
+            exam.setStateToClosed();
             examRepository.save(exam);
-            log.info("Exam with ID -> " + exam.getIdExam() + " <- has been CLOSED");
+            log.info("Exam with ID -> " + exam.getId() + " <- has been CLOSED");
         }
     }
 
     private void checkDateAndOpenExam(Exam exam){
-        int dateValue1 = exam.getAvailableDate().compareTo(LocalDateTime.now());
-        int dateValue2 = exam.getAvailableDate().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
+        int dateValue1 = exam.getAvailableFrom().compareTo(LocalDateTime.now());
+        int dateValue2 = exam.getAvailableFrom().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
         if(dateValue1 <= 0 && dateValue2 > 0){
-            exam.setStatusToOpen();
+            exam.setStateToOpen();
             examRepository.save(exam);
-            log.info("Exam with ID -> " + exam.getIdExam() + " <- has been OPENED");
+            log.info("Exam with ID -> " + exam.getId() + " <- has been OPENED");
         }
     }
 }

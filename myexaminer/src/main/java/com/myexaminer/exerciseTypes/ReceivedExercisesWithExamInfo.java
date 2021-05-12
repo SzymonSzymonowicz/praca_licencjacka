@@ -7,11 +7,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ReceivedExercisesWithIdIndividualExam {
+public class ReceivedExercisesWithExamInfo {
 
     private List<ReceivedExercise> receivedExercises;
 
-    private Long idIndividualExam;
+    private Long individualExamId;
 
-    private Long idExam;
+    private Long examId;
 }

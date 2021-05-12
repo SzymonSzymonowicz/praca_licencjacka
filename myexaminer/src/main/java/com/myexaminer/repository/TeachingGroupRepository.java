@@ -11,12 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface TeachingGroupRepository extends JpaRepository<TeachingGroup, Long> {
-    long deleteByidTeachingGroup(Long idTeachingGroup);
-    Optional<TeachingGroup> findByidTeachingGroup(Long idTeachingGroup);
     Optional<TeachingGroup> findByName(String name);
     Optional<TeachingGroup> findByStudentsContaining(Student student);
     List<TeachingGroup> findByLecturerAccountEmail(String email);
-    List<TeachingGroup> findByLecturerIdLecturer(Long id);
+    List<TeachingGroup> findByLecturerId(Long id);
     Optional<TeachingGroup> findByAccessCode(String accessCode);
     List<TeachingGroup> findAllByStudents(Student student);
     List<TeachingGroup> findAllByLecturer(Lecturer lecturer);

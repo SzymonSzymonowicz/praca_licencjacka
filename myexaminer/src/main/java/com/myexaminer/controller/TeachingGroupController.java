@@ -48,8 +48,8 @@ public class TeachingGroupController {
     }
 
     @PostMapping(path = "/{group}/students")
-    public void addStudentToGroup(@PathVariable("group") Long idTeachingGroup, @RequestParam Long idStudent) {
-        teachingGroupService.addStudentToGroup(idTeachingGroup, idStudent);
+    public void addStudentToGroup(@PathVariable("group") Long groupId, @RequestParam Long studentId) {
+        teachingGroupService.addStudentToGroup(groupId, studentId);
     }
 
     @DeleteMapping(path = "/{group}/students/{id}")

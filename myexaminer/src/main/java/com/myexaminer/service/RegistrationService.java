@@ -5,6 +5,7 @@ import com.myexaminer.model.Account;
 import com.myexaminer.model.Notebook;
 import com.myexaminer.model.Student;
 import com.myexaminer.modelDTO.RegisterDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class RegistrationService {
 
     private final RoleService roleService;
@@ -20,15 +22,7 @@ public class RegistrationService {
     private final StudentService studentService;
     private final NotebookService notebookService;
 
-    public RegistrationService(RoleService roleService, AccountService accountService, StudentService studentService, NotebookService notebookService){
-        this.roleService = roleService;
-        this.accountService = accountService;
-        this.studentService = studentService;
-        this.notebookService = notebookService;
-    }
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void registerNewStudentToDatabase(RegisterDTO registerDTO){
@@ -52,11 +46,11 @@ public class RegistrationService {
                 registerDTO.getFieldOfStudy()
         );
         studentService.studentSave(newStudent);
-        log.info("Student with ID -> {} <- has been CREATED and SAVED to database", newStudent.getIdStudent());
+        log.info("Student with ID -> {} <- has been CREATED and SAVED to database", newStudent.getId());
 
         Notebook newNotebok = new Notebook("Miłej nauki !", newAccount);
         notebookService.notebookSave(newNotebok);
 
-        log.info("Notebook with ID -> {} <- has been CREATED and SAVED to database", newNotebok.getIdNotebook());
+        log.info("Notebook with ID -> {} <- has been CREATED and SAVED to database", newNotebok.getId());
     }
 }

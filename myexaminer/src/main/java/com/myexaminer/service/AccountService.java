@@ -15,9 +15,7 @@ import java.util.Optional;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public void accountSave(Account account) {
         accountRepository.save(account);

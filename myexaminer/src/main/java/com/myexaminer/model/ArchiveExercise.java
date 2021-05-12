@@ -13,7 +13,6 @@ import javax.persistence.*;
 public class ArchiveExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "archive_exercise_id")
     private Long id;
 
     @ManyToOne

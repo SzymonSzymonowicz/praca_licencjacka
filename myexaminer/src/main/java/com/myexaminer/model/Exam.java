@@ -1,6 +1,6 @@
 package com.myexaminer.model;
 
-import com.myexaminer.enums.Status;
+import com.myexaminer.enums.State;
 import com.myexaminer.modelDTO.ExamDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,20 +24,18 @@ public class Exam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exam_id")
-    private Long idExam;
+    private Long id;
 
-    private String examName;
+    private String name;
 
     private String description;
 
-    private LocalDateTime availableDate;
+    private LocalDateTime availableFrom;
 
     private Long duration;
 
-    @Column(name = "exam_status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private State state;
 
     @ManyToOne
     @JoinColumn(name="fk_teaching_group_id", nullable=false)
@@ -52,45 +50,45 @@ public class Exam {
     @Override
     public String toString() {
         return "Exam{" +
-                "idExam=" + idExam +
-                ", examName='" + examName + '\'' +
-                ", examDescription='" + description + '\'' +
-                ", examAvailableDate=" + availableDate +
-                ", examDurationTime=" + duration +
-                ", teachingGroup=" + teachingGroup.getIdTeachingGroup() +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", availableFrom=" + availableFrom +
+                ", duration=" + duration +
+                ", teachingGroup=" + teachingGroup.getId() +
                 '}';
     }
 
-    public void setStatusToHidden(){
-        setStatus(Status.HIDDEN);
+    public void setStateToHidden(){
+        setState(State.HIDDEN);
     }
 
-    public void setStatusToDraft(){
-        setStatus(Status.DRAFT);
+    public void setStateToDraft(){
+        setState(State.DRAFT);
     }
 
-    public void setStatusToClosed(){
-        setStatus(Status.CLOSED);
+    public void setStateToClosed(){
+        setState(State.CLOSED);
     }
 
-    public void setStatusToOpen(){
-        setStatus(Status.OPEN);
+    public void setStateToOpen(){
+        setState(State.OPEN);
     }
 
-    public void setStatusToChecked(){
-        setStatus(Status.CHECKED);
+    public void setStateToChecked(){
+        setState(State.CHECKED);
     }
 
-    public boolean isClosed(){return getStatus().equals(Status.CLOSED);}
+    public boolean isClosed(){return getState().equals(State.CLOSED);}
 
-    public boolean isOpened(){return getStatus().equals(Status.OPEN);}
+    public boolean isOpened(){return getState().equals(State.OPEN);}
 
     public static Exam mapExamDTOToExam(ExamDTO examDTO){
         return Exam.builder()
-                .examName(examDTO.getExamName())
-                .availableDate(parseStringToDate(examDTO.getExamAvailableDate()))
-                .description(examDTO.getExamDescription())
-                .duration(examDTO.getExamDurationTime())
+                .name(examDTO.getName())
+                .availableFrom(parseStringToDate(examDTO.getAvailableFrom()))
+                .description(examDTO.getDescription())
+                .duration(examDTO.getDuration())
                 .build();
     }
 }

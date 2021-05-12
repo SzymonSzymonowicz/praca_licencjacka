@@ -24,7 +24,7 @@ public class NotebookController {
 
     @GetMapping
     public String getNotebookContent(HttpServletRequest request) {
-        return notebookService.returnNotebookByUserEmail(request.getUserPrincipal().getName()).getNotebookBody();
+        return notebookService.returnNotebookByUserEmail(request.getUserPrincipal().getName()).getContent();
     }
 
     @PutMapping

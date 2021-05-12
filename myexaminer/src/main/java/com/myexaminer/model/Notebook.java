@@ -14,18 +14,17 @@ public class Notebook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notebook_id")
-    private Long idNotebook;
+    private Long id;
 
-    @Column(name = "notebook_body", columnDefinition="longtext")
-    private String notebookBody;
+    @Column(columnDefinition="longtext")
+    private String content;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")
     Account account;
 
-    public Notebook(String notebookBody, Account account) {
-        this.notebookBody = notebookBody;
+    public Notebook(String content, Account account) {
+        this.content = content;
         this.account = account;
     }
 }

@@ -34,8 +34,8 @@ public class ExerciseController {
     }
 
     @GetMapping
-    public Exercise getExercise(@RequestBody Map<String, Long> map_idExercise) {
-        return exerciseService.getExercise(map_idExercise);
+    public Exercise getExercise(@RequestBody Map<String, Long> map_id) {
+        return exerciseService.getExercise(map_id);
     }
 
     @PostMapping
@@ -43,9 +43,9 @@ public class ExerciseController {
         exerciseService.createExercise(exercise);
     }
 
-    @GetMapping("/{idExam}")
-    public Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Long idExam, HttpServletRequest request) {
-        return exerciseService.getExerciseDTOList(idExam, request);
+    @GetMapping("/{id}")
+    public Iterable<ExerciseDTO> getAllExercisesById(@PathVariable Long id, HttpServletRequest request) {
+        return exerciseService.getExerciseDTOList(id, request);
     }
 
     @PostMapping("/save")
@@ -53,17 +53,17 @@ public class ExerciseController {
         exerciseService.saveExercises(receivedExerciseList);
     }
 
-    @PostMapping("/create/open/{idExam}")
+    @PostMapping("/create/open/{id}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createOpenExercise(@RequestBody OpenExercise openExercise,
-                                     @PathVariable Long idExam) throws JsonProcessingException {
-        exerciseService.createExerciseTypeO(openExercise, idExam);
+                                     @PathVariable Long id) throws JsonProcessingException {
+        exerciseService.createExerciseTypeO(openExercise, id);
     }
 
-    @PostMapping("/create/closed/{idExam}")
+    @PostMapping("/create/closed/{id}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createClosedExercise(@RequestBody ClosedExercise closedExercise,
-                                   @PathVariable Long idExam) throws JsonProcessingException {
-        exerciseService.createExerciseTypeZ(closedExercise, idExam);
+                                   @PathVariable Long id) throws JsonProcessingException {
+        exerciseService.createExerciseTypeZ(closedExercise, id);
     }
 }

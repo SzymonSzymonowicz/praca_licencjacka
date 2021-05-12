@@ -15,7 +15,7 @@ public class Lecturer {
 
     @Id
     @Column(name = "fk_account_id")
-    private Long idLecturer;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")
@@ -35,7 +35,7 @@ public class Lecturer {
     @Override
     public String toString() {
         return "Lecturer{" +
-                "idLecturer=" + idLecturer +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", homePage='" + homePage + '\'' +

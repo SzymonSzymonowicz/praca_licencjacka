@@ -1,6 +1,6 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.enums.Status;
+import com.myexaminer.enums.State;
 import com.myexaminer.model.Exam;
 import com.myexaminer.modelDTO.ExamDTO;
 import com.myexaminer.modelDTO.GenericOneValue;
@@ -31,8 +31,8 @@ public class ExamController {
     }
 
     @GetMapping
-    public Exam getExam(@RequestBody Map<String, Long> map_idExam) {
-        return examService.getExam(map_idExam);
+    public Exam getExam(@RequestBody Map<String, Long> map_id) {
+        return examService.getExam(map_id);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
@@ -47,8 +47,8 @@ public class ExamController {
     }
 
     @GetMapping("/status")
-    public Status getExamStatus(@RequestBody GenericOneValue idExam) {
-        return examService.getStatus(idExam);
+    public State getExamStatus(@RequestBody GenericOneValue id) {
+        return examService.getState(id);
     }
 
     @PutMapping("/status")

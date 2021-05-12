@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 public class ExerciseDTO {
 
-    private Long idExercise;
+    private Long id;
 
-    private String exerciseBody;
+    private String content;
 
     public ExerciseDTO(Exercise exercise) {
-        this.idExercise = exercise.getIdExercise();
-        this.exerciseBody = exercise.getExerciseBody();
+        this.id = exercise.getId();
+        this.content = exercise.getContent();
     }
 }

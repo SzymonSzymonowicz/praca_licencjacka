@@ -7,7 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Log4j2
@@ -22,16 +21,16 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public boolean studentExistsById(Long idStudent) {
-        Optional<Student> userById = studentRepository.findByIdStudent(idStudent);
+    public boolean studentExistsById(Long id) {
+        Optional<Student> userById = studentRepository.findById(id);
 
         return userById.isPresent();
     }
 
-    public Student getStudentById(Long idStudent) {
-        Optional<Student> studentById = studentRepository.findByIdStudent(idStudent);
+    public Student getStudentById(Long id) {
+        Optional<Student> studentById = studentRepository.findById(id);
 
-        return studentById.orElseThrow(() -> new EntityNotFoundException("Student with id " + idStudent + "does not exist!"));
+        return studentById.orElseThrow(() -> new EntityNotFoundException("Student with id " + id + "does not exist!"));
     }
 
     public Student getStudentByAccountId(Long accountId) {
@@ -55,20 +54,20 @@ public class StudentService {
     }
 
     public void createStudent(Student student) {
-        if (!accountService.accountExistsById(student.getIdStudent())) {
-            log.info("Account with given ID -> {} <- DOES NOT EXIST", student.getIdStudent());
+        if (!accountService.accountExistsById(student.getId())) {
+            log.info("Account with given ID -> {} <- DOES NOT EXIST", student.getId());
             return;
         }
-        if (studentExistsById(student.getIdStudent())) {
-            log.info("Student with given ID -> {} <- ALREADY EXISTS", student.getIdStudent());
+        if (studentExistsById(student.getId())) {
+            log.info("Student with given ID -> {} <- ALREADY EXISTS", student.getId());
             return;
         }
 
         studentSave(student);
-        log.info("Student with ID -> {} <- has been ADDED", student.getIdStudent());
+        log.info("Student with ID -> {} <- has been ADDED", student.getId());
     }
 
     public Student findStudentByEmail(String email){
-        return studentRepository.findByAccountEmail(email).orElseThrow(() -> new NoSuchElementException("There is no student with given email -> " + email));
+        return studentRepository.findByAccountEmail(email).orElseThrow(() -> new EntityNotFoundException("There is no student with given email -> " + email));
     }
 }
