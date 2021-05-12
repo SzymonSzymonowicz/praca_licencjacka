@@ -13,17 +13,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class LecturerIndividualExamView {
 
-    private int idIndividualExam;
+    private Long individualExamId;
 
     private String examName;
 
     private String examDescription;
 
-    private LocalDateTime examAvailableDate;
+    private LocalDateTime examAvailableFrom;
 
-    private int idTeachingGroup;
+    private Long teachingGroupId;
 
-    private String nameTeachingGroup;
+    private String teachingGroupName;
 
     private String studentIndex;
 }

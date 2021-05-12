@@ -4,48 +4,43 @@ import com.myexaminer.model.ArchiveExercise;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.model.IndividualExam;
 import com.myexaminer.modelDTO.ArchiveExerciseDTO;
-import com.myexaminer.modelDTO.TwoIdObject;
+import com.myexaminer.modelDTO.StudentExam;
 import com.myexaminer.repository.ArchiveExerciseRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class ArchiveExerciseService {
 
     private final ArchiveExerciseRepository archiveExerciseRepository;
     private final ExamService examService;
     private final IndividualExamService individualExamService;
 
-    public ArchiveExerciseService(ArchiveExerciseRepository archiveExerciseRepository, ExamService examService, IndividualExamService individualExamService) {
-        this.archiveExerciseRepository = archiveExerciseRepository;
-        this.examService = examService;
-        this.individualExamService = individualExamService;
-    }
-
     public void exerciseSave(ArchiveExercise archiveExercise) {
         archiveExerciseRepository.save(archiveExercise);
     }
 
-    public Optional<ArchiveExercise> returnOptionalArchiveExerciseByExerciseAndIndividualExam(int idExercise, int idIndividualExam) {
-
-        return archiveExerciseRepository.findByExerciseIdExerciseAndIndividualExamIdIndividualExam(idExercise, idIndividualExam);
+    public Optional<ArchiveExercise> getOptionalArchiveExerciseByExerciseAndIndividualExam(Long exerciseId, Long individualExamId) {
+        return archiveExerciseRepository.findByExerciseIdAndIndividualExamId(exerciseId, individualExamId);
     }
 
-    public ArchiveExercise returnArchiveExerciseByExerciseAndIndividualExam(int idExercise, int idIndividualExam) {
+    public ArchiveExercise getArchiveExerciseByExerciseAndIndividualExam(Long exerciseId, Long individualExamId) {
 
-        return returnOptionalArchiveExerciseByExerciseAndIndividualExam(idExercise, idIndividualExam)
-                .orElseThrow(() -> new NoSuchElementException("There is no Archive Exercise in database that you were looking for."));
+        return getOptionalArchiveExerciseByExerciseAndIndividualExam(exerciseId, individualExamId)
+                .orElseThrow(() -> new EntityNotFoundException("There is no Archive Exercise in database that you were looking for."));
     }
 
-    public boolean doArchiveExerciseExists(int idExercise, int idIndividualExam) {
-        return returnOptionalArchiveExerciseByExerciseAndIndividualExam(idExercise, idIndividualExam).isPresent();
+    public boolean doArchiveExerciseExists(Long exerciseId, Long individualExamId) {
+        return getOptionalArchiveExerciseByExerciseAndIndividualExam(exerciseId, individualExamId).isPresent();
     }
 
     public void createNewArchiveExercises(List<Exercise> exerciseList, IndividualExam individualExam) {
@@ -64,15 +59,17 @@ public class ArchiveExerciseService {
         }
     }
 
-    public List<ArchiveExerciseDTO> archiveExercisesDTOByExamIdAndIdIndividualExam(int idExam, int idIndividualExam) {
+    public List<ArchiveExerciseDTO> archiveExercisesDTOByExamIdAndIndividualExamId(Long examId, Long individualExamId) {
         List<ArchiveExercise> archiveExerciseList = new ArrayList<>();
-        for (Exercise exercise : examService.returnExamById(idExam).getExercises()) {
+        for (Exercise exercise : examService.getExamById(examId).getExercises()) {
             archiveExerciseList.add(
-                    returnArchiveExerciseByExerciseAndIndividualExam(exercise.getIdExercise(), idIndividualExam)
+                    getArchiveExerciseByExerciseAndIndividualExam(exercise.getId(), individualExamId)
             );
         }
 
-        return archiveExerciseList.stream().map(exercise -> new ArchiveExerciseDTO((exercise))).collect(Collectors.toList());
+        return archiveExerciseList.stream()
+                .map(exercise -> new ArchiveExerciseDTO((exercise)))
+                .collect(Collectors.toList());
     }
 
     public String toJSONString(String answer) {
@@ -83,19 +80,19 @@ public class ArchiveExerciseService {
         return jsonAnswer.toString();
     }
 
-    public void createExerciseArchive(TwoIdObject twoIdObject) {
-        int idStudent = twoIdObject.getIdStudent();
-        int idExam = twoIdObject.getIdExam();
+    public void createExerciseArchive(StudentExam studentExam) {
+        Long studentId = studentExam.getStudentId();
+        Long examId = studentExam.getExamId();
 
         IndividualExam individualExam = individualExamService
-                .createOrGetIndividualExamAndReturn(idStudent, idExam);
+                .createOrGetIndividualExamAndReturn(studentId, examId);
 
         if (doArchiveExerciseExists(
-                examService.returnExamById(idExam).getExercises().get(0).getIdExercise(),
-                individualExam.getIdIndividualExam())) {
+                examService.getExamById(examId).getExercises().get(0).getId(),
+                individualExam.getId())) {
             return;
         } else {
-            createNewArchiveExercises(examService.returnExamById(idExam).getExercises(), individualExam);
+            createNewArchiveExercises(examService.getExamById(examId).getExercises(), individualExam);
             return;
         }
     }

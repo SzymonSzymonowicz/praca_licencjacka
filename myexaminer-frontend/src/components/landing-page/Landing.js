@@ -169,7 +169,7 @@ export default function Landing() {
       {
         "name": "Oceń egzaminy",
         "icon": <DoneOutlineIcon/>,
-        "subpage": "examstocheck"
+        "subpage": "checking"
       }
     ]
   ]
@@ -333,7 +333,7 @@ export default function Landing() {
             <Route path={`${match.path}/examresults/:id`}>
               <ExamResults/>
             </Route>
-            {isLecturer && <Route path={`${match.path}/examstocheck`}>
+            {isLecturer && <Route path={`${match.path}/checking`}>
               <ExamsToCheck/>
             </Route>}
             {isLecturer && <Route path={`${match.path}/checkexam/:id`}>

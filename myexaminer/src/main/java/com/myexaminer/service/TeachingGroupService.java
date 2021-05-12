@@ -3,10 +3,8 @@ package com.myexaminer.service;
 import com.myexaminer.enums.RoleEnum;
 import com.myexaminer.model.Account;
 import com.myexaminer.model.Lecturer;
-import com.myexaminer.model.Role;
 import com.myexaminer.model.Student;
 import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.modelDTO.AccessCodeDTO;
 import com.myexaminer.modelDTO.TeachingGroupDTO;
 import com.myexaminer.repository.TeachingGroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +19,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Set;
 
 @Log4j2
 @Service
@@ -39,29 +35,29 @@ public class TeachingGroupService {
         teachingGroupRepository.save(teachingGroup);
     }
 
-    public boolean teachingGroupExistsById(int idTeachingGroup) {
-        Optional<TeachingGroup> teachingGroupById = teachingGroupRepository.findByidTeachingGroup(idTeachingGroup);
+    public boolean teachingGroupExistsById(Long id) {
+        Optional<TeachingGroup> teachingGroupById = teachingGroupRepository.findById(id);
 
         return teachingGroupById.isPresent();
     }
 
-    public List<TeachingGroup> findAllGroups(){
+    public List<TeachingGroup> findAllGroups() {
         return teachingGroupRepository.findAll();
     }
 
-    public TeachingGroup getTeachingGroupById(int idTeachingGroup) {
-        Optional<TeachingGroup> teachingGroup = teachingGroupRepository.findByidTeachingGroup(idTeachingGroup);
+    public TeachingGroup getTeachingGroupById(Long id) {
+        Optional<TeachingGroup> teachingGroup = teachingGroupRepository.findById(id);
 
-        return teachingGroup.orElseThrow(() -> new EntityNotFoundException("Group with id " + idTeachingGroup + " does not exist!"));
+        return teachingGroup.orElseThrow(() -> new EntityNotFoundException("Group with id " + id + " does not exist!"));
     }
 
-    public TeachingGroup getTeachingGroupByStudentId(int studentId) {
+    public TeachingGroup getTeachingGroupByStudentId(Long studentId) {
         Student student = studentService.getStudentById(studentId);
 
         return teachingGroupRepository
                 .findByStudentsContaining(student)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("There is no group containing student with id " + studentId  + "."));
+                        new EntityNotFoundException("There is no group containing student with id " + studentId + "."));
     }
 
     public boolean teachingGroupExistsByName(String teachingGroupName) {
@@ -70,10 +66,10 @@ public class TeachingGroupService {
         return teachingGroupExistsByName.isPresent();
     }
 
-    public void addStudentToTeachingGroup(int idTeachingGroup, int idStudent) {
-        TeachingGroup teachingGroup = getTeachingGroupById(idTeachingGroup);
+    public void addStudentToTeachingGroup(Long groupId, Long studentId) {
+        TeachingGroup teachingGroup = getTeachingGroupById(groupId);
 
-        Student student = studentService.getStudentById(idStudent);
+        Student student = studentService.getStudentById(studentId);
 
         teachingGroup.addStudent(student);
 
@@ -88,8 +84,8 @@ public class TeachingGroupService {
         return teachingGroupRepository.findByLecturerAccountEmail(email);
     }
 
-    public List<TeachingGroup> getTeachingGroupsByLecturerId(int id) {
-        return teachingGroupRepository.findByLecturerIdLecturer(id);
+    public List<TeachingGroup> getTeachingGroupsByLecturerId(Long id) {
+        return teachingGroupRepository.findByLecturerId(id);
     }
 
     public void createTeachingGroup(TeachingGroupDTO teachingGroupDTO, Authentication authentication) {
@@ -108,41 +104,41 @@ public class TeachingGroupService {
                 .build();
 
         teachingGroupSave(teachingGroup);
-        log.info("Group with ID -> {} <- has been ADDED", teachingGroup.getIdTeachingGroup());
+        log.info("Group with ID -> {} <- has been ADDED", teachingGroup.getId());
     }
 
-    public void addStudentToGroup(int idTeachingGroup, int idStudent) {
-        if (!teachingGroupExistsById(idTeachingGroup)) {
-            log.info("Group with given ID -> {} <- DOES NOT EXIST", idTeachingGroup);
+    public void addStudentToGroup(Long groupId, Long studentId) {
+        if (!teachingGroupExistsById(groupId)) {
+            log.info("Group with given ID -> {} <- DOES NOT EXIST", groupId);
             return;
         }
 
-        if (!studentService.studentExistsById(idStudent)) {
-            log.info("Student with given ID -> {} <- DOES NOT EXIST", idStudent);
+        if (!studentService.studentExistsById(studentId)) {
+            log.info("Student with given ID -> {} <- DOES NOT EXIST", studentId);
             return;
         }
 
-        addStudentToTeachingGroup(idTeachingGroup, idStudent);
-        log.info("Student with ID -> {} <- has been ADDED to TeachingGroup with ID -> {} <-", idStudent, idTeachingGroup);
+        addStudentToTeachingGroup(groupId, studentId);
+        log.info("Student with ID -> {} <- has been ADDED to TeachingGroup with ID -> {} <-", studentId, groupId);
     }
 
-    public void removeStudentFromGroup(int groupId, int studentId) {
+    public void removeStudentFromGroup(Long groupId, Long studentId) {
         TeachingGroup group = getTeachingGroupById(groupId);
         group.removeStudent(studentService.getStudentById(studentId));
         teachingGroupRepository.save(group);
     }
 
-    public void deleteGroup(int groupId) {
+    public void deleteGroup(Long groupId) {
         teachingGroupRepository.deleteById(groupId);
         log.info("TeachingGroup with ID -> {} <- has been deleted", groupId);
     }
 
-    public TeachingGroup findTeachingGroupByAccessCode(String code){
-        TeachingGroup teachingGroup = teachingGroupRepository.getOne(1);
-        return teachingGroupRepository.findByAccessCode(teachingGroup.getAccessCode()).orElseThrow(() -> new NoSuchElementException("There is no teaching group with given code -> " + code));
+    public TeachingGroup findTeachingGroupByAccessCode(String code) {
+        return teachingGroupRepository.findByAccessCode(code)
+                .orElseThrow(() -> new EntityNotFoundException("There is no teaching group with given code -> " + code));
     }
 
-    public ResponseEntity addStudentToGroupByCode(String accessCode, Authentication authentication){
+    public ResponseEntity addStudentToGroupByCode(String accessCode, Authentication authentication) {
         TeachingGroup teachingGroup = findTeachingGroupByAccessCode(accessCode);
         Student student = studentService.findStudentByEmail(authentication.getName());
 
@@ -152,7 +148,7 @@ public class TeachingGroupService {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Student " + authentication.getName() + " has been added to teaching group");
     }
 
-    public List<TeachingGroup> getTeachingGroupByAccountId(Integer accountId) {
+    public List<TeachingGroup> getTeachingGroupByAccountId(Long accountId) {
         Account account = accountService.getAccountById(accountId);
 
         if (account.hasRole(RoleEnum.ROLE_STUDENT)) {

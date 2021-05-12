@@ -1,6 +1,6 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.enums.Status;
+import com.myexaminer.enums.State;
 import com.myexaminer.model.Exam;
 import com.myexaminer.modelDTO.ExamDTO;
 import com.myexaminer.modelDTO.GenericOneValue;
@@ -31,24 +31,24 @@ public class ExamController {
     }
 
     @GetMapping
-    public Exam getExam(@RequestBody Map<String, Integer> map_idExam) {
-        return examService.getExam(map_idExam);
+    public Exam getExam(@RequestBody Map<String, Long> map_id) {
+        return examService.getExam(map_id);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/{idGroup}")
-    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable int idGroup) throws ParseException {
+    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) throws ParseException {
         examService.createExam(examDTO, idGroup);
     }
 
     @GetMapping("/{idGroup}")
-    public Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable int idGroup) {
+    public Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable Long idGroup) {
         return examService.getExamDTOSByIdGroup(idGroup);
     }
 
     @GetMapping("/status")
-    public Status getExamStatus(@RequestBody GenericOneValue idExam) {
-        return examService.getStatus(idExam);
+    public State getExamStatus(@RequestBody GenericOneValue id) {
+        return examService.getState(id);
     }
 
     @PutMapping("/status")

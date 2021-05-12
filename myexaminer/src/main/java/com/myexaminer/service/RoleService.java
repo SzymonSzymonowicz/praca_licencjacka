@@ -14,7 +14,7 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public Role getRoleByName(RoleEnum roleEnum){
+    public Role getRoleByName(RoleEnum roleEnum) {
         return roleRepository.findByName(roleEnum)
                 .orElseThrow(() -> new EntityNotFoundException("Role of name (enum): " + roleEnum + " was not found."));
     }

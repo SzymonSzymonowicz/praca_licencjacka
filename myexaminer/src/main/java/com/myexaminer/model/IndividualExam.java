@@ -4,7 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,18 +22,17 @@ public class IndividualExam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "individual_exam_id")
-    private int idIndividualExam;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name="fk_exam_id", nullable=false)
+    @JoinColumn(name = "fk_exam_id", nullable = false)
     private Exam mainExam;
 
     @ManyToOne
-    @JoinColumn(name="fk_student_id", nullable=false)
+    @JoinColumn(name = "fk_student_id", nullable = false)
     private Student student;
 
-    @OneToMany(mappedBy="individualExam")
+    @OneToMany(mappedBy = "individualExam")
     private List<ArchiveExercise> archiveExercises;
 
     private boolean isChecked;

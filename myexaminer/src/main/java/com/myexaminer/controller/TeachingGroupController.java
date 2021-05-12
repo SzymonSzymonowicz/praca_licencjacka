@@ -1,7 +1,6 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.modelDTO.AccessCodeDTO;
 import com.myexaminer.modelDTO.TeachingGroupDTO;
 import com.myexaminer.service.TeachingGroupService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,14 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -33,7 +39,7 @@ public class TeachingGroupController {
 //
 
     @GetMapping("/account/{accountId}")
-    public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Integer accountId) {
+    public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Long accountId) {
         return teachingGroupService.getTeachingGroupByAccountId(accountId);
     }
 
@@ -44,34 +50,34 @@ public class TeachingGroupController {
     }
 
     @DeleteMapping(path = "/{group}")
-    public void removeGroup(@PathVariable("group") int groupId) {
+    public void removeGroup(@PathVariable("group") Long groupId) {
         teachingGroupService.deleteGroup(groupId);
     }
 
     @PostMapping(path = "/{group}/students")
-    public void addStudentToGroup(@PathVariable("group") int idTeachingGroup, @RequestParam int idStudent) {
-        teachingGroupService.addStudentToGroup(idTeachingGroup, idStudent);
+    public void addStudentToGroup(@PathVariable("group") Long groupId, @RequestParam Long studentId) {
+        teachingGroupService.addStudentToGroup(groupId, studentId);
     }
 
     @DeleteMapping(path = "/{group}/students/{id}")
-    public void removeStudentFromGroup(@PathVariable("group") int groupId, @PathVariable("id") int studentId) {
+    public void removeStudentFromGroup(@PathVariable("group") Long groupId, @PathVariable("id") Long studentId) {
         teachingGroupService.removeStudentFromGroup(groupId, studentId);
     }
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping(path = "/students")
-    public ResponseEntity addStudentToGroupByCode(@RequestBody String accessCode, Authentication authentication){
+    public ResponseEntity addStudentToGroupByCode(@RequestBody String accessCode, Authentication authentication) {
         return teachingGroupService.addStudentToGroupByCode(accessCode, authentication);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @GetMapping("/lecturers")
-    public List<TeachingGroup> getLectorsTeachingGroups(Authentication authentication){
+    public List<TeachingGroup> getLectorsTeachingGroups(Authentication authentication) {
         return teachingGroupService.returnTeachingGroupsByLecturerEmail(authentication.getName());
     }
 
     @GetMapping
-    public List<TeachingGroup> getTeachingGroups(){
+    public List<TeachingGroup> getTeachingGroups() {
         return teachingGroupService.findAllGroups();
     }
 }

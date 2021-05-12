@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TwoIdObject {
+public class StudentExam {
 
-    private int idStudent;
+    private Long studentId;
 
-    private int idExam;
+    private Long examId;
 }

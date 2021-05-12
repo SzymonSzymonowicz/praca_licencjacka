@@ -9,7 +9,7 @@ import com.myexaminer.security.service.AccountDetails;
 import com.myexaminer.service.AccountService;
 import com.myexaminer.service.RegistrationService;
 import com.myexaminer.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,23 +30,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/account")
+@RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
     private final RegistrationService registrationService;
     private final StudentService studentService;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    JwtUtils jwtUtils;
-
-    public AccountController(AccountService accountService, RegistrationService registrationService, StudentService studentService) {
-        this.accountService = accountService;
-        this.registrationService = registrationService;
-        this.studentService = studentService;
-    }
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
 
     // TODO Validation for registerDTO
     @PostMapping

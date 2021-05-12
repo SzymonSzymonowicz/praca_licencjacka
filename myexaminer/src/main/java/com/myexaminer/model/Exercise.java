@@ -6,7 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Getter
@@ -19,16 +26,15 @@ public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exercise_id")
-    private int idExercise;
+    private Long id;
 
-    @Column(columnDefinition="json")
-    private String exerciseBody;
+    @Column(columnDefinition = "json")
+    private String content;
 
     @ManyToOne
-    @JoinColumn(name="fk_exam_id", nullable=false)
+    @JoinColumn(name = "fk_exam_id", nullable = false)
     private Exam exam;
 
-    @OneToMany(mappedBy="exercise")
+    @OneToMany(mappedBy = "exercise")
     private List<ArchiveExercise> archiveExercises;
 }

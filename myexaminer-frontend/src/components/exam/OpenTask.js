@@ -5,16 +5,16 @@ export default function OpenTask(props) {
   const [assignedPoints, setAssignedPoints] = React.useState(props.modify ? props.answered[props.index]['gainedPoints'] : null);
 
   const handleChange = (event) => {
-    if(!props.answered.some(item => item['idExercise'] === props.id))
-      props.setAnswered(props.answered.concat({idExercise: props.id, answer: event.target.value}))
+    if(!props.answered.some(item => item['id'] === props.id))
+      props.setAnswered(props.answered.concat({id: props.id, answer: event.target.value}))
     else
-      props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {idExercise: props.id, answer: event.target.value} : item))
+      props.setAnswered(props.answered.map(item => item['id'] === props.id ? {id: props.id, answer: event.target.value} : item))
   };
 
   const handlePointsChange = (event) => {
     setAssignedPoints(event.target.value);
     
-    props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {...item, gainedPoints: event.target.value} : item))
+    props.setAnswered(props.answered.map(item => item['id'] === props.id ? {...item, gainedPoints: event.target.value} : item))
   };
 
   const pointsString = props.loadValue === true ?  `(${props.answered[props.index]['gainedPoints']} / ${props.points} pkt.)` : `(${props.points} pkt.)`
@@ -37,7 +37,7 @@ export default function OpenTask(props) {
           onChange={handleChange}
 
           {...(props.loadValue === true && {
-            value: props.answered.find(item => item['idExercise'] === props.id)['answer'],
+            value: props.answered.find(item => item['id'] === props.id)['answer'],
             disabled: true,
             label: null,
           })}

@@ -1,6 +1,6 @@
 package com.myexaminer.service;
 
-import com.myexaminer.enums.Status;
+import com.myexaminer.enums.State;
 import com.myexaminer.model.Exam;
 import com.myexaminer.model.TeachingGroup;
 import com.myexaminer.modelDTO.ExamDTO;
@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,63 +30,63 @@ public class ExamService {
         examRepository.save(exam);
     }
 
-    public boolean examExistsById(int idExam) {
-        Optional<Exam> examById = examRepository.findByIdExam(idExam);
+    public boolean examExistsById(Long id) {
+        Optional<Exam> examById = examRepository.findById(id);
 
         return examById.isPresent();
     }
 
-    public Exam returnExamById(int idExam) {
-        Optional<Exam> examById = examRepository.findByIdExam(idExam);
+    public Exam getExamById(Long id) {
+        Optional<Exam> examById = examRepository.findById(id);
 
-        return examById.orElseThrow(() -> new NoSuchElementException("There is no Exam in database that you were looking for."));
+        return examById.orElseThrow(() -> new EntityNotFoundException("There is no Exam in database that you were looking for."));
     }
 
     public Iterable<Exam> returnAllExams() {
         return examRepository.findAll();
     }
 
-    public Exam getExam(Map<String, Integer> map_idExam) {
-        Integer idExam = map_idExam.get("idExam");
-        if (!examExistsById(idExam)) {
-            log.info("Exam with given ID -> {} <- DOES NOT EXIST", idExam);
+    public Exam getExam(Map<String, Long> map_id) {
+        Long id = map_id.get("id");
+        if (!examExistsById(id)) {
+            log.info("Exam with given ID -> {} <- DOES NOT EXIST", id);
             return null;
         }
 
-        Exam returnedExam = returnExamById(idExam);
+        Exam returnedExam = getExamById(id);
 
-        log.info("Exam with ID -> {} <- HAS BEEN RETURNED", returnedExam.getIdExam());
+        log.info("Exam with ID -> {} <- HAS BEEN RETURNED", returnedExam.getId());
 
         return returnedExam;
     }
 
-    public void createExam(ExamDTO examDTO, Integer id){
+    public void createExam(ExamDTO examDTO, Long id) {
         Exam exam = Exam.mapExamDTOToExam(examDTO);
-        exam.setStatusToDraft();
+        exam.setStateToDraft();
 
         TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(id);
         exam.setTeachingGroup(teachingGroup);
 
         examSave(exam);
-        log.info("Exam with ID -> {} <- has been ADDED", exam.getIdExam());
+        log.info("Exam with ID -> {} <- has been ADDED", exam.getId());
     }
 
-    public List<ExamDTO> getExamDTOSByIdGroup(int idGroup) {
+    public List<ExamDTO> getExamDTOSByIdGroup(Long idGroup) {
         return StreamSupport.stream(returnAllExams().spliterator(), false).
-                filter(exam -> exam.getTeachingGroup().getIdTeachingGroup() == idGroup).
+                filter(exam -> exam.getTeachingGroup().getId() == idGroup).
                 map(ExamDTO::new).collect(Collectors.toList());
     }
 
-    public Status getStatus(GenericOneValue idExam) {
-        return returnExamById((Integer) idExam.getFirstValue()).getStatus();
+    public State getState(GenericOneValue id) {
+        return getExamById((Long) id.getFirstValue()).getState();
     }
 
     public void updateExamStatus(GenericTwoValues genericTwoValues) {
-        Integer idExam = (Integer) genericTwoValues.getFirstValue();
-        Status status = Status.valueOf((String) genericTwoValues.getSecondValue());
+        Long id = (Long) genericTwoValues.getFirstValue();
+        State state = State.valueOf((String) genericTwoValues.getSecondValue());
 
-        Exam exam = returnExamById(idExam);
-        exam.setStatus(status);
+        Exam exam = getExamById(id);
+        exam.setState(state);
 
         examSave(exam);
     }

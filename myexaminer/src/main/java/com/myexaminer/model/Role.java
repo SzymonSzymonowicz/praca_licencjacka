@@ -13,9 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,7 +23,7 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roleId;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
@@ -34,11 +32,12 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<Account> accounts = new HashSet<>();
 
-    public void addAccount(Account account){
+    public void addAccount(Account account) {
         accounts.add(account);
         account.getRoles().add(this);
     }
-    public void removeAccount(Account account){
+
+    public void removeAccount(Account account) {
         accounts.remove(account);
         account.getRoles().remove(this);
     }

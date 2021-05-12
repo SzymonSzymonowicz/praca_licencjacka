@@ -2,7 +2,7 @@ package com.myexaminer.enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public enum Status {
+public enum State {
     @JsonProperty("HIDDEN")
     HIDDEN,
     @JsonProperty("OPEN")

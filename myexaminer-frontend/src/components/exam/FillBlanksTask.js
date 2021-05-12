@@ -12,17 +12,17 @@ export default function FillBlanksTask(props) {
     items[blankIndex] = event.target.value;
     setBlanksFilled(items)
 
-    if(!props.answered.some(item => item['idExercise'] === props.id))
-      props.setAnswered(props.answered.concat({idExercise: props.id, answer: event.target.value}))
+    if(!props.answered.some(item => item['id'] === props.id))
+      props.setAnswered(props.answered.concat({id: props.id, answer: event.target.value}))
     else
-      props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {idExercise: props.id, answer: items} : item))
+      props.setAnswered(props.answered.map(item => item['id'] === props.id ? {id: props.id, answer: items} : item))
 
   };
 
   const handlePointsChange = (event) => {
     setAssignedPoints(event.target.value);
     
-    props.setAnswered(props.answered.map(item => item['idExercise'] === props.id ? {...item, gainedPoints: event.target.value} : item))
+    props.setAnswered(props.answered.map(item => item['id'] === props.id ? {...item, gainedPoints: event.target.value} : item))
   };
 
   const pointsString = props.loadValue === true ?  `(${props.answered[props.index]['gainedPoints']} / ${props.points} pkt.)` : `(${props.points} pkt.)`
@@ -51,7 +51,7 @@ export default function FillBlanksTask(props) {
             style={{margin: '0px 10px', minWidth: '60px'}} 
             inputProps={{ style: { textAlign: "center" } }}
             {...(props.loadValue === true  && {
-              value: props.answered.find(item => item['idExercise'] === props.id)['answer'][index],
+              value: props.answered.find(item => item['id'] === props.id)['answer'][index],
               disabled: true,
             })}
           />}

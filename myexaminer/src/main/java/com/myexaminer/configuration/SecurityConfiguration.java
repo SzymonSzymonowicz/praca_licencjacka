@@ -1,9 +1,11 @@
 package com.myexaminer.configuration;
 
+import com.myexaminer.repository.AccountRepository;
 import com.myexaminer.security.jwt.AuthEntryPointJwt;
 import com.myexaminer.security.jwt.AuthTokenFilter;
+import com.myexaminer.security.jwt.JwtUtils;
 import com.myexaminer.security.service.AccountDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,14 +23,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private final AuthEntryPointJwt unauthorizedHandler;
+    private final JwtUtils jwtUtils;
+    private final AccountDetailsService accountDetailsService;
+    private final AccountRepository accountRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new AccountDetailsService();
+        return new AccountDetailsService(accountRepository);
     }
 
     @Bean
@@ -38,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+        return new AuthTokenFilter(jwtUtils, accountDetailsService);
     }
 
     @Bean

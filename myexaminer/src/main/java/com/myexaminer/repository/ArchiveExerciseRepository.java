@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ArchiveExerciseRepository extends JpaRepository<ArchiveExercise, Integer> {
-    Optional<ArchiveExercise> findByExerciseIdExerciseAndIndividualExamIdIndividualExam(int idExercise, int idIndividualExam);
+public interface ArchiveExerciseRepository extends JpaRepository<ArchiveExercise, Long> {
+    Optional<ArchiveExercise> findByExerciseIdAndIndividualExamId(Long exerciseId, Long individualExamId);
 }

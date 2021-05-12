@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface StudentRepository extends JpaRepository<Student, Integer> {
-    long deleteByIdStudent(int idStudent);
-    Optional<Student> findByIdStudent(int idStudent);
+public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findByIndex(String index);
+
     Optional<Student> findByAccountEmail(String email);
-    Optional<Student> findByAccountId(int accountId);
+
+    Optional<Student> findByAccountId(Long accountId);
 }

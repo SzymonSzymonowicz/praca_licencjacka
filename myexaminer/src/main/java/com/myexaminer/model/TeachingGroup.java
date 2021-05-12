@@ -1,9 +1,23 @@
 package com.myexaminer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,10 +31,9 @@ import java.util.Set;
 public class TeachingGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "teaching_group_id")
-    private int idTeachingGroup;
+    private Long id;
 
-    @Column(name = "teaching_group_name")
+    @Column(name = "group_name")
     private String name;
 
     private String accessCode;
@@ -28,7 +41,7 @@ public class TeachingGroup {
     private LocalDateTime startingDate;
 
     @ManyToOne
-    @JoinColumn(name="fk_lecturer_account_id", nullable=false)
+    @JoinColumn(name = "fk_lecturer_account_id", nullable = false)
     @JsonIgnore
     private Lecturer lecturer;
 
@@ -41,9 +54,10 @@ public class TeachingGroup {
             inverseJoinColumns = @JoinColumn(name = "fk_student_account_id")
     )
     @JsonIgnore
+    @Builder.Default
     private Set<Student> students = new HashSet<>();
 
-    @OneToMany(mappedBy="teachingGroup")
+    @OneToMany(mappedBy = "teachingGroup")
     @JsonIgnore
     private Set<Exam> exams;
 

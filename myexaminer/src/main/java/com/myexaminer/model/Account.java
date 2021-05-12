@@ -5,7 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,11 +25,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 public class Account {
-    // TODO rename column in sql
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
-    private int id;
+    private Long id;
 
     @Column(unique = true)
     private String email;
@@ -54,7 +61,7 @@ public class Account {
         this.isLecturer = false;
     }
 
-    public void addToRoles(Role role){
+    public void addToRoles(Role role) {
         roles.add(role);
     }
 

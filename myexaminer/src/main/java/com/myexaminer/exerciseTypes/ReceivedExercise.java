@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ReceivedExercise {
-    private int idExercise;
+    private Long id;
 
-    private int gainedPoints;
+    private Integer gainedPoints;
 
     private String lecturerComment;
 
@@ -19,7 +19,7 @@ public class ReceivedExercise {
     @Override
     public String toString() {
         return "ReceivedExercise{" +
-                "idExercise=" + idExercise +
+                "id=" + id +
                 ", points=" + gainedPoints +
                 ", lecturerComment='" + lecturerComment + '\'' +
                 ", answer=" + answer +

@@ -4,7 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +24,7 @@ public class Student {
 
     @Id
     @Column(name = "fk_account_id")
-    private int idStudent;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")
@@ -37,11 +44,11 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private Set<TeachingGroup> teachingGroups = new HashSet<>();
 
-    @OneToMany(mappedBy="student")
+    @OneToMany(mappedBy = "student")
     private List<IndividualExam> individualExams;
 
-    public Student(int idStudent, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
-        this.idStudent = idStudent;
+    public Student(Long id, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.index = index;
@@ -57,7 +64,7 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "idStudent=" + idStudent +
+                "id=" + id +
                 ", account=" + account +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

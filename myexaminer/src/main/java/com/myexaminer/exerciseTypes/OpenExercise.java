@@ -9,5 +9,5 @@ public class OpenExercise {
 
     private String instruction;
 
-    private Integer points;
+    private Long points;
 }

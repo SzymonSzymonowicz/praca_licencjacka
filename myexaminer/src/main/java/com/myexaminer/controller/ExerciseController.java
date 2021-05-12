@@ -7,10 +7,8 @@ import com.myexaminer.exerciseTypes.ReceivedExercise;
 import com.myexaminer.model.Exercise;
 import com.myexaminer.modelDTO.ExerciseDTO;
 import com.myexaminer.service.ExerciseService;
-import com.myexaminer.service.IndividualExamService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,8 +32,8 @@ public class ExerciseController {
     }
 
     @GetMapping
-    public Exercise getExercise(@RequestBody Map<String, Integer> map_idExercise) {
-        return exerciseService.getExercise(map_idExercise);
+    public Exercise getExercise(@RequestBody Map<String, Long> map_id) {
+        return exerciseService.getExercise(map_id);
     }
 
     @PostMapping
@@ -43,9 +41,9 @@ public class ExerciseController {
         exerciseService.createExercise(exercise);
     }
 
-    @GetMapping("/{idExam}")
-    public Iterable<ExerciseDTO> getAllExercisesByIdExam(@PathVariable Integer idExam, HttpServletRequest request) {
-        return exerciseService.getExerciseDTOList(idExam, request);
+    @GetMapping("/{id}")
+    public Iterable<ExerciseDTO> getAllExercisesById(@PathVariable Long id, HttpServletRequest request) {
+        return exerciseService.getExerciseDTOList(id, request);
     }
 
     @PostMapping("/save")
@@ -53,17 +51,17 @@ public class ExerciseController {
         exerciseService.saveExercises(receivedExerciseList);
     }
 
-    @PostMapping("/create/open/{idExam}")
+    @PostMapping("/create/open/{id}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createOpenExercise(@RequestBody OpenExercise openExercise,
-                                     @PathVariable Integer idExam) throws JsonProcessingException {
-        exerciseService.createExerciseTypeO(openExercise, idExam);
+                                   @PathVariable Long id) throws JsonProcessingException {
+        exerciseService.createExerciseTypeO(openExercise, id);
     }
 
-    @PostMapping("/create/closed/{idExam}")
+    @PostMapping("/create/closed/{id}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createClosedExercise(@RequestBody ClosedExercise closedExercise,
-                                   @PathVariable Integer idExam) throws JsonProcessingException {
-        exerciseService.createExerciseTypeZ(closedExercise, idExam);
+                                     @PathVariable Long id) throws JsonProcessingException {
+        exerciseService.createExerciseTypeZ(closedExercise, id);
     }
 }
