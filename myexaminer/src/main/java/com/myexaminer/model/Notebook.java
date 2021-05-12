@@ -23,7 +23,7 @@ public class Notebook {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition="longtext")
+    @Column(columnDefinition = "longtext")
     private String content;
 
     @OneToOne(cascade = CascadeType.ALL)

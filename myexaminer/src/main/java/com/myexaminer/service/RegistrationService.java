@@ -24,7 +24,7 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void registerNewStudentToDatabase(RegisterDTO registerDTO){
+    public void registerNewStudentToDatabase(RegisterDTO registerDTO) {
 
         Account newAccount = new Account(
                 registerDTO.getEmail(),

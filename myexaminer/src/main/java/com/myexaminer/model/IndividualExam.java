@@ -25,14 +25,14 @@ public class IndividualExam {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="fk_exam_id", nullable=false)
+    @JoinColumn(name = "fk_exam_id", nullable = false)
     private Exam mainExam;
 
     @ManyToOne
-    @JoinColumn(name="fk_student_id", nullable=false)
+    @JoinColumn(name = "fk_student_id", nullable = false)
     private Student student;
 
-    @OneToMany(mappedBy="individualExam")
+    @OneToMany(mappedBy = "individualExam")
     private List<ArchiveExercise> archiveExercises;
 
     private boolean isChecked;

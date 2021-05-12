@@ -13,7 +13,7 @@ import javax.persistence.EntityNotFoundException;
 public class ExceptionHandlers {
 
     @ExceptionHandler(value = {EntityNotFoundException.class, EntityNotFoundException.class})
-    public ResponseEntity handleNotFoundException(Exception exception){
+    public ResponseEntity handleNotFoundException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 }

@@ -44,7 +44,7 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private Set<TeachingGroup> teachingGroups = new HashSet<>();
 
-    @OneToMany(mappedBy="student")
+    @OneToMany(mappedBy = "student")
     private List<IndividualExam> individualExams;
 
     public Student(Long id, String firstName, String lastName, String index, String faculty, String fieldOfStudy) {

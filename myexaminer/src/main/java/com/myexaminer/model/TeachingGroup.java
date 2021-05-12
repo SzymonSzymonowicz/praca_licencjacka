@@ -41,7 +41,7 @@ public class TeachingGroup {
     private LocalDateTime startingDate;
 
     @ManyToOne
-    @JoinColumn(name="fk_lecturer_account_id", nullable=false)
+    @JoinColumn(name = "fk_lecturer_account_id", nullable = false)
     @JsonIgnore
     private Lecturer lecturer;
 
@@ -57,7 +57,7 @@ public class TeachingGroup {
     @Builder.Default
     private Set<Student> students = new HashSet<>();
 
-    @OneToMany(mappedBy="teachingGroup")
+    @OneToMany(mappedBy = "teachingGroup")
     @JsonIgnore
     private Set<Exam> exams;
 

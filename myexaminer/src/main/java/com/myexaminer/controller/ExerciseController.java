@@ -54,14 +54,14 @@ public class ExerciseController {
     @PostMapping("/create/open/{id}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createOpenExercise(@RequestBody OpenExercise openExercise,
-                                     @PathVariable Long id) throws JsonProcessingException {
+                                   @PathVariable Long id) throws JsonProcessingException {
         exerciseService.createExerciseTypeO(openExercise, id);
     }
 
     @PostMapping("/create/closed/{id}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createClosedExercise(@RequestBody ClosedExercise closedExercise,
-                                   @PathVariable Long id) throws JsonProcessingException {
+                                     @PathVariable Long id) throws JsonProcessingException {
         exerciseService.createExerciseTypeZ(closedExercise, id);
     }
 }

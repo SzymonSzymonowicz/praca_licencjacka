@@ -19,32 +19,32 @@ public class ExamScheduler {
     private final ExamRepository examRepository;
 
     @Scheduled(cron = "0 * * * * *")
-    public void closeExams(){
+    public void closeExams() {
         List<Exam> exams = examRepository.findAll().stream().filter(exam -> !exam.isClosed()).collect(Collectors.toList());
 
         exams.forEach(this::checkDateAndCloseExam);
     }
 
     @Scheduled(cron = "0 * * * * *")
-    public void openExams(){
+    public void openExams() {
         List<Exam> exams = examRepository.findAll().stream().filter(exam -> !exam.isOpened()).collect(Collectors.toList());
 
         exams.forEach(this::checkDateAndOpenExam);
     }
 
-    private void checkDateAndCloseExam(Exam exam){
+    private void checkDateAndCloseExam(Exam exam) {
         int dateValue = exam.getAvailableFrom().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
-        if(dateValue <= 0){
+        if (dateValue <= 0) {
             exam.setStateToClosed();
             examRepository.save(exam);
             log.info("Exam with ID -> " + exam.getId() + " <- has been CLOSED");
         }
     }
 
-    private void checkDateAndOpenExam(Exam exam){
+    private void checkDateAndOpenExam(Exam exam) {
         int dateValue1 = exam.getAvailableFrom().compareTo(LocalDateTime.now());
         int dateValue2 = exam.getAvailableFrom().plusMinutes(exam.getDuration()).compareTo(LocalDateTime.now());
-        if(dateValue1 <= 0 && dateValue2 > 0){
+        if (dateValue1 <= 0 && dateValue2 > 0) {
             exam.setStateToOpen();
             examRepository.save(exam);
             log.info("Exam with ID -> " + exam.getId() + " <- has been OPENED");

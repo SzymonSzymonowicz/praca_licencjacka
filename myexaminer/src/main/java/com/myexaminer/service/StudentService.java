@@ -67,7 +67,7 @@ public class StudentService {
         log.info("Student with ID -> {} <- has been ADDED", student.getId());
     }
 
-    public Student findStudentByEmail(String email){
+    public Student findStudentByEmail(String email) {
         return studentRepository.findByAccountEmail(email).orElseThrow(() -> new EntityNotFoundException("There is no student with given email -> " + email));
     }
 }

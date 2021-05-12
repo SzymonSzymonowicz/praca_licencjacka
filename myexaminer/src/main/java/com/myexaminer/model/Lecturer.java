@@ -35,7 +35,7 @@ public class Lecturer {
 
     private String contactEmail;
 
-    @OneToMany(mappedBy="lecturer")
+    @OneToMany(mappedBy = "lecturer")
     private List<TeachingGroup> teachingGroups;
 
     @Override

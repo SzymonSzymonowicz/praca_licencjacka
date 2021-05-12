@@ -61,7 +61,7 @@ public class Account {
         this.isLecturer = false;
     }
 
-    public void addToRoles(Role role){
+    public void addToRoles(Role role) {
         roles.add(role);
     }
 

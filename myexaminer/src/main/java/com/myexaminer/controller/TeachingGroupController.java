@@ -66,18 +66,18 @@ public class TeachingGroupController {
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping(path = "/students")
-    public ResponseEntity addStudentToGroupByCode(@RequestBody String accessCode, Authentication authentication){
+    public ResponseEntity addStudentToGroupByCode(@RequestBody String accessCode, Authentication authentication) {
         return teachingGroupService.addStudentToGroupByCode(accessCode, authentication);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @GetMapping("/lecturers")
-    public List<TeachingGroup> getLectorsTeachingGroups(Authentication authentication){
+    public List<TeachingGroup> getLectorsTeachingGroups(Authentication authentication) {
         return teachingGroupService.returnTeachingGroupsByLecturerEmail(authentication.getName());
     }
 
     @GetMapping
-    public List<TeachingGroup> getTeachingGroups(){
+    public List<TeachingGroup> getTeachingGroups() {
         return teachingGroupService.findAllGroups();
     }
 }

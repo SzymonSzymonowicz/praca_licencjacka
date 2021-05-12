@@ -67,7 +67,7 @@ public class CheckingExercisesService {
         }
     }
 
-    public ArchiveExercise checkIfStudentOrLectorAndReturnArchiveExercise(Long examId, Long exerciseId, Long individualExamId,  Authentication authentication){
+    public ArchiveExercise checkIfStudentOrLectorAndReturnArchiveExercise(Long examId, Long exerciseId, Long individualExamId, Authentication authentication) {
         ArchiveExercise archiveExercise;
         if (examId == null) {
             archiveExercise = archiveExerciseService

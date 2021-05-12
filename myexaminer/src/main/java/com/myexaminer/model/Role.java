@@ -32,11 +32,12 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<Account> accounts = new HashSet<>();
 
-    public void addAccount(Account account){
+    public void addAccount(Account account) {
         accounts.add(account);
         account.getRoles().add(this);
     }
-    public void removeAccount(Account account){
+
+    public void removeAccount(Account account) {
         accounts.remove(account);
         account.getRoles().remove(this);
     }

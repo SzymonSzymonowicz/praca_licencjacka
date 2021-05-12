@@ -46,13 +46,13 @@ public class Exam {
     private State state;
 
     @ManyToOne
-    @JoinColumn(name="fk_teaching_group_id", nullable=false)
+    @JoinColumn(name = "fk_teaching_group_id", nullable = false)
     private TeachingGroup teachingGroup;
 
-    @OneToMany(mappedBy="exam")
+    @OneToMany(mappedBy = "exam")
     private List<Exercise> exercises;
 
-    @OneToMany(mappedBy="mainExam")
+    @OneToMany(mappedBy = "mainExam")
     private List<IndividualExam> individualExams;
 
     @Override
@@ -67,31 +67,35 @@ public class Exam {
                 '}';
     }
 
-    public void setStateToHidden(){
+    public void setStateToHidden() {
         setState(State.HIDDEN);
     }
 
-    public void setStateToDraft(){
+    public void setStateToDraft() {
         setState(State.DRAFT);
     }
 
-    public void setStateToClosed(){
+    public void setStateToClosed() {
         setState(State.CLOSED);
     }
 
-    public void setStateToOpen(){
+    public void setStateToOpen() {
         setState(State.OPEN);
     }
 
-    public void setStateToChecked(){
+    public void setStateToChecked() {
         setState(State.CHECKED);
     }
 
-    public boolean isClosed(){return getState().equals(State.CLOSED);}
+    public boolean isClosed() {
+        return getState().equals(State.CLOSED);
+    }
 
-    public boolean isOpened(){return getState().equals(State.OPEN);}
+    public boolean isOpened() {
+        return getState().equals(State.OPEN);
+    }
 
-    public static Exam mapExamDTOToExam(ExamDTO examDTO){
+    public static Exam mapExamDTOToExam(ExamDTO examDTO) {
         return Exam.builder()
                 .name(examDTO.getName())
                 .availableFrom(parseStringToDate(examDTO.getAvailableFrom()))

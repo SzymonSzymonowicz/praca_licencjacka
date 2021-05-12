@@ -28,13 +28,13 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition="json")
+    @Column(columnDefinition = "json")
     private String content;
 
     @ManyToOne
-    @JoinColumn(name="fk_exam_id", nullable=false)
+    @JoinColumn(name = "fk_exam_id", nullable = false)
     private Exam exam;
 
-    @OneToMany(mappedBy="exercise")
+    @OneToMany(mappedBy = "exercise")
     private List<ArchiveExercise> archiveExercises;
 }

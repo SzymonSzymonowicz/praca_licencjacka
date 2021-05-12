@@ -60,7 +60,7 @@ public class ExamService {
         return returnedExam;
     }
 
-    public void createExam(ExamDTO examDTO, Long id){
+    public void createExam(ExamDTO examDTO, Long id) {
         Exam exam = Exam.mapExamDTOToExam(examDTO);
         exam.setStateToDraft();
 

@@ -31,7 +31,7 @@ public class IndividualExamService {
 
     public IndividualExam getIndividualExamById(Long id) {
         return individualExamRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Individual exam of id: " + id + " was not found." ));
+                .orElseThrow(() -> new EntityNotFoundException("Individual exam of id: " + id + " was not found."));
     }
 
     public Optional<IndividualExam> getOptionalIndividualExamByStudentIdAndExamId(Long idStudent, Long idExam) {

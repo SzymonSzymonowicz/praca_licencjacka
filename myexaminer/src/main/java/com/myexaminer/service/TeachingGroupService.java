@@ -41,7 +41,7 @@ public class TeachingGroupService {
         return teachingGroupById.isPresent();
     }
 
-    public List<TeachingGroup> findAllGroups(){
+    public List<TeachingGroup> findAllGroups() {
         return teachingGroupRepository.findAll();
     }
 
@@ -57,7 +57,7 @@ public class TeachingGroupService {
         return teachingGroupRepository
                 .findByStudentsContaining(student)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("There is no group containing student with id " + studentId  + "."));
+                        new EntityNotFoundException("There is no group containing student with id " + studentId + "."));
     }
 
     public boolean teachingGroupExistsByName(String teachingGroupName) {
@@ -133,12 +133,12 @@ public class TeachingGroupService {
         log.info("TeachingGroup with ID -> {} <- has been deleted", groupId);
     }
 
-    public TeachingGroup findTeachingGroupByAccessCode(String code){
+    public TeachingGroup findTeachingGroupByAccessCode(String code) {
         return teachingGroupRepository.findByAccessCode(code)
                 .orElseThrow(() -> new EntityNotFoundException("There is no teaching group with given code -> " + code));
     }
 
-    public ResponseEntity addStudentToGroupByCode(String accessCode, Authentication authentication){
+    public ResponseEntity addStudentToGroupByCode(String accessCode, Authentication authentication) {
         TeachingGroup teachingGroup = findTeachingGroupByAccessCode(accessCode);
         Student student = studentService.findStudentByEmail(authentication.getName());
 

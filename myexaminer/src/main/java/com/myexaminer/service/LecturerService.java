@@ -49,7 +49,7 @@ public class LecturerService {
         log.info("Lecturer with ID -> {} <- has been ADDED", lecturer.getId());
     }
 
-    public Lecturer findLecturerByEmail(String email){
+    public Lecturer findLecturerByEmail(String email) {
         return lecturerRepository.findByAccount_Email(email).orElseThrow(() -> new EntityNotFoundException("There is no lecturer with email -> " + email));
     }
 
