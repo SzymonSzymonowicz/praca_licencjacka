@@ -6,7 +6,6 @@ import com.myexaminer.security.jwt.AuthTokenFilter;
 import com.myexaminer.security.jwt.JwtUtils;
 import com.myexaminer.security.service.AccountDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
