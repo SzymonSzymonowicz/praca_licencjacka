@@ -1,6 +1,8 @@
 package com.myexaminer.model;
 
 import com.myexaminer.enums.RoleEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +54,7 @@ public class Account {
             joinColumns = @JoinColumn(name = "fk_account_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_role_id")
     )
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
     public Account(String email, String password, String recoveryQuestion, String recoveryAnswer) {
