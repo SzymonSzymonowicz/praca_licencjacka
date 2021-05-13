@@ -4,9 +4,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
-import { individualExamsForGroupUrl } from 'router/urls';
+import { individualExamsForLecturerGroupsUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
-import { getCurrentAccount } from 'services/auth-service';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,19 +33,16 @@ export default function ExamsToCheck(props) {
 
   useEffect(() => {
     fetchAllIndividualExams();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function fetchAllIndividualExams() {
     try {
-      const result = await fetch(individualExamsForGroupUrl, {
+      const result = await fetch(individualExamsForLecturerGroupsUrl, {
         method: 'GET',
-        headers: authHeader(),
-        body: getCurrentAccount()?.id
+        headers: authHeader()
       })
       const data = await result.json()
 
-      console.log(data)
       setIndividualExams(data)
     }
     catch(error) {

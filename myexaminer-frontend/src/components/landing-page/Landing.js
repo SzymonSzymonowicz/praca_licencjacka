@@ -299,7 +299,7 @@ export default function Landing() {
               </List>
             </div>)
           else
-            return
+            return ""
         })}
       </Drawer>
       <main className={classes.content}>
