@@ -10,7 +10,7 @@ import { archiveExcercisesUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
 import { getCurrentAccount } from 'services/auth-service';
 import { examUrl } from 'router/urls';
-import { isPresentTime, timeDiffNow } from 'utils/dateUtils';
+import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -57,7 +57,7 @@ export default function Exams(props) {
     // 10 secs
     const lagMsDelay = 10000;
     let times = exams?.map(exam => new Date(exam.availableFrom));
-    let present = times?.filter(isPresentTime);
+    let present = times?.filter(isPresentTime).sort(compareDates);
 
     console.table(times);
     console.table(present);
