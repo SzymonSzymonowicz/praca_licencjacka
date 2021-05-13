@@ -1,7 +1,7 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.Notebook;
-import com.myexaminer.modelDTO.GenericOneValue;
+import com.myexaminer.entity.Notebook;
+import com.myexaminer.dto.GenericOneValue;
 import com.myexaminer.repository.NotebookRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

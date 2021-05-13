@@ -1,12 +1,14 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.Exam;
-import com.myexaminer.model.IndividualExam;
-import com.myexaminer.model.Student;
-import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.modelDTO.LecturerIndividualExamView;
+import com.myexaminer.entity.Exam;
+import com.myexaminer.entity.IndividualExam;
+import com.myexaminer.entity.Student;
+import com.myexaminer.entity.TeachingGroup;
+import com.myexaminer.dto.LecturerIndividualExamView;
 import com.myexaminer.repository.IndividualExamRepository;
+import com.myexaminer.security.service.AccountDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,7 +67,10 @@ public class IndividualExamService {
         individualExamSave(individualExam);
     }
 
-    public List<LecturerIndividualExamView> getLecturerIndividualExamViews(Long lecturerId) {
+    public List<LecturerIndividualExamView> getLecturerIndividualExamViews(Authentication authentication) {
+        AccountDetails details = (AccountDetails) authentication.getPrincipal();
+        Long lecturerId = details.getId();
+
         List<TeachingGroup> teachingGroups = teachingGroupService.getTeachingGroupsByLecturerId(lecturerId);
 
         List<LecturerIndividualExamView> individualExamViewList = new ArrayList<>();
@@ -91,27 +96,6 @@ public class IndividualExamService {
                 });
             });
         });
-//        for (TeachingGroup teachingGroup : teachingGroups) {
-//            Set<Exam> exams = teachingGroup.getExams();
-//            for (Exam exam : exams) {
-//                for (Student student : teachingGroup.getStudents()) {
-//                    Optional<IndividualExam> individualExam = returnOptionalIndividualExamByIdAndId(student.getId(), exam.getId());
-//                    if (individualExam.isPresent()) {
-//                        if (!individualExam.get().isChecked()) {
-//                            individualExamViewList.add(new LecturerIndividualExamView(
-//                                    individualExam.get().getId(),
-//                                    exam.getName(),
-//                                    exam.getDescription(),
-//                                    exam.getAvailableFrom(),
-//                                    teachingGroup.getId(),
-//                                    teachingGroup.getName(),
-//                                    student.getIndex()
-//                            ));
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
         return individualExamViewList;
     }

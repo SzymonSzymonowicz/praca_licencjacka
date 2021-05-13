@@ -1,4 +1,4 @@
-package com.myexaminer.model;
+package com.myexaminer.entity;
 
 import com.myexaminer.enums.RoleEnum;
 import lombok.AllArgsConstructor;

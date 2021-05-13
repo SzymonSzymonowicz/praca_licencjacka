@@ -20,7 +20,7 @@ export const exercisesUrl = domain + "/exercises/";
 export const notebookUrl = domain + "/notebook";
 
 // IndividualExamsController
-export const individualExamsForGroupUrl = domain + "/individual-exams/group";
+export const individualExamsForLecturerGroupsUrl = domain + "/individual-exams/lecturer-groups";
 
 // TeachingGroupController
 export const groupsForAccountUrl = (id) => domain + "/groups/account/" + id;

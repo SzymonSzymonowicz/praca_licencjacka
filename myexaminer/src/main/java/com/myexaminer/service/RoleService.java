@@ -1,7 +1,7 @@
 package com.myexaminer.service;
 
 import com.myexaminer.enums.RoleEnum;
-import com.myexaminer.model.Role;
+import com.myexaminer.entity.Role;
 import com.myexaminer.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,10 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.ArchiveExercise;
-import com.myexaminer.model.Exam;
-import com.myexaminer.model.Exercise;
-import com.myexaminer.model.IndividualExam;
-import com.myexaminer.modelDTO.ArchiveExerciseDTO;
+import com.myexaminer.entity.ArchiveExercise;
+import com.myexaminer.entity.Exam;
+import com.myexaminer.entity.Exercise;
+import com.myexaminer.entity.IndividualExam;
+import com.myexaminer.dto.ArchiveExerciseDTO;
 import com.myexaminer.repository.ArchiveExerciseRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doReturn;

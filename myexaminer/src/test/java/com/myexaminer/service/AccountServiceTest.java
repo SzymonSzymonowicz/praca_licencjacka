@@ -1,6 +1,6 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.Account;
+import com.myexaminer.entity.Account;
 import com.myexaminer.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

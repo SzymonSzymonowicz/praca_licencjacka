@@ -19,9 +19,7 @@ import Lesson from "../group/Lesson";
 import ExamResults from 'components/exam/ExamResults';
 import ExamsToCheck from 'components/lecturer/ExamsToCheck';
 import CheckExam from 'components/lecturer/CheckExam';
-import { examUrl } from 'router/urls';
 import { logout, getCurrentAccount, hasRole } from "services/auth-service";
-import authHeader from 'services/auth-header';
 
 
 const drawerWidth = 240;
@@ -101,27 +99,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Landing() {
-  const [exams, setExams] = useState([])
-
-  const groupId = 1
-  useEffect(() => {
-    fetch(examUrl + groupId, {
-      method: 'GET',
-      headers: authHeader()
-    }).then(function (response) {
-      if (response.status === 200) {
-        return response.json()
-      } else {
-        console.log("Something went wrong!")
-      }
-    }).then( examsJson => {
-      console.log(examsJson)
-      setExams(examsJson)
-    }).catch(function (error) {
-      console.log("error")
-    })
-  }, [groupId])
-
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -299,7 +276,7 @@ export default function Landing() {
               </List>
             </div>)
           else
-            return
+            return ""
         })}
       </Drawer>
       <main className={classes.content}>
@@ -316,7 +293,7 @@ export default function Landing() {
               <Groups/>
             </Route>
             <Route path={`${match.path}/exams`}>
-              <Exams exams={exams}/>
+              <Exams/>
             </Route>
             <Route path={`${match.path}/announcments`}>
               <h1>Ogłoszenia</h1>

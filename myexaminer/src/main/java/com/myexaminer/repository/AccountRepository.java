@@ -1,6 +1,6 @@
 package com.myexaminer.repository;
 
-import com.myexaminer.model.Account;
+import com.myexaminer.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

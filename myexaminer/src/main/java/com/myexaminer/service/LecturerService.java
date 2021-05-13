@@ -1,6 +1,6 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.Lecturer;
+import com.myexaminer.entity.Lecturer;
 import com.myexaminer.repository.LecturerRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

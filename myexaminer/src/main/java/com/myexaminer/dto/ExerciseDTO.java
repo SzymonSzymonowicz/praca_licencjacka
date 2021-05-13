@@ -1,7 +1,7 @@
-package com.myexaminer.modelDTO;
+package com.myexaminer.dto;
 
 
-import com.myexaminer.model.Exercise;
+import com.myexaminer.entity.Exercise;
 import lombok.Getter;
 import lombok.Setter;
 

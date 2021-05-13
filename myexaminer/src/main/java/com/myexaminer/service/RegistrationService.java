@@ -1,10 +1,10 @@
 package com.myexaminer.service;
 
 import com.myexaminer.enums.RoleEnum;
-import com.myexaminer.model.Account;
-import com.myexaminer.model.Notebook;
-import com.myexaminer.model.Student;
-import com.myexaminer.modelDTO.RegisterDTO;
+import com.myexaminer.entity.Account;
+import com.myexaminer.entity.Notebook;
+import com.myexaminer.entity.Student;
+import com.myexaminer.dto.RegisterDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;

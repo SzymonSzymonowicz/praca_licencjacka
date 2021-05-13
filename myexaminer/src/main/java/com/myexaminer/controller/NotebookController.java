@@ -1,6 +1,6 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.modelDTO.GenericOneValue;
+import com.myexaminer.dto.GenericOneValue;
 import com.myexaminer.service.NotebookService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,5 +1,6 @@
+import React from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography, makeStyles, AccordionActions, Button } from '@material-ui/core';
-import React from 'react'
+import { useState, useEffect } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import TimerIcon from '@material-ui/icons/Timer';
 import EventIcon from '@material-ui/icons/Event';
@@ -8,6 +9,8 @@ import { useHistory } from 'react-router-dom';
 import { archiveExcercisesUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
 import { getCurrentAccount } from 'services/auth-service';
+import { examUrl } from 'router/urls';
+import { isPresentTime, timeDiffNow } from 'utils/dateUtils';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -21,35 +24,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Exams({exams}, props) {
+export default function Exams(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [exams, setExams] = useState([]);
+
+  const history = useHistory();
+  const studentId = getCurrentAccount()?.id;
+
+  const groupId = 1;
+  const loadExams = () => fetch(examUrl + groupId, {
+    method: 'GET',
+    headers: authHeader()
+  }).then(function (response) {
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      console.log("Something went wrong!");
+    }
+  }).then(examsJson => {
+    console.log(examsJson);
+    setExams(examsJson);
+  }).catch(function (error) {
+    console.log("error");
+  });
+
+  useEffect(() => {
+    loadExams();
+  }, []);
+
+  useEffect(() => {
+    // 10 secs
+    const lagMsDelay = 10000;
+    let times = exams?.map(exam => new Date(exam.availableFrom));
+    let present = times?.filter(isPresentTime);
+
+    console.table(times);
+    console.table(present);
+    let soonestTime = present[0];
+
+    if(soonestTime !== undefined) {
+      setTimeout(() => {
+        console.log("Odpalony o " + soonestTime);
+        loadExams();
+      }, timeDiffNow(soonestTime) + lagMsDelay);
+    }
+  }, [exams]);
   
-  // fake state to remount component thus runing fetch on exams
-  // const [update, setUpdate] = React.useState(false);
-
-  const history = useHistory()
-
-  const studentId = getCurrentAccount()?.id
-
-  // const timeDiffNow = (date) => date.getTime() - Date.now();
-
-  // // 30 secs
-  // const lagMsDelay = 30000;
-  // const times = exams?.map(exam => new Date(exam.examavailableFrom)).filter(date => timeDiffNow(date) > 0).sort((a, b) => a - b);
-
-  // const soonestTime = times[0];
-  // console.log(times);
-
-  // React.useEffect(() => {
-  //   if(soonestTime !== undefined) {
-  //     setTimeout(() => {console.log("Odpalony o " + soonestTime)
-  //       setUpdate(!update);
-  //     }, timeDiffNow(soonestTime) + lagMsDelay);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -76,7 +97,7 @@ export default function Exams({exams}, props) {
       console.log(error)
       console.log("error")
     })
-  }
+  };
 
 
   return (

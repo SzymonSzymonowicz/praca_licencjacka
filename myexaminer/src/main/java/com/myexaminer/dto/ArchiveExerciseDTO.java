@@ -1,6 +1,6 @@
-package com.myexaminer.modelDTO;
+package com.myexaminer.dto;
 
-import com.myexaminer.model.ArchiveExercise;
+import com.myexaminer.entity.ArchiveExercise;
 import lombok.Getter;
 import lombok.Setter;
 

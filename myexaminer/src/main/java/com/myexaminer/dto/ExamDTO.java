@@ -1,7 +1,7 @@
-package com.myexaminer.modelDTO;
+package com.myexaminer.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.myexaminer.model.Exam;
+import com.myexaminer.entity.Exam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.myexaminer.repository;
 
 import com.myexaminer.enums.RoleEnum;
-import com.myexaminer.model.Role;
+import com.myexaminer.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

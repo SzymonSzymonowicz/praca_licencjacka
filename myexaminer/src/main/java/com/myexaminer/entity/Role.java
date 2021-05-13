@@ -1,4 +1,4 @@
-package com.myexaminer.model;
+package com.myexaminer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.myexaminer.enums.RoleEnum;
