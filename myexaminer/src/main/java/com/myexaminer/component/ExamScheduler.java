@@ -1,6 +1,6 @@
 package com.myexaminer.component;
 
-import com.myexaminer.model.Exam;
+import com.myexaminer.entity.Exam;
 import com.myexaminer.repository.ExamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

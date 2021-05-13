@@ -1,7 +1,7 @@
 package com.myexaminer.repository;
 
-import com.myexaminer.model.Exam;
-import com.myexaminer.model.Exercise;
+import com.myexaminer.entity.Exam;
+import com.myexaminer.entity.Exercise;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

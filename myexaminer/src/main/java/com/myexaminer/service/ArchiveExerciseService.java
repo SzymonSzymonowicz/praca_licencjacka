@@ -1,10 +1,10 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.ArchiveExercise;
-import com.myexaminer.model.Exercise;
-import com.myexaminer.model.IndividualExam;
-import com.myexaminer.modelDTO.ArchiveExerciseDTO;
-import com.myexaminer.modelDTO.StudentExam;
+import com.myexaminer.entity.ArchiveExercise;
+import com.myexaminer.entity.Exercise;
+import com.myexaminer.entity.IndividualExam;
+import com.myexaminer.dto.ArchiveExerciseDTO;
+import com.myexaminer.dto.StudentExam;
 import com.myexaminer.repository.ArchiveExerciseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

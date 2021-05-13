@@ -1,4 +1,4 @@
-package com.myexaminer.modelDTO;
+package com.myexaminer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenericOneValue {
+public class GenericTwoValues {
     private Object firstValue;
+
+    private Object secondValue;
 }

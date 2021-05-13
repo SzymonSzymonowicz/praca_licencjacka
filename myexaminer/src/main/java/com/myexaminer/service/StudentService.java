@@ -1,6 +1,6 @@
 package com.myexaminer.service;
 
-import com.myexaminer.model.Student;
+import com.myexaminer.entity.Student;
 import com.myexaminer.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

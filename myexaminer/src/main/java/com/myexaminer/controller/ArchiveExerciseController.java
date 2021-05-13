@@ -2,8 +2,8 @@ package com.myexaminer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.myexaminer.exerciseTypes.ReceivedExercisesWithExamInfo;
-import com.myexaminer.modelDTO.ArchiveExerciseDTO;
-import com.myexaminer.modelDTO.StudentExam;
+import com.myexaminer.dto.ArchiveExerciseDTO;
+import com.myexaminer.dto.StudentExam;
 import com.myexaminer.service.ArchiveExerciseService;
 import com.myexaminer.service.CheckingExercisesService;
 import org.springframework.security.core.Authentication;

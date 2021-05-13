@@ -1,7 +1,7 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.modelDTO.TeachingGroupDTO;
+import com.myexaminer.entity.TeachingGroup;
+import com.myexaminer.dto.TeachingGroupDTO;
 import com.myexaminer.service.TeachingGroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

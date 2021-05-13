@@ -1,6 +1,6 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.model.Lecturer;
+import com.myexaminer.entity.Lecturer;
 import com.myexaminer.service.LecturerService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

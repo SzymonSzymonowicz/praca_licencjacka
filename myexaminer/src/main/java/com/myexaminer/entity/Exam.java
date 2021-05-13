@@ -1,7 +1,7 @@
-package com.myexaminer.model;
+package com.myexaminer.entity;
 
 import com.myexaminer.enums.State;
-import com.myexaminer.modelDTO.ExamDTO;
+import com.myexaminer.dto.ExamDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

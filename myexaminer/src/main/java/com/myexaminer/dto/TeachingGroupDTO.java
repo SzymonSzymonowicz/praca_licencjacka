@@ -1,4 +1,4 @@
-package com.myexaminer.modelDTO;
+package com.myexaminer.dto;
 
 import lombok.Getter;
 import lombok.Setter;

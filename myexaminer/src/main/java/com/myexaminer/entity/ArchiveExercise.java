@@ -1,4 +1,4 @@
-package com.myexaminer.model;
+package com.myexaminer.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

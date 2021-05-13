@@ -1,6 +1,6 @@
 package com.myexaminer.security.service;
 
-import com.myexaminer.model.Account;
+import com.myexaminer.entity.Account;
 import com.myexaminer.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

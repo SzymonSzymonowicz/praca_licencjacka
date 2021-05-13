@@ -1,11 +1,11 @@
 package com.myexaminer.service;
 
 import com.myexaminer.enums.RoleEnum;
-import com.myexaminer.model.Account;
-import com.myexaminer.model.Lecturer;
-import com.myexaminer.model.Student;
-import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.modelDTO.TeachingGroupDTO;
+import com.myexaminer.entity.Account;
+import com.myexaminer.entity.Lecturer;
+import com.myexaminer.entity.Student;
+import com.myexaminer.entity.TeachingGroup;
+import com.myexaminer.dto.TeachingGroupDTO;
 import com.myexaminer.repository.TeachingGroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

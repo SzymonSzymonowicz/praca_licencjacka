@@ -1,12 +1,11 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.modelDTO.LecturerIndividualExamView;
+import com.myexaminer.dto.LecturerIndividualExamView;
 import com.myexaminer.service.IndividualExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

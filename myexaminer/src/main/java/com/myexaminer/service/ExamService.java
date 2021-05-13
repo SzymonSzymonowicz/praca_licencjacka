@@ -1,11 +1,11 @@
 package com.myexaminer.service;
 
 import com.myexaminer.enums.State;
-import com.myexaminer.model.Exam;
-import com.myexaminer.model.TeachingGroup;
-import com.myexaminer.modelDTO.ExamDTO;
-import com.myexaminer.modelDTO.GenericOneValue;
-import com.myexaminer.modelDTO.GenericTwoValues;
+import com.myexaminer.entity.Exam;
+import com.myexaminer.entity.TeachingGroup;
+import com.myexaminer.dto.ExamDTO;
+import com.myexaminer.dto.GenericOneValue;
+import com.myexaminer.dto.GenericTwoValues;
 import com.myexaminer.repository.ExamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
