@@ -30,7 +30,7 @@ INSERT INTO `myexaminer`.`student_teaching_group` VALUES
 
 INSERT INTO `myexaminer`.`exam` VALUES
 (1,'English exam - B2', '<b>INSTRUCTIONS TO CANDIDATES</b><br><ul><li>Do not open this exam until you are told to do so.</li>
-<li>Answer all the questions.</li><li>You <b>must</b> complete the exam within the time limit.</li></ul>', '2021-01-29 14:30:00',60 ,'OPEN', 1),
+<li>Answer all the questions.</li><li>You <b>must</b> complete the exam within the time limit.</li></ul>', CURRENT_TIME() + INTERVAL 2 MINUTE,60 ,'OPEN', 1),
 (2,'Matura próbna - poziom rozszerzony', 'Próbny arkusz maturalny. Powodzenia! &#128515', '2021-01-20 12:15:00',20 ,'CLOSED', 1);
 
 INSERT INTO `myexaminer`.`exercise` VALUES
