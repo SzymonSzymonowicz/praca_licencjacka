@@ -15,11 +15,11 @@ public class LecturerIndividualExamView {
 
     private Long individualExamId;
 
-    private String examName;
+    private String name;
 
-    private String examDescription;
+    private String description;
 
-    private LocalDateTime examAvailableFrom;
+    private LocalDateTime availableFrom;
 
     private Long teachingGroupId;
 

@@ -31,7 +31,7 @@ export default function ClosedTask(props) {
 
   return (
     <Paper elevation={4} style={{padding: 20}}>
-      <Typography>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
+      <Typography component={"div"}>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
       <Typography>{props.instruction}</Typography>
       <FormControl disabled={props.loadValue} component="fieldset" fullWidth>
         <RadioGroup row name={`task${props.id}`} value={markValue} onChange={handleChange} style={{justifyContent: "space-evenly"}}>

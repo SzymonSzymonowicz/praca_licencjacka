@@ -36,10 +36,11 @@ export default function CheckExam(props) {
       data.forEach(result => {
         var answer = JSON.parse(result["answer"])["answerJSON"]
 
-        answArr.push({ id: result["id"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
+        answArr.push({ id: result["archivedId"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
       })
 
-      // console.log(answArr)
+      console.log("answArr")
+      console.log(answArr)
       setAnswered(answArr)
     }
     catch(error) {
