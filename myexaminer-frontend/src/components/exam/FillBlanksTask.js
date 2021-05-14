@@ -33,7 +33,7 @@ export default function FillBlanksTask(props) {
 
   return (
     <Paper elevation={4} style={{padding: 20}}>
-      <Typography>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
+      <Typography component={"div"}>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
       <Typography>{props.instruction}</Typography>
       <Grid
         container

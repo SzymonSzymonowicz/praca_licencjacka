@@ -2,7 +2,7 @@ import { Paper, TextField, Typography } from '@material-ui/core'
 import React from 'react'
 
 export default function OpenTask(props) {
-  const [assignedPoints, setAssignedPoints] = React.useState(props.modify ? props.answered[props.index]['gainedPoints'] : null);
+  const [assignedPoints, setAssignedPoints] = React.useState(props.modify ? props.answered[props.index]['gainedPoints'] : "");
 
   const handleChange = (event) => {
     if(!props.answered.some(item => item['id'] === props.id))
@@ -25,7 +25,7 @@ export default function OpenTask(props) {
 
   return (
     <Paper elevation={4} style={{padding: 20}}>
-      <Typography>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
+      <Typography component={"div"}>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
       <Typography>{props.instruction}</Typography>
       <TextField
           id="outlined-multiline-static"
@@ -35,7 +35,6 @@ export default function OpenTask(props) {
           variant="outlined"
           fullWidth
           onChange={handleChange}
-
           {...(props.loadValue === true && {
             value: props.answered.find(item => item['id'] === props.id)['answer'],
             disabled: true,

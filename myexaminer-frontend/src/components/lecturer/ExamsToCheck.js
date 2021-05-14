@@ -55,7 +55,7 @@ export default function ExamsToCheck(props) {
   return (
     <>
       {individualExams.length !== 0 && individualExams.map((exam,index) => {
-        let date = new Date(exam.examavailableFrom);
+        let date = new Date(exam.availableFrom);
         return (
           <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
             <AccordionSummary
@@ -76,7 +76,7 @@ export default function ExamsToCheck(props) {
               <EventIcon/><Typography>{date.toLocaleString().split(',')[0]}</Typography>
               <HourglassEmptyIcon/><Typography style={{flexGrow: 1}}>{date.toLocaleString().split(',')[1]}</Typography>
               <Button size="small" onClick={() => {
-                  history.push(`/landing/checkexam/${exam.id}`);
+                  history.push(`/landing/checkexam/${exam.individualExamId}`);
                 }}   
               >
               Sprawdź
