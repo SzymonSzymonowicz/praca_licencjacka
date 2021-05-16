@@ -15,6 +15,7 @@ import { Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import Exams from 'components/subpages/Exams';
 import Exam from 'components/exam/Exam';
 import Groups from "../subpages/Groups";
+import Group from "../subpages/Group";
 import Lesson from "../group/Lesson";
 import ExamResults from 'components/exam/ExamResults';
 import ExamsToCheck from 'components/lecturer/ExamsToCheck';
@@ -291,6 +292,9 @@ export default function Landing() {
             </Route>
             <Route path={`${match.path}/groups`}>
               <Groups/>
+            </Route>
+            <Route path={`${match.path}/group/:groupId`}>
+              <Group/>
             </Route>
             <Route path={`${match.path}/exams`}>
               <Exams/>

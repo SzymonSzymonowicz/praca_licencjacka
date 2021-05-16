@@ -76,7 +76,10 @@ export default function CheckExam(props) {
     try {
       const result = await fetch(archiveCheckUrl, {
         method: 'PUT',
-        headers: authHeader(),
+        headers: {
+          ...authHeader(),
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           individualExamId: id,
           receivedExercises: answered

@@ -160,7 +160,7 @@ public class TeachingGroupService {
 
             return teachingGroupRepository.findAllByLecturer(lecturer);
         }
-
+        //TODO find better exception for this
         throw new EntityNotFoundException("Your account doesn't posses required roles. Contact administrators of the application.");
     }
 }

@@ -20,8 +20,9 @@ INSERT INTO `myexaminer`.`account_role` VALUES
 (1,2);
 
 INSERT INTO `myexaminer`.`teaching_group` VALUES
-(1,'Grupa DT2 angielski', 'kod-dostepu-123', NOW(), 1),
-(2,'Grupa Testowa', 'test-123', NOW(), 1);
+(1, 'Grupa DT2 angielski', 'kod-dostepu-123', NOW(), 1),
+(2, 'Grupa Testowa', 'test-123', NOW(), 1),
+(3, 'Nowa Grupa', 'qazwsx', NOW(), 1);
 
 INSERT INTO `myexaminer`.`student_teaching_group` VALUES
 (1,2),
