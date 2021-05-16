@@ -1,5 +1,6 @@
 package com.myexaminer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,9 +24,10 @@ public class Lecturer {
     @Column(name = "fk_account_id")
     private Long id;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id")
-    Account account;
+    private Account account;
 
     private String firstName;
 
@@ -36,6 +38,7 @@ public class Lecturer {
     private String contactEmail;
 
     @OneToMany(mappedBy = "lecturer")
+    @JsonIgnore
     private List<TeachingGroup> teachingGroups;
 
     @Override

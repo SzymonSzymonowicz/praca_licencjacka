@@ -1,0 +1,24 @@
+.grayBackground {
+  background-color: lightgray;
+}
+
+.lecturerCard {
+  display: flex;
+  flex-direction: row;
+}
+
+.iconSection{
+  width: 30%;
+  text-align: center;
+}
+
+.lecturerIcon {
+  font-size: 120px;
+}
+
+.lecturerDetails {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+}

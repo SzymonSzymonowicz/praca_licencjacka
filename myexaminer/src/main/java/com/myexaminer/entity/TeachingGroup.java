@@ -37,13 +37,13 @@ public class TeachingGroup {
     @Column(name = "group_name")
     private String name;
 
+    //TODO Consider JSONView only for lecturer
     private String accessCode;
 
     private LocalDateTime startingDate;
 
     @ManyToOne
     @JoinColumn(name = "fk_lecturer_account_id", nullable = false)
-    @JsonIgnore
     private Lecturer lecturer;
 
     @ManyToMany(cascade = {
@@ -54,12 +54,11 @@ public class TeachingGroup {
             joinColumns = @JoinColumn(name = "fk_teaching_group_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_student_account_id")
     )
-    @JsonIgnore
     @Builder.Default
     private Set<Student> students = new HashSet<>();
 
-    @OneToMany(mappedBy = "teachingGroup")
     @JsonIgnore
+    @OneToMany(mappedBy = "teachingGroup")
     private Set<Exam> exams;
 
     @OneToMany(mappedBy = "teachingGroup")

@@ -35,6 +35,8 @@ const hasRole = (role) => {
   return currentRoles?.includes(role) ? true : false;
 };
 
+const isLecturer = hasRole("ROLE_LECTURER");
+
 const register = (
   email, password,
   recoveryQuestion, recoveryAnswer,
@@ -60,4 +62,4 @@ const register = (
   })
 };
 
-export { login, logout, getCurrentAccount, hasRole, register };
+export { login, logout, getCurrentAccount, hasRole, register, isLecturer };
