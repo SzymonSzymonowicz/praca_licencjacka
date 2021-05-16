@@ -20,8 +20,9 @@ INSERT INTO `myexaminer`.`account_role` VALUES
 (1,2);
 
 INSERT INTO `myexaminer`.`teaching_group` VALUES
-(1,'Grupa DT2 angielski', 'kod-dostepu-123', NOW(), 1),
-(2,'Grupa Testowa', 'test-123', NOW(), 1);
+(1, 'Grupa DT2 angielski', 'kod-dostepu-123', NOW(), 1),
+(2, 'Grupa Testowa', 'test-123', NOW(), 1),
+(3, 'Nowa Grupa', 'qazwsx', NOW(), 1);
 
 INSERT INTO `myexaminer`.`student_teaching_group` VALUES
 (1,2),
@@ -54,4 +55,14 @@ INSERT INTO `myexaminer`.`exercise` VALUES
 INSERT INTO `myexaminer`.`notebook` VALUES
 (1,'Miłej nauki !',1),
 (2,'Miłej nauki !',2),
-(3,'Miłej nauki !',3)
+(3,'Miłej nauki !',3);
+
+INSERT INTO `myexaminer`.`lesson` VALUES
+(1, "2021-05-10 10:15:00", "Czasy przeszłe powtórzenie", "past simple, past perfect", 1),
+(2, "2021-05-17 10:15:00", "Czasy przyszłe powtórzenie", "future simple, future continuous, future perfect", 1),
+(3, "2021-05-24 10:15:00", "Czasy teraźniejsze powtórzenie", "present simple, present perfect", 1);
+
+-- id, title, content, lesson_id
+INSERT INTO `myexaminer`.`chapter` VALUES
+(1, "Past Simple", "<h2>Past Simple - użycie</h2>Czas Past Simple jest czasem przeszłym, który w dużym stopniu odpowiada polskiemu trybowi dokonanemu. Stosujemy go w następujących sytuacjach:<br><h3>Mówiąc o czynnościach, stanach i sytuacjach, które miały miejsce w przeszłości i nie mają już żadnego związku z teraźniejszością.</h3>W tego typu zdaniach bardzo często pojawiają się określenia czasu precyzujące moment wykonania czynności. Oto kilka przykładów:<ul><li>Jim watched TV yesterday.</li><li>I learnt German many years ago.</li><li>They lived in the countryside when they were younger.</li><li>Mary wrote the report two days ago.</li><li>We visited Paris last month.</li></ul>", 1),
+(2, "Past Perfect", "<h2>Past Perfect - użycie</h2>Czasu Past Perfect Simple ma dość ograniczony zakres użycia. Stosujemy go, aby mówić o czynnościach, które zakończyły się przed inną czynnością lub punktem w czasie w przeszłości. <br>Takim punktem w czasie może też być data lub jakieś wydarzenie. Oto kilka przykładów.<br><ul><li>I had packed my suitcases before the taxi arrived.</li><li>Peter had broken down after his wife had left him.</li><li>By the time you came we had discussed all the points on the agenda.</li><li>I wondered who had eaten my piece of cake.</li><li>The company had sold over twenty thousand of these cars by 1999.</li></ul>", 1);

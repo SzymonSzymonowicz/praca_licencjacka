@@ -80,4 +80,10 @@ public class TeachingGroupController {
     public List<TeachingGroup> getTeachingGroups() {
         return teachingGroupService.findAllGroups();
     }
+
+    //TODO security SpEL call to check if caller belongs to requested group
+    @GetMapping("/{groupId}")
+    public TeachingGroup getTeachingGroupById(@PathVariable Long groupId) {
+        return teachingGroupService.getTeachingGroupById(groupId);
+    }
 }

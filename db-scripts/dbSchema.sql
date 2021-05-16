@@ -31,7 +31,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `myexaminer`.`roles`
+-- Table `myexaminer`.`role`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `myexaminer`.`role` ;
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `myexaminer`.`teaching_group` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `myexaminer`.`user_teaching_group`
+-- Table `myexaminer`.`student_teaching_group`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `myexaminer`.`student_teaching_group` ;
 
@@ -117,9 +117,37 @@ CREATE TABLE IF NOT EXISTS `myexaminer`.`student_teaching_group` (
   FOREIGN KEY (`fk_student_account_id`) REFERENCES `myexaminer`.`student`(`fk_account_id`))
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `myexaminer`.`lesson`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myexaminer`.`lesson` ;
+
+CREATE TABLE IF NOT EXISTS `myexaminer`.`lesson` (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  date DATETIME NOT NULL,
+  topic VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  teaching_group_id BIGINT NOT NULL,
+  FOREIGN KEY (`teaching_group_id`) REFERENCES `myexaminer`.`teaching_group`(`id`)
+  )
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `myexaminer`.`user_teaching_group`
+-- Table `myexaminer`.`chapter`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myexaminer`.`chapter` ;
+
+CREATE TABLE IF NOT EXISTS `myexaminer`.`chapter` (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  content LONGTEXT NOT NULL,
+  lesson_id BIGINT NOT NULL,
+  FOREIGN KEY (`lesson_id`) REFERENCES `myexaminer`.`lesson`(`id`)
+  )
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `myexaminer`.`account_role`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `myexaminer`.`account_role` ;
 
@@ -164,6 +192,10 @@ CREATE TABLE IF NOT EXISTS `myexaminer`.`exercise` (
   FOREIGN KEY (`fk_exam_id`) REFERENCES `myexaminer`.`exam`(`id`)
   )
 ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `myexaminer`.`individual_exam`
+-- -----------------------------------------------------
 
 DROP TABLE IF EXISTS `myexaminer`.`individual_exam` ;
 

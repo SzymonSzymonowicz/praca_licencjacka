@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -60,6 +61,9 @@ public class TeachingGroup {
     @OneToMany(mappedBy = "teachingGroup")
     @JsonIgnore
     private Set<Exam> exams;
+
+    @OneToMany(mappedBy = "teachingGroup")
+    private List<Lesson> lessons;
 
     public void addStudent(Student student) {
         students.add(student);
