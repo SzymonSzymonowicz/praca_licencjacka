@@ -55,4 +55,9 @@ INSERT INTO `myexaminer`.`exercise` VALUES
 INSERT INTO `myexaminer`.`notebook` VALUES
 (1,'Miłej nauki !',1),
 (2,'Miłej nauki !',2),
-(3,'Miłej nauki !',3)
+(3,'Miłej nauki !',3);
+
+INSERT INTO `myexaminer`.`lesson` VALUES
+(1, "2021-05-10 10:15:00", "Czasy przeszłe powtórzenie", "past simple, past perfect", 1),
+(2, "2021-05-17 10:15:00", "Czasy przyszłe powtórzenie", "future simple, future continuous, future perfect", 1),
+(3, "2021-05-24 10:15:00", "Czasy teraźniejsze powtórzenie", "present simple, present perfect", 1);
