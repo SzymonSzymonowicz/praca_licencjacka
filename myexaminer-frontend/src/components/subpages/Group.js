@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -14,7 +14,9 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { groupByIdUrl } from "router/urls";
+import authHeader from "services/auth-header";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,28 +60,39 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Group(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState("one");
+  const [value, setValue] = useState(1);
 
   const history = useHistory();
+  const { groupId } = useParams();
+
+  const [group, setGroup] = useState();
+
+  console.log("Wszedłeś na grupę: " + groupId);
+
+  const getGroupById = (id) => {
+    fetch(groupByIdUrl(id), {
+      method: 'GET',
+      headers: {
+        ...authHeader(),
+        "Content-Type": "application/json",
+        'Accept': '*/*'
+      }
+    }).then(response => response.json()
+    ).then(data => {
+      console.log(data);
+      setGroup(data);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  useEffect(() => {
+    getGroupById(groupId);
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const lessons = [
-    {
-      title: "Czasy przeszłe powtórzenie",
-      description: "past simple, past perfect",
-    },
-    {
-      title: "Czasy przyszłe powtórzenie",
-      description: "future simple, future continuous, future perfect",
-    },
-    {
-      title: "Czasy teraźniejsze powtórzenie",
-      description: "present simple, present perfect",
-    },
-  ];
 
   return (
     <div className={classes.root}>
@@ -113,7 +126,7 @@ export default function Group(props) {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={1}>
-        {lessons.map((lesson, index) => (
+        {group && group?.lessons?.map((lesson, index) => (
           <Card className={classes.root} style={{ marginBottom: 30 }}>
             <CardActionArea>
               {/*                        <CardMedia
@@ -125,7 +138,7 @@ export default function Group(props) {
                                     />*/}
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {lesson.title}
+                  {lesson.topic}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
                   {lesson.description}

@@ -1,4 +1,4 @@
-import { Avatar, Card, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
+import { Avatar, Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
 import React from "react";
 // import AddIcon from "@material-ui/icons/Add";
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
@@ -8,27 +8,29 @@ import authHeader from "services/auth-header";
 import { useState } from "react";
 import { useEffect } from "react";
 import { generateShortcut, generateHexColor } from "utils/stringUtils";
-import { groupsStudentsUrl } from "router/urls";
+import { groupsStudentsUrl, domain } from "router/urls";
+import { useHistory } from "react-router-dom";
 
 export default function Groups() {
   const [groups, setGroups] = useState([]);
+  const history = useHistory();
 
   const addToGroup = (accessCode) => {
-  fetch(groupsStudentsUrl, {
-    method: 'POST',
-    headers: {
-      ...authHeader(),
-      "Content-Type": "application/json",
-      'Accept': '*/*',
-    },
-    body: accessCode
-  }).then((response) => response.text()
-  ).then(data => {
-    console.log(data);
-    getGroups();
-  }).catch((error) => {
-    console.log("error");
-  });
+    fetch(groupsStudentsUrl, {
+      method: 'POST',
+      headers: {
+        ...authHeader(),
+        "Content-Type": "application/json",
+        'Accept': '*/*',
+      },
+      body: accessCode
+    }).then((response) => response.text()
+    ).then(data => {
+      console.log(data);
+      getGroups();
+    }).catch((error) => {
+      console.log("error");
+    });
   }
 
   const handleKeyPressed = (event) => {
@@ -62,25 +64,30 @@ export default function Groups() {
       {groups.length !== 0 &&
         groups.map((group) => (
           <Grid item xs={2} key={`${group.name}`}>
-            <Card style={{ height: "100%" }} elevation={6}>
-              <CardMedia style={{ height: "70%" }}>
-                <Avatar
-                  variant={"square"}
-                  style={{
-                    backgroundColor: generateHexColor(group.name),
-                    height: "100%",
-                    width: "100%",
-                    fontSize: "60px",
-                    color: "black",
-                  }}
-                >
-                  {generateShortcut(group.name)}
-                </Avatar>
-              </CardMedia>
-              <CardContent>
-                <Typography align="center" style={{ padding: "15px 0px" }}>{group.name}</Typography>
-              </CardContent>
-              {/* </CardActionArea> */}
+            <Card style={{ height: "100%" }} elevation={6}
+              onClick={() => {
+                history.push(`group/${group.id}`);
+            }}
+            >
+              <CardActionArea style={{ height: "100%" }}>
+                <CardMedia style={{ height: "70%" }}>
+                  <Avatar
+                    variant={"square"}
+                    style={{
+                      backgroundColor: generateHexColor(group.name),
+                      height: "100%",
+                      width: "100%",
+                      fontSize: "60px",
+                      color: "black",
+                    }}
+                  >
+                    {generateShortcut(group.name)}
+                  </Avatar>
+                </CardMedia>
+                <CardContent>
+                  <Typography align="center" style={{ padding: "15px 0px" }}>{group.name}</Typography>
+                </CardContent>
+              </CardActionArea>
             </Card>
           </Grid>
         ))}
