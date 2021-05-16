@@ -133,6 +133,20 @@ CREATE TABLE IF NOT EXISTS `myexaminer`.`lesson` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
+-- Table `myexaminer`.`chapter`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myexaminer`.`chapter` ;
+
+CREATE TABLE IF NOT EXISTS `myexaminer`.`chapter` (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  content LONGTEXT NOT NULL,
+  lesson_id BIGINT NOT NULL,
+  FOREIGN KEY (`lesson_id`) REFERENCES `myexaminer`.`lesson`(`id`)
+  )
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `myexaminer`.`account_role`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `myexaminer`.`account_role` ;
