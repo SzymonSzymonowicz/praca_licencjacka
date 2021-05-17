@@ -157,7 +157,7 @@ export default function Group(props) {
             <CardActions>
               <Button
                 size="small"
-                onClick={() => history.push(`/landing/lesson/`)}
+                onClick={() => history.push(`/landing/lesson/`, lesson)}
               >
                 Otwórz
               </Button>
