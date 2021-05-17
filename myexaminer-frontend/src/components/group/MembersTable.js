@@ -24,7 +24,7 @@ const columns = [
   {
     id: "faculty",
     label: "Wydział",
-    minWidth: 170,
+    minWidth: 100,
     align: "center",
   },
   {
@@ -38,7 +38,9 @@ const columns = [
     label: "Indeks",
     minWidth: 170,
     align: "center",
+    // currently not used, left as example
     format: (value) => (isLecturer ? value : "------"),
+    onlyLecturer: true
   },
 ];
 
@@ -67,13 +69,28 @@ export default function MembersTable({ students }) {
     setPage(0);
   };
 
+  const shouldShow = (column) => {
+    if (column.onlyLecturer === true && !isLecturer()) {
+      return false;
+    }
+
+    return true;
+    // if (column.onlyLecturer === true && isLecturer()) {
+    //   return true;
+    // } else if (column.onlyLecturer === true && !isLecturer()) {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+  }
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {columns.filter(shouldShow).map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -89,7 +106,7 @@ export default function MembersTable({ students }) {
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                    {columns.map((column) => {
+                    {columns.filter(shouldShow).map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>

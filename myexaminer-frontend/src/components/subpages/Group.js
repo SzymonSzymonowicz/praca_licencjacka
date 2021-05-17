@@ -33,7 +33,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={5}>
-          <Typography>{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  flexContainer: {
+    justifyContent: "space-evenly"
+  }
 }));
 
 export default function Group(props) {
@@ -105,7 +108,7 @@ export default function Group(props) {
           value={value}
           onChange={handleChange}
           aria-label="wrapped label tabs example"
-          style={{ justifyContent: "space-evenly" }}
+          classes={{ flexContainer: classes.flexContainer }}
         >
           <Tab
             icon={<SchoolIcon />}

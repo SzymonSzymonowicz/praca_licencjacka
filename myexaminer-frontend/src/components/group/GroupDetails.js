@@ -4,14 +4,16 @@ import { Table, TableBody, TableCell, TableContainer, TableRow } from "@material
 import { Link } from "react-router-dom";
 import styles from "./group.module.css";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import { isLecturer } from "services/auth-service";
 
 export default function GroupDetails({ group }) {
   const lecturer = group?.lecturer;
+  const creationDate = new Date(group?.startingDate).toLocaleDateString();
 
   return (
     <>
-      <Card className={styles.grayBackground} style={{ marginBottom: 30 }}>
-        <CardContent>
+      <Card className={styles.grayBackground}>
+        <CardContent style={{ padding: "16px" }}>
           <div className={styles.lecturerCard}>
             <div className={styles.iconSection}>
               <MenuBookIcon className={styles.lecturerIcon} />
@@ -41,11 +43,19 @@ export default function GroupDetails({ group }) {
               </TableCell>
               <TableCell align="right">{group?.name || ""}</TableCell>
             </TableRow>
+            {isLecturer() &&
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Kod dostępu
+                </TableCell>
+                <TableCell align="right">{group?.accessCode || ""}</TableCell>
+              </TableRow>
+            }
             <TableRow>
               <TableCell component="th" scope="row">
-                Kod dostępu
+                Data utworzenia
               </TableCell>
-              <TableCell align="right">{group?.accessCode || ""}</TableCell>
+              <TableCell align="right">{creationDate || ""}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
