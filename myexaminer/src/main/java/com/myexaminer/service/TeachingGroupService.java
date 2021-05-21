@@ -1,11 +1,10 @@
 package com.myexaminer.service;
 
-import com.myexaminer.enums.RoleEnum;
 import com.myexaminer.entity.Account;
 import com.myexaminer.entity.Lecturer;
 import com.myexaminer.entity.Student;
 import com.myexaminer.entity.TeachingGroup;
-import com.myexaminer.dto.TeachingGroupDTO;
+import com.myexaminer.enums.RoleEnum;
 import com.myexaminer.repository.TeachingGroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -88,16 +87,16 @@ public class TeachingGroupService {
         return teachingGroupRepository.findByLecturerId(id);
     }
 
-    public void createTeachingGroup(TeachingGroupDTO teachingGroupDTO, Authentication authentication) {
-        if (teachingGroupExistsByName(teachingGroupDTO.getName())) {
-            log.info("Group with given name -> {} <- ALREADY EXISTS", teachingGroupDTO.getName());
-            throw new EntityExistsException("Group with given name ->" + teachingGroupDTO.getName() + "<- ALREADY EXISTS");
+    public void createTeachingGroup(String groupName, Authentication authentication) {
+        if (teachingGroupExistsByName(groupName)) {
+            log.info("Group with given name -> {} <- ALREADY EXISTS", groupName);
+            throw new EntityExistsException("Group with given name ->" + groupName + "<- ALREADY EXISTS");
         }
 
         Lecturer lecturer = lecturerService.findLecturerByEmail(authentication.getName());
 
         TeachingGroup teachingGroup = TeachingGroup.builder()
-                .name(teachingGroupDTO.getName())
+                .name(groupName)
                 .startingDate(LocalDateTime.now())
                 .accessCode(RandomStringUtils.randomAlphanumeric(8))
                 .lecturer(lecturer)

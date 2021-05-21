@@ -1,13 +1,13 @@
 package com.myexaminer.controller;
 
 import com.myexaminer.entity.TeachingGroup;
-import com.myexaminer.dto.TeachingGroupDTO;
 import com.myexaminer.service.TeachingGroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Log4j2
 @RestController
 @RequestMapping(path = "/groups")
 @RequiredArgsConstructor
+@Validated
 public class TeachingGroupController {
 
     private final TeachingGroupService teachingGroupService;
@@ -45,8 +47,14 @@ public class TeachingGroupController {
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping
-    public void addTeachingGroup(@RequestBody TeachingGroupDTO teachingGroupDTO, Authentication authentication) {
-        teachingGroupService.createTeachingGroup(teachingGroupDTO, authentication);
+    public void addTeachingGroup(@RequestBody @NotBlank String groupName, Authentication authentication) {
+        teachingGroupService.createTeachingGroup(groupName, authentication);
+    }
+
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @GetMapping("/unique")
+    public boolean checkIfGroupNameIsUnique(@RequestParam String groupName) {
+        return !teachingGroupService.teachingGroupExistsByName(groupName);
     }
 
     @DeleteMapping(path = "/{group}")
