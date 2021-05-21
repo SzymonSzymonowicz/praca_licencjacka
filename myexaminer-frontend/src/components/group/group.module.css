@@ -25,3 +25,13 @@
   flex-grow: 1;
   justify-content: center;
 }
+
+.newGroupForm {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.newGroupForm > div{
+  margin-bottom: 20px;
+}

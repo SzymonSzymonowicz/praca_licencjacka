@@ -1,15 +1,16 @@
-import { Avatar, Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
+import { Avatar, Button, Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
 import React from "react";
-// import AddIcon from "@material-ui/icons/Add";
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import AddIcon from '@material-ui/icons/Add';
 import { groupsForAccountUrl } from "router/urls";
-import { getCurrentAccount } from "services/auth-service";
+import { getCurrentAccount, isLecturer } from "services/auth-service";
 import authHeader from "services/auth-header";
 import { useState } from "react";
 import { useEffect } from "react";
 import { generateShortcut, generateHexColor } from "utils/stringUtils";
-import { groupsStudentsUrl, domain } from "router/urls";
+import { groupsStudentsUrl } from "router/urls";
 import { useHistory } from "react-router-dom";
+import CreateGroupModal from "components/group/CreateGroupModal";
 
 export default function Groups() {
   const [groups, setGroups] = useState([]);
@@ -67,7 +68,7 @@ export default function Groups() {
             <Card style={{ height: "100%" }} elevation={6}
               onClick={() => {
                 history.push(`group/${group.id}`);
-            }}
+              }}
             >
               <CardActionArea style={{ height: "100%" }}>
                 <CardMedia style={{ height: "70%" }}>
@@ -94,7 +95,6 @@ export default function Groups() {
 
       <Grid item xs={2}>
         <Card elevation={6}>
-          {/* <CardActionArea> */}
           <CardContent>
             <Grid container direction="column" alignItems="center">
               <GroupAddIcon style={{ fontSize: "140px" }} />
@@ -109,9 +109,19 @@ export default function Groups() {
               />
             </Grid>
           </CardContent>
-          {/* </CardActionArea> */}
         </Card>
       </Grid>
+      {isLecturer() && <Grid item xs={2}>
+        <Card elevation={6}>
+          <CardContent>
+            <Grid container direction="column" alignItems="center">
+              <AddIcon style={{ fontSize: "140px" }} />
+              <Typography style={{ padding: "10px", margin: "10px 0px" }}>Utwórz grupę</Typography>
+              <CreateGroupModal getGroups={getGroups}/>
+            </Grid>
+          </CardContent>
+        </Card>
+      </Grid>}
     </Grid>
   );
 }

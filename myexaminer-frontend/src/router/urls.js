@@ -26,3 +26,5 @@ export const individualExamsForLecturerGroupsUrl = apiDomain + "/individual-exam
 export const groupsForAccountUrl = (id) => apiDomain + "/groups/account/" + id;
 export const groupsStudentsUrl = apiDomain + "/groups/students";
 export const groupByIdUrl = (id) => apiDomain + "/groups/" + id;
+export const groupIsUniqueNameUrl = (name) => apiDomain + "/groups/unique?groupName=" + name;
+export const createGroupUrl = apiDomain + "/groups";
