@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import MuiModal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import CreateGroupForm from './CreateGroupForm';
 import { Button } from '@material-ui/core';
-import { Children } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -20,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }));
-//TransitionsModal
-export default function TransitionsModal(props) {
+
+export default function Modal(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -38,7 +36,7 @@ export default function TransitionsModal(props) {
       <Button onClick={handleOpen}>
         Stwórz
       </Button>
-      <Modal
+      <MuiModal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
@@ -53,10 +51,9 @@ export default function TransitionsModal(props) {
         <Fade in={open}>
           <div className={classes.paper}>
             {React.cloneElement(props.children, { closeModal: handleClose })}
-            {/* <CreateGroupForm getGroups={props.getGroups} closeModal={handleClose}/> */}
           </div>
         </Fade>
-      </Modal>
+      </MuiModal>
     </div>
   );
 }

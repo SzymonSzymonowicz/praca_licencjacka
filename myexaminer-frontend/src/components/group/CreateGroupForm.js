@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import Input from "@material-ui/core/Input";
-import { Box, Button, Grid, makeStyles, TextField } from "@material-ui/core";
+import { Box, Button, makeStyles, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
 import { groupIsUniqueNameUrl, createGroupUrl } from "router/urls";
 import authHeader from "services/auth-header";
@@ -19,8 +18,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateGroupForm(props) {
   const { control, formState: { errors }, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
-
   const classes = useStyles();
 
   const checkIsGroupNameUnique = async (name) => {

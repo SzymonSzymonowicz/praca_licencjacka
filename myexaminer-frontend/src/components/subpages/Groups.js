@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
+import { Avatar, Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
 import React from "react";
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import AddIcon from '@material-ui/icons/Add';
@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { generateShortcut, generateHexColor } from "utils/stringUtils";
 import { groupsStudentsUrl } from "router/urls";
 import { useHistory } from "react-router-dom";
-import CreateGroupModal from "components/group/CreateGroupModal";
+import Modal from "components/reusable/modal/Modal";
 import CreateGroupForm from "components/group/CreateGroupForm";
 
 export default function Groups() {
@@ -62,7 +62,7 @@ export default function Groups() {
   }, []);
 
   return (
-    <Grid container spacing={2} alignItems="stretch">
+    <Grid container spacing={2} alignItems="stretch" style={{alignItems: "stretch"}}>
       {groups.length !== 0 &&
         groups.map((group) => (
           <Grid item xs={2} key={`${group.name}`}>
@@ -92,9 +92,9 @@ export default function Groups() {
               </CardActionArea>
             </Card>
           </Grid>
-        ))}
+      ))}
 
-      <Grid item xs={2}>
+      {!isLecturer() && <Grid item xs={2}>
         <Card elevation={6}>
           <CardContent>
             <Grid container direction="column" alignItems="center">
@@ -111,16 +111,17 @@ export default function Groups() {
             </Grid>
           </CardContent>
         </Card>
-      </Grid>
-      {isLecturer() && <Grid item xs={2}>
+      </Grid>}
+
+      {isLecturer() && <Grid item xs={2} style={{ display:"flex" }}>
         <Card elevation={6}>
           <CardContent>
             <Grid container direction="column" alignItems="center">
               <AddIcon style={{ fontSize: "140px" }} />
               <Typography style={{ padding: "10px", margin: "10px 0px" }}>Utwórz grupę</Typography>
-              <CreateGroupModal>
+              <Modal>
                 <CreateGroupForm getGroups={getGroups}/>
-              </CreateGroupModal>
+              </Modal>
             </Grid>
           </CardContent>
         </Card>
