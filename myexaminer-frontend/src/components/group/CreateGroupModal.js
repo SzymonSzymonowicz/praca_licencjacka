@@ -5,6 +5,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import CreateGroupForm from './CreateGroupForm';
 import { Button } from '@material-ui/core';
+import { Children } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -20,10 +21,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 //TransitionsModal
-export default function TransitionsModal(props, { children }) {
+export default function TransitionsModal(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  // console.log(props.getGroups);
 
   const handleOpen = () => {
     setOpen(true);
@@ -52,7 +52,8 @@ export default function TransitionsModal(props, { children }) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <CreateGroupForm getGroups={props.getGroups} closeModal={handleClose}/>
+            {React.cloneElement(props.children, { closeModal: handleClose })}
+            {/* <CreateGroupForm getGroups={props.getGroups} closeModal={handleClose}/> */}
           </div>
         </Fade>
       </Modal>

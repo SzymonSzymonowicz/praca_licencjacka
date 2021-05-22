@@ -11,6 +11,7 @@ import { generateShortcut, generateHexColor } from "utils/stringUtils";
 import { groupsStudentsUrl } from "router/urls";
 import { useHistory } from "react-router-dom";
 import CreateGroupModal from "components/group/CreateGroupModal";
+import CreateGroupForm from "components/group/CreateGroupForm";
 
 export default function Groups() {
   const [groups, setGroups] = useState([]);
@@ -117,7 +118,9 @@ export default function Groups() {
             <Grid container direction="column" alignItems="center">
               <AddIcon style={{ fontSize: "140px" }} />
               <Typography style={{ padding: "10px", margin: "10px 0px" }}>Utwórz grupę</Typography>
-              <CreateGroupModal getGroups={getGroups}/>
+              <CreateGroupModal>
+                <CreateGroupForm getGroups={getGroups}/>
+              </CreateGroupModal>
             </Grid>
           </CardContent>
         </Card>

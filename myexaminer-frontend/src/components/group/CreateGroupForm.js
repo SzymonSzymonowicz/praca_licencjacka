@@ -1,10 +1,12 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import Input from "@material-ui/core/Input";
-import { Box, Button, makeStyles, TextField } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
 import { groupIsUniqueNameUrl, createGroupUrl } from "router/urls";
 import authHeader from "services/auth-header";
+import CloseIcon from '@material-ui/icons/Close';
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -69,6 +71,7 @@ export default function CreateGroupForm(props) {
             variant="outlined"
             label="Nazwa grupy"
             error={errors.groupName}
+            fullWidth
             helperText={ errors.groupName ? errors.groupName?.message : null }
             {...field}
           />
@@ -79,9 +82,14 @@ export default function CreateGroupForm(props) {
         }}
       />
       </Box>
-      <Button color="primary" type="submit" variant="contained">
-        Utwórz grupę
-      </Button >
+      <Box display="flex" justifyContent="space-evenly">
+        <Button color="primary" type="submit" variant="contained" startIcon={<CheckIcon />} style={{ marginRight: "20px" }}>
+          Utwórz grupę
+        </Button >
+        <Button color="secondary" variant="contained" startIcon={<CloseIcon />} onClick={ props.closeModal }>
+          Anuluj
+        </Button >
+      </Box>
     </form>
   );
 }

@@ -35,3 +35,7 @@
 .newGroupForm > div{
   margin-bottom: 20px;
 }
+
+.newGroupForm > div:last-of-type{
+  margin-bottom: 0px;
+}
