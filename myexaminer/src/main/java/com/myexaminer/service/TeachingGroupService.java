@@ -30,7 +30,7 @@ public class TeachingGroupService {
     private final LecturerService lecturerService;
     private final AccountService accountService;
 
-    public void teachingGroupSave(TeachingGroup teachingGroup) {
+    public void saveTeachingGroup(TeachingGroup teachingGroup) {
         teachingGroupRepository.save(teachingGroup);
     }
 
@@ -72,7 +72,7 @@ public class TeachingGroupService {
 
         teachingGroup.addStudent(student);
 
-        teachingGroupSave(teachingGroup);
+        saveTeachingGroup(teachingGroup);
 
         student.addToTeachingGroups(teachingGroup);
 
@@ -102,7 +102,7 @@ public class TeachingGroupService {
                 .lecturer(lecturer)
                 .build();
 
-        teachingGroupSave(teachingGroup);
+        saveTeachingGroup(teachingGroup);
         log.info("Group with ID -> {} <- has been ADDED", teachingGroup.getId());
     }
 
@@ -160,6 +160,15 @@ public class TeachingGroupService {
             return teachingGroupRepository.findAllByLecturer(lecturer);
         }
         //TODO find better exception for this
-        throw new EntityNotFoundException("Your account doesn't posses required roles. Contact administrators of the application.");
+        throw new IllegalArgumentException("Your account doesn't posses required roles. Contact administrators of the application.");
+    }
+
+    public void editGroup(Long groupId, TeachingGroup teachingGroup) {
+        TeachingGroup dbGroup = getTeachingGroupById(groupId);
+
+        dbGroup.setName(teachingGroup.getName());
+        dbGroup.setStartingDate(teachingGroup.getStartingDate());
+
+        teachingGroupRepository.save(dbGroup);
     }
 }

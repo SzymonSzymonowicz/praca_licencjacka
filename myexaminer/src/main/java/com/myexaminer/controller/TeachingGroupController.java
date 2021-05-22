@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,6 +58,13 @@ public class TeachingGroupController {
         return !teachingGroupService.teachingGroupExistsByName(groupName);
     }
 
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PatchMapping("/{groupId}")
+    public void editGroup(@PathVariable Long groupId, @RequestBody TeachingGroup teachingGroup) {
+        teachingGroupService.editGroup(groupId, teachingGroup);
+    }
+
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
     @DeleteMapping(path = "/{group}")
     public void removeGroup(@PathVariable("group") Long groupId) {
         teachingGroupService.deleteGroup(groupId);
