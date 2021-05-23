@@ -62,7 +62,7 @@ export default function Groups() {
   }, []);
 
   return (
-    <Grid container spacing={2} alignItems="stretch" style={{alignItems: "stretch"}}>
+    <Grid container spacing={2} alignItems="stretch">
       {groups.length !== 0 &&
         groups.map((group) => (
           <Grid item xs={2} key={`${group.name}`}>
@@ -97,7 +97,7 @@ export default function Groups() {
       {!isLecturer() && <Grid item xs={2}>
         <Card elevation={6}>
           <CardContent>
-            <Grid container direction="column" alignItems="center">
+            <Grid container direction="column" alignContent="center" alignItems="center">
               <GroupAddIcon style={{ fontSize: "140px" }} />
               <Typography style={{ padding: "10px", margin: "10px 0px" }}>Dołącz do grupy</Typography>
               <TextField

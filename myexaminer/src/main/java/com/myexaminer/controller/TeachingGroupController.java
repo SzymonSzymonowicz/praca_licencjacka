@@ -30,17 +30,6 @@ public class TeachingGroupController {
 
     private final TeachingGroupService teachingGroupService;
 
-//    @GetMapping
-//    public TeachingGroup getStudentTeachingGroup(@RequestParam int studentId) {
-//        return teachingGroupService.getTeachingGroupByStudentId(studentId);
-//    }
-//
-//    @GetMapping("placeholder")
-//    public List<TeachingGroup> getLecturerTeachingGroups(@RequestParam int lecturerId) {
-//        return teachingGroupService.getTeachingGroupsByLecturerId(lecturerId);
-//    }
-//
-
     @GetMapping("/account/{accountId}")
     public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Long accountId) {
         return teachingGroupService.getTeachingGroupByAccountId(accountId);
@@ -65,18 +54,18 @@ public class TeachingGroupController {
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @DeleteMapping(path = "/{group}")
-    public void removeGroup(@PathVariable("group") Long groupId) {
+    @DeleteMapping(path = "/{groupId}")
+    public void removeGroup(@PathVariable Long groupId) {
         teachingGroupService.deleteGroup(groupId);
     }
 
-    @PostMapping(path = "/{group}/students")
-    public void addStudentToGroup(@PathVariable("group") Long groupId, @RequestParam Long studentId) {
+    @PostMapping(path = "/{groupId}/students")
+    public void addStudentToGroup(@PathVariable Long groupId, @RequestParam Long studentId) {
         teachingGroupService.addStudentToGroup(groupId, studentId);
     }
 
-    @DeleteMapping(path = "/{group}/students/{id}")
-    public void removeStudentFromGroup(@PathVariable("group") Long groupId, @PathVariable("id") Long studentId) {
+    @DeleteMapping(path = "/{groupId}/students/{id}")
+    public void removeStudentFromGroup(@PathVariable Long groupId, @PathVariable("id") Long studentId) {
         teachingGroupService.removeStudentFromGroup(groupId, studentId);
     }
 

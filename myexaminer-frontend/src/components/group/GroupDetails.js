@@ -1,14 +1,38 @@
 import React from "react";
-import { Card, CardContent, Typography, Paper } from "@material-ui/core";
+import { Card, CardContent, Typography, Paper, Box, Button } from "@material-ui/core";
 import { Table, TableBody, TableCell, TableContainer, TableRow } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styles from "./group.module.css";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import { isLecturer } from "services/auth-service";
+import authHeader from "services/auth-header";
+import { groupByIdUrl } from "router/urls";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
 
 export default function GroupDetails({ group }) {
   const lecturer = group?.lecturer;
-  const creationDate = new Date(group?.startingDate).toLocaleDateString();
+  const startingDate = new Date(group?.startingDate).toLocaleDateString();
+  const groupId = group?.id;
+
+  const history = useHistory();
+
+  const deleteGroup = (groupId) => {
+    fetch(groupByIdUrl(groupId), {
+      method: "DELETE",
+      headers: authHeader()
+    })
+    .then(res => {
+      if (res.status === 200) {
+        history.goBack();
+      } else {
+        console.log("Something went wrong");
+        console.log(res);
+      }
+    })
+    .catch(err => console.error(err))
+  }
 
   return (
     <>
@@ -53,13 +77,22 @@ export default function GroupDetails({ group }) {
             }
             <TableRow>
               <TableCell component="th" scope="row">
-                Data utworzenia
+                Data rozpoczęcia
               </TableCell>
-              <TableCell align="right">{creationDate || ""}</TableCell>
+              <TableCell align="right">{startingDate || ""}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Box display="flex" justifyContent="space-between" style={{ paddingTop: "20px" }}>
+        <Button color="primary" type="submit" variant="contained" startIcon={<EditIcon />}>
+          Edytuj grupę
+        </Button >
+        <DeleteConfirmButton text={"Usuń grupę"} action={() => deleteGroup(groupId)} />
+      </Box>
+
+
     </>
   );
 }
