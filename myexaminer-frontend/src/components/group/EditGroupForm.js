@@ -2,54 +2,53 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
-import { createGroupUrl } from "router/urls";
+import { groupByIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
 import { checkIsGroupNameUnique } from "services/group-service";
 
-export default function CreateGroupForm(props) {
-  const { control, formState: { errors }, handleSubmit } = useForm();
+export default function EditGroupForm(props) {
+  const { control, formState: { errors }, handleSubmit } = useForm({
+    defaultValues: props?.group
+  });
 
-  const createGroup = (name) => {
-    fetch(createGroupUrl, {
-      method: "POST",
+  const editGroup = (id, group) => {
+    fetch(groupByIdUrl(id), {
+      method: "PATCH",
       headers: {
         ...authHeader(),
         "Content-Type": "application/json"
       },
-      body: name
+      body: JSON.stringify(group)
     })
-      .then(res => {
-        console.log(props?.getGroups);
-        console.log("input from form");
-        console.log(name)
-        if (res.status === 200) {
-          props?.getGroups();
-          props?.closeModal();
-        }
-        else {
-          console.log("Adding group failed");
-          console.log(res.text())
-        }
+    .then(res => {
+      if (res.status === 200) {
+        props?.closeModal();
+        props?.getGroup(id);
+      }
+      else {
+        console.log("Editing group failed");
+        console.log(res.text())
+      }
     })
     .catch(err => { console.error(err) })
   }
 
   return (
-    <form onSubmit={handleSubmit(data => createGroup(data.groupName))} className={styles.newGroupForm}>
+    <form onSubmit={handleSubmit(data => editGroup(props?.group?.id, data))} className={styles.newGroupForm}>
       <Box style={{ minHeight: "80px" }}>
       <Controller
         control={control}
-        name="groupName"
+        name="name"
         defaultValue=""
         render={({ field }) =>
           <TextField
             variant="outlined"
             label="Nazwa grupy"
-            error={errors.groupName}
+            error={errors.name}
             fullWidth
-            helperText={ errors.groupName ? errors.groupName?.message : null }
+            helperText={ errors.name ? errors.name?.message : null }
             {...field}
           />
         }
@@ -61,7 +60,7 @@ export default function CreateGroupForm(props) {
       </Box>
       <Box display="flex" justifyContent="space-evenly">
         <Button color="primary" type="submit" variant="contained" startIcon={<CheckIcon />} style={{ marginRight: "20px" }}>
-          Utwórz grupę
+          Potwierdź
         </Button >
         <Button color="secondary" variant="contained" startIcon={<CloseIcon />} onClick={ props.closeModal }>
           Anuluj

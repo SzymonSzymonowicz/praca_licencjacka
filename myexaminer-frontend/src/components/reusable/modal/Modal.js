@@ -33,9 +33,7 @@ export default function Modal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        Stwórz
-      </Button>
+      {React.cloneElement(props.input, { onClick: handleOpen })}
       <MuiModal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

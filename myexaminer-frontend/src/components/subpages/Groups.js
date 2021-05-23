@@ -1,4 +1,4 @@
-import { Avatar, Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
+import { Avatar, Button, Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from "@material-ui/core";
 import React from "react";
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import AddIcon from '@material-ui/icons/Add';
@@ -119,7 +119,7 @@ export default function Groups() {
             <Grid container direction="column" alignItems="center">
               <AddIcon style={{ fontSize: "140px" }} />
               <Typography style={{ padding: "10px", margin: "10px 0px" }}>Utwórz grupę</Typography>
-              <Modal>
+              <Modal input={<Button>Stwórz</Button>}>
                 <CreateGroupForm getGroups={getGroups}/>
               </Modal>
             </Grid>

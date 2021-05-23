@@ -166,10 +166,10 @@ export default function Group(props) {
         ))}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <MembersTable students={group?.students} />
+        <MembersTable students={group?.students} groupId={groupId} getGroup={getGroupById}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <GroupDetails group={group} />
+        <GroupDetails group={group} getGroup={getGroupById}/>
       </TabPanel>
     </div>
   );
