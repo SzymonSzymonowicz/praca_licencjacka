@@ -1,10 +1,10 @@
 package com.myexaminer.service;
 
+import com.myexaminer.dto.LecturerIndividualExamView;
 import com.myexaminer.entity.Exam;
 import com.myexaminer.entity.IndividualExam;
 import com.myexaminer.entity.Student;
 import com.myexaminer.entity.TeachingGroup;
-import com.myexaminer.dto.LecturerIndividualExamView;
 import com.myexaminer.repository.IndividualExamRepository;
 import com.myexaminer.security.service.AccountDetails;
 import lombok.RequiredArgsConstructor;

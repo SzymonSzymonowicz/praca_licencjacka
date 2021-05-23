@@ -2,11 +2,11 @@ package com.myexaminer.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myexaminer.dto.ExerciseDTO;
+import com.myexaminer.entity.Exercise;
 import com.myexaminer.exerciseTypes.ClosedExercise;
 import com.myexaminer.exerciseTypes.OpenExercise;
 import com.myexaminer.exerciseTypes.ReceivedExercise;
-import com.myexaminer.entity.Exercise;
-import com.myexaminer.dto.ExerciseDTO;
 import com.myexaminer.repository.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

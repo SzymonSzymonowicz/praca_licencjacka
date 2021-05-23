@@ -34,7 +34,8 @@ public class MyexaminerApplication {
                 registry.addMapping("/notebook").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/groups/account/{accountId}").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/groups/students").allowedMethods("*").allowedOrigins(LOCALHOST);
-                registry.addMapping("/groups/{groupId}").allowedOrigins(LOCALHOST);
+                registry.addMapping("/groups/{groupId}").allowedMethods("*").allowedOrigins(LOCALHOST);
+                registry.addMapping("/groups/**").allowedMethods("*").allowedOrigins(LOCALHOST);
             }
         };
     }

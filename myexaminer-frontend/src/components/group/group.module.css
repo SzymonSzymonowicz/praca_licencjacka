@@ -1,5 +1,6 @@
 .grayBackground {
-  background-color: lightgray;
+  background-color: lightgray !important;
+  margin-bottom: 30px;
 }
 
 .lecturerCard {
@@ -10,10 +11,12 @@
 .iconSection{
   width: 30%;
   text-align: center;
+  border-right: 2px lightslategray solid;
+  margin-right: 10%;
 }
 
 .lecturerIcon {
-  font-size: 120px;
+  font-size: 120px !important;
 }
 
 .lecturerDetails {
@@ -21,4 +24,18 @@
   flex-direction: column;
   flex-grow: 1;
   justify-content: center;
+}
+
+.newGroupForm {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.newGroupForm > div{
+  margin-bottom: 20px;
+}
+
+.newGroupForm > div:last-of-type{
+  margin-bottom: 0px;
 }

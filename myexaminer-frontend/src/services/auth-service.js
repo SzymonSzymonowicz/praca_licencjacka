@@ -32,10 +32,10 @@ const getCurrentAccount = () => {
 const hasRole = (role) => {
   const currentRoles = getCurrentAccount()?.roles;
 
-  return currentRoles?.includes(role) ? true : false;
+  return currentRoles?.includes(role);
 };
 
-const isLecturer = hasRole("ROLE_LECTURER");
+const isLecturer = () => hasRole("ROLE_LECTURER");
 
 const register = (
   email, password,

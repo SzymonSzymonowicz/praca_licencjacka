@@ -1,10 +1,10 @@
 package com.myexaminer.controller;
 
-import com.myexaminer.enums.State;
-import com.myexaminer.entity.Exam;
 import com.myexaminer.dto.ExamDTO;
 import com.myexaminer.dto.GenericOneValue;
 import com.myexaminer.dto.GenericTwoValues;
+import com.myexaminer.entity.Exam;
+import com.myexaminer.enums.State;
 import com.myexaminer.service.ExamService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
