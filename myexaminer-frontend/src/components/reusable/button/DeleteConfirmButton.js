@@ -24,11 +24,9 @@ export default function DeleteConfirmButton({ text, action }, props) {
   });
 
   const handleClick = () => {
-    console.log("Clicked :" + clicked);
-    console.log(action);
     if (clicked === true) {
       console.log(typeof action);
-      typeof action === "function" ? action() : console.log("Perform Action");
+      typeof action === "function" ? action() : console.log("Given action is not a function! Performing mock log.");
     }
 
     setClicked(true);

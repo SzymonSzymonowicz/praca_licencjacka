@@ -1,11 +1,11 @@
 package com.myexaminer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.myexaminer.dto.ExerciseDTO;
+import com.myexaminer.entity.Exercise;
 import com.myexaminer.exerciseTypes.ClosedExercise;
 import com.myexaminer.exerciseTypes.OpenExercise;
 import com.myexaminer.exerciseTypes.ReceivedExercise;
-import com.myexaminer.entity.Exercise;
-import com.myexaminer.dto.ExerciseDTO;
 import com.myexaminer.service.ExerciseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;

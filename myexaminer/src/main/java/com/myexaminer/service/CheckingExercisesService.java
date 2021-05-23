@@ -2,11 +2,11 @@ package com.myexaminer.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myexaminer.enums.RoleEnum;
-import com.myexaminer.exerciseTypes.ReceivedExercise;
+import com.myexaminer.dto.ArchiveExerciseDTO;
 import com.myexaminer.entity.ArchiveExercise;
 import com.myexaminer.entity.IndividualExam;
-import com.myexaminer.dto.ArchiveExerciseDTO;
+import com.myexaminer.enums.RoleEnum;
+import com.myexaminer.exerciseTypes.ReceivedExercise;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.security.core.Authentication;

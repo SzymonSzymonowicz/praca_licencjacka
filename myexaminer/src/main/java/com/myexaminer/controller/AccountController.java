@@ -1,8 +1,8 @@
 package com.myexaminer.controller;
 
+import com.myexaminer.dto.RegisterDTO;
 import com.myexaminer.entity.Account;
 import com.myexaminer.entity.Role;
-import com.myexaminer.dto.RegisterDTO;
 import com.myexaminer.security.jwt.JwtUtils;
 import com.myexaminer.security.payload.JwtResponse;
 import com.myexaminer.security.service.AccountDetails;
