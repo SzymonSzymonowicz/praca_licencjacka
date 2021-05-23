@@ -28,3 +28,4 @@ export const groupsStudentsUrl = apiDomain + "/groups/students";
 export const groupByIdUrl = (id) => apiDomain + "/groups/" + id;
 export const groupIsUniqueNameUrl = (name) => apiDomain + "/groups/unique?groupName=" + name;
 export const createGroupUrl = apiDomain + "/groups";
+export const removeStudentFromGroupUrl = (groupId, studentId) => apiDomain + "/groups/" + groupId + "/students/" + studentId;

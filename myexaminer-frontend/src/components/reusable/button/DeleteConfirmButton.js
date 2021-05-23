@@ -1,12 +1,13 @@
-import { Button } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 // if you pass function with parameters it should be wrapped in anonymous function, so it does not excecute 
 // ex.function(){ action(p1, p2) } or simply() => {... }
-export default function DeleteConfirmButton({ text, action }, props) {
+export default function DeleteConfirmButton(props) {
   const [clicked, setClicked] = useState(false);
+  const { text, action, onlyIcon } = props;
 
   useEffect(() => {
     // turn off, if did not confirm after 5s
@@ -32,16 +33,25 @@ export default function DeleteConfirmButton({ text, action }, props) {
     setClicked(true);
   };
 
+  // onlyIcon
+  const iconButton = (
+    <IconButton aria-label="delete" color="secondary" onClick={handleClick}>
+      {clicked ? <DeleteForeverIcon /> : <DeleteIcon />}
+    </IconButton >
+  );
+
+  const textButton = (
+    <Button
+      variant="contained"
+      color="secondary"
+      onClick={handleClick}
+      startIcon={clicked ? <DeleteForeverIcon /> : <DeleteIcon />}
+    >
+      {clicked ? props?.confirmTitle || "Zatwierdź" : text}
+    </Button>
+  );
+
   return (
-    <>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleClick}
-        startIcon={clicked ? <DeleteForeverIcon /> : <DeleteIcon />}
-      >
-        {clicked ? props?.confirmTitle || "Zatwierdź" : text}
-      </Button>
-    </>
+    onlyIcon ? iconButton : textButton
   );
 }

@@ -64,6 +64,7 @@ public class TeachingGroupController {
         teachingGroupService.addStudentToGroup(groupId, studentId);
     }
 
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
     @DeleteMapping(path = "/{groupId}/students/{id}")
     public void removeStudentFromGroup(@PathVariable Long groupId, @PathVariable("id") Long studentId) {
         teachingGroupService.removeStudentFromGroup(groupId, studentId);

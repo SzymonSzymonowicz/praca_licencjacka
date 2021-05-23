@@ -10,8 +10,10 @@ import { groupByIdUrl } from "router/urls";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
+import Modal from "components/reusable/modal/Modal";
+import EditGroupForm from "./EditGroupForm";
 
-export default function GroupDetails({ group }) {
+export default function GroupDetails({ group, getGroup }) {
   const lecturer = group?.lecturer;
   const startingDate = new Date(group?.startingDate).toLocaleDateString();
   const groupId = group?.id;
@@ -86,9 +88,14 @@ export default function GroupDetails({ group }) {
       </TableContainer>
 
       <Box display="flex" justifyContent="space-between" style={{ paddingTop: "20px" }}>
-        <Button color="primary" type="submit" variant="contained" startIcon={<EditIcon />}>
-          Edytuj grupę
-        </Button >
+        <Modal input={
+          <Button color="primary" type="submit" variant="contained" startIcon={<EditIcon />}>
+            Edytuj grupę
+          </Button >
+        }>
+          <EditGroupForm group={group} getGroup={ getGroup }/>
+        </Modal>
+
         <DeleteConfirmButton text={"Usuń grupę"} action={() => deleteGroup(groupId)} />
       </Box>
 

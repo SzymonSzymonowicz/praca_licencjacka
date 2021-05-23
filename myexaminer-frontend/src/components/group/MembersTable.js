@@ -9,6 +9,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { isLecturer } from "services/auth-service";
+import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
+import authHeader from "services/auth-header";
+import { removeStudentFromGroupUrl } from "router/urls";
 
 const columns = [
   {
@@ -53,7 +56,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MembersTable({ students }) {
+export default function MembersTable(props) {
+  const { students, groupId } = props;
   const rows = students || [];
 
   const classes = useStyles();
@@ -75,13 +79,21 @@ export default function MembersTable({ students }) {
     }
 
     return true;
-    // if (column.onlyLecturer === true && isLecturer()) {
-    //   return true;
-    // } else if (column.onlyLecturer === true && !isLecturer()) {
-    //   return false;
-    // } else {
-    //   return true;
-    // }
+  }
+
+  const removeStudentFromGroup = (groupId, studentId) => {
+    fetch(removeStudentFromGroupUrl(groupId, studentId), {
+      method: "DELETE",
+      headers: authHeader() 
+    })
+    .then(res => {
+      if (res.status === 200) {
+        props?.getGroup(groupId);
+      } else {
+        console.log("Could not remove student.");
+      }
+    })
+    .catch(err => console.error(err))
   }
 
   return (
@@ -99,6 +111,13 @@ export default function MembersTable({ students }) {
                   {column.label}
                 </TableCell>
               ))}
+              {isLecturer() &&
+                <TableCell
+                  align="center"
+                  style={{ minWidth: "50px" }}
+                >
+                  Usuń
+                </TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -114,6 +133,10 @@ export default function MembersTable({ students }) {
                         </TableCell>
                       );
                     })}
+                    
+                    {isLecturer() && <TableCell key="remove" align="center">
+                      <DeleteConfirmButton text="" action={() => removeStudentFromGroup(groupId, row?.id)} onlyIcon={true}/>
+                    </TableCell>}
                   </TableRow>
                 );
               })}
