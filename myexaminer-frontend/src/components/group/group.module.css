@@ -39,3 +39,12 @@
 .newGroupForm > div:last-of-type{
   margin-bottom: 0px;
 }
+
+.lessonForm{
+  display: flex;
+  flex-direction: column;
+}
+
+.lessonInputBox > *{
+  margin-bottom: 20px !important;
+}

@@ -19,6 +19,7 @@ import { groupByIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import MembersTable from "components/group/MembersTable";
 import GroupDetails from "components/group/GroupDetails";
+import CreateLessonForm from "components/group/CreateLessonForm";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,8 +72,6 @@ export default function Group(props) {
   const { groupId } = useParams();
 
   const [group, setGroup] = useState();
-
-  console.log("Wszedłeś na grupę: " + groupId);
 
   const getGroupById = (id) => {
     fetch(groupByIdUrl(id), {
@@ -164,6 +163,14 @@ export default function Group(props) {
             </CardActions>
           </Card>
         ))}
+         <Card
+            className={classes.root}
+            style={{ marginBottom: 30 }}
+          >
+            <CardContent>
+              <CreateLessonForm groupId={groupId} getGroup={getGroupById}/>
+            </CardContent>
+          </Card>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <MembersTable students={group?.students} groupId={groupId} getGroup={getGroupById}/>
