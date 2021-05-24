@@ -4,6 +4,7 @@ import com.myexaminer.entity.Lesson;
 import com.myexaminer.service.LessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,5 +28,11 @@ public class LessonController {
     @PostMapping("/groups/{groupId}/lessons")
     public void createLessonForGivenGroup(@PathVariable Long groupId, @RequestBody Lesson lesson) {
         lessonService.createLessonForGivenGroup(groupId, lesson);
+    }
+
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @DeleteMapping("/groups/{groupId}/lessons/{lessonId}")
+    public void deleteLesson(@PathVariable Long groupId, @PathVariable Long lessonId) {
+        lessonService.deleteLesson(groupId, lessonId);
     }
 }

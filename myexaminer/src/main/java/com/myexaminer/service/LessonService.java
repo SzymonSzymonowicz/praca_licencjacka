@@ -24,15 +24,21 @@ public class LessonService {
 
     public void createLessonForGivenGroup(Long groupId, Lesson lesson) {
         TeachingGroup group = teachingGroupService.getTeachingGroupById(groupId);
-
         lesson.setTeachingGroup(group);
+
         Lesson persistedLesson = lessonRepository.save(lesson);
 
-        List<Lesson> lessons = group.getLessons();
-        lessons.add(persistedLesson);
-
-        group.setLessons(lessons);
-
+        group.addLesson(persistedLesson);
         teachingGroupService.saveTeachingGroup(group);
+    }
+
+    public void deleteLesson(Long groupId, Long lessonId) {
+        TeachingGroup group = teachingGroupService.getTeachingGroupById(groupId);
+        Lesson lesson = getLessonById(lessonId);
+
+        group.removeLesson(lesson);
+        teachingGroupService.saveTeachingGroup(group);
+
+        lessonRepository.delete(lesson);
     }
 }

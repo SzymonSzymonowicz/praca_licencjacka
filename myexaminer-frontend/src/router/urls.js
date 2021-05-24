@@ -32,3 +32,4 @@ export const removeStudentFromGroupUrl = (groupId, studentId) => apiDomain + "/g
 
 // LessonController
 export const createLessonUrl = (groupId) => apiDomain + "/groups/" + groupId + "/lessons";
+export const groupIdLessonIdUrl = (groupId, lessonId) => apiDomain + "/groups/" + groupId + "/lessons/" + lessonId;

@@ -15,11 +15,12 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import { useHistory, useParams } from "react-router-dom";
-import { groupByIdUrl } from "router/urls";
+import { groupByIdUrl, groupIdLessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import MembersTable from "components/group/MembersTable";
 import GroupDetails from "components/group/GroupDetails";
 import CreateLessonForm from "components/group/CreateLessonForm";
+import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -92,6 +93,23 @@ export default function Group(props) {
       });
   };
 
+  const deleteLesson = (groupId, lessonId) => {
+    fetch(groupIdLessonIdUrl(groupId, lessonId), {
+      method: "DELETE",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          getGroupById(groupId);
+        }
+
+        return response.text();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     getGroupById(groupId);
   }, [groupId]);
@@ -153,13 +171,16 @@ export default function Group(props) {
                 </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions>
+            <CardActions style={{ justifyContent: "space-between" }}>
               <Button
                 size="small"
                 onClick={() => history.push(`/landing/lesson/`, lesson)}
               >
                 Otwórz
               </Button>
+              <Box>
+                <DeleteConfirmButton onlyIcon action={ () => deleteLesson(groupId, lesson.id)}/>
+              </Box>
             </CardActions>
           </Card>
         ))}
