@@ -19,7 +19,7 @@ import { groupByIdUrl, groupIdLessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import MembersTable from "components/group/MembersTable";
 import GroupDetails from "components/group/GroupDetails";
-import LessonForm from "components/group/CreateLessonForm";
+import LessonForm from "components/group/LessonForm";
 import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
