@@ -23,6 +23,8 @@ import LessonForm from "components/group/LessonForm";
 import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
+import EventIcon from '@material-ui/icons/Event';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -169,9 +171,13 @@ export default function Group(props) {
               <>
                 <CardActionArea>
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {lesson.topic}
-                    </Typography>
+                    <Box display="flex" flexDirection="row">
+                      <Typography gutterBottom variant="h5" component="h2" style={{ flexGrow: 1 }}>
+                        {lesson.topic}
+                      </Typography>
+                        <EventIcon /><Typography>{lesson.date.toLocaleString().split('T')[0]}</Typography>
+                      <HourglassEmptyIcon style={{ marginLeft: 20 }}/><Typography>{lesson.date.toLocaleString().split('T')[1]}</Typography>
+                    </Box>
                     <Typography
                       variant="body2"
                       color="textSecondary"
