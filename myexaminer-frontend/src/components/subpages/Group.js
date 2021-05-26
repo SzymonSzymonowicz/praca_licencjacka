@@ -15,10 +15,16 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import { useHistory, useParams } from "react-router-dom";
-import { groupByIdUrl } from "router/urls";
+import { groupByIdUrl, groupIdLessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import MembersTable from "components/group/MembersTable";
 import GroupDetails from "components/group/GroupDetails";
+import LessonForm from "components/group/LessonForm";
+import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
+import { IconButton } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
+import EventIcon from '@material-ui/icons/Event';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,14 +71,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Group(props) {
   const classes = useStyles();
-  const [value, setValue] = useState(1);
-
-  const history = useHistory();
   const { groupId } = useParams();
+  const history = useHistory();
 
+  const [value, setValue] = useState(1);
   const [group, setGroup] = useState();
+  const [edited, setEdited] = useState(null);
 
-  console.log("Wszedłeś na grupę: " + groupId);
+  const resetEdited = () => setEdited(null);
 
   const getGroupById = (id) => {
     fetch(groupByIdUrl(id), {
@@ -90,6 +96,23 @@ export default function Group(props) {
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  const deleteLesson = (groupId, lessonId) => {
+    fetch(groupIdLessonIdUrl(groupId, lessonId), {
+      method: "DELETE",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          getGroupById(groupId);
+        }
+
+        return response.text();
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -140,30 +163,56 @@ export default function Group(props) {
             style={{ marginBottom: 30 }}
             key={`group${group.id}lesson${index}`}
           >
-            <CardActionArea>
+            {edited === lesson.id ?
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {lesson.topic}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="p"
-                >
-                  {lesson.description}
-                </Typography>
+                <LessonForm type="edit" lesson={lesson} resetEdited={resetEdited} groupId={groupId} getGroup={getGroupById} />
               </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button
-                size="small"
-                onClick={() => history.push(`/landing/lesson/`, lesson)}
-              >
-                Otwórz
-              </Button>
-            </CardActions>
+              :
+              <>
+                <CardActionArea>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row">
+                      <Typography gutterBottom variant="h5" component="h2" style={{ flexGrow: 1 }}>
+                        {lesson.topic}
+                      </Typography>
+                        <EventIcon /><Typography>{lesson.date.toLocaleString().split('T')[0]}</Typography>
+                      <HourglassEmptyIcon style={{ marginLeft: 20 }}/><Typography>{lesson.date.toLocaleString().split('T')[1]}</Typography>
+                    </Box>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {lesson.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions style={{ justifyContent: "space-between" }}>
+                  <Button
+                    size="small"
+                    onClick={() => history.push(`/landing/lesson/`, lesson)}
+                  >
+                      Otwórz
+                  </Button>
+                  <Box>
+                    <IconButton onClick={() => setEdited(lesson.id)}>
+                      <EditIcon/>
+                    </IconButton>
+                    <DeleteConfirmButton onlyIcon action={ () => deleteLesson(groupId, lesson.id)}/>
+                  </Box>
+                </CardActions>
+              </>
+            }
           </Card>
         ))}
+         <Card
+            className={classes.root}
+            style={{ marginBottom: 30 }}
+          >
+            <CardContent>
+              <LessonForm groupId={groupId} getGroup={getGroupById} type="create"/>
+            </CardContent>
+          </Card>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <MembersTable students={group?.students} groupId={groupId} getGroup={getGroupById}/>

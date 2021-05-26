@@ -71,4 +71,14 @@ public class TeachingGroup {
     public void removeStudent(Student student) {
         students.remove(student);
     }
+
+    public void addLesson(Lesson lesson) {
+        lessons.add(lesson);
+        lesson.setTeachingGroup(this);
+    }
+
+    public void removeLesson(Lesson lesson) {
+        lessons.remove(lesson);
+//        lesson.setTeachingGroup(null);
+    }
 }

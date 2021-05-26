@@ -30,12 +30,13 @@ public class MyexaminerApplication {
                 registry.addMapping("/exam/{idGroup}").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exam/status").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exercises/{id}").allowedOrigins(LOCALHOST);
-                registry.addMapping("/individual-exams/lecturer-groups").allowedOrigins(LOCALHOST);
-                registry.addMapping("/notebook").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/groups/account/{accountId}").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/groups/students").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/groups/{groupId}").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/groups/**").allowedMethods("*").allowedOrigins(LOCALHOST);
+                registry.addMapping("/individual-exams/lecturer-groups").allowedOrigins(LOCALHOST);
+                registry.addMapping("/lessons/**").allowedMethods("*").allowedOrigins(LOCALHOST);
+                registry.addMapping("/notebook").allowedMethods("*").allowedOrigins(LOCALHOST);
             }
         };
     }
