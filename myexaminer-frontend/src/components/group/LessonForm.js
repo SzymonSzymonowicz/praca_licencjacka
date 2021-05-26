@@ -2,13 +2,14 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
-import { createLessonUrl, groupIdLessonIdUrl } from "router/urls";
+import { createLessonUrl, lessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
 export default function LessonForm(props) {
   const { groupId, lesson, type, resetEdited } = props;
+  const lessonId = lesson?.id;
 
   const { control, formState: { errors }, reset, handleSubmit } = useForm({
     defaultValues: lesson || {
@@ -40,8 +41,8 @@ export default function LessonForm(props) {
     .catch(err => { console.error(err) })
   }
 
-  const editLesson = (groupId, lesson) => {
-    fetch(groupIdLessonIdUrl(groupId, lesson.id), {
+  const editLesson = (lessonId, lesson) => {
+    fetch(lessonIdUrl(lessonId), {
       method: "PATCH",
       headers: {
         ...authHeader(),
@@ -74,7 +75,7 @@ export default function LessonForm(props) {
       submitText = "Utwórz Lekcję";
       break;
     case 'edit':
-      action = (lesson) => editLesson(groupId, lesson);
+      action = (lesson) => editLesson(lessonId, lesson);
       submitText = "Edytuj Lekcję";
       break;
     default:
