@@ -19,8 +19,10 @@ import { groupByIdUrl, groupIdLessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import MembersTable from "components/group/MembersTable";
 import GroupDetails from "components/group/GroupDetails";
-import CreateLessonForm from "components/group/CreateLessonForm";
+import LessonForm from "components/group/CreateLessonForm";
 import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
+import { IconButton } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,12 +69,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Group(props) {
   const classes = useStyles();
-  const [value, setValue] = useState(1);
-
-  const history = useHistory();
   const { groupId } = useParams();
+  const history = useHistory();
 
+  const [value, setValue] = useState(1);
   const [group, setGroup] = useState();
+  const [edited, setEdited] = useState(null);
+
+  const resetEdited = () => setEdited(null);
 
   const getGroupById = (id) => {
     fetch(groupByIdUrl(id), {
@@ -157,31 +161,42 @@ export default function Group(props) {
             style={{ marginBottom: 30 }}
             key={`group${group.id}lesson${index}`}
           >
-            <CardActionArea>
+            {edited === lesson.id ?
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {lesson.topic}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="p"
-                >
-                  {lesson.description}
-                </Typography>
+                <LessonForm type="edit" lesson={lesson} resetEdited={resetEdited} groupId={groupId} getGroup={getGroupById} />
               </CardContent>
-            </CardActionArea>
-            <CardActions style={{ justifyContent: "space-between" }}>
-              <Button
-                size="small"
-                onClick={() => history.push(`/landing/lesson/`, lesson)}
-              >
-                Otwórz
-              </Button>
-              <Box>
-                <DeleteConfirmButton onlyIcon action={ () => deleteLesson(groupId, lesson.id)}/>
-              </Box>
-            </CardActions>
+              :
+              <>
+                <CardActionArea>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {lesson.topic}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {lesson.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions style={{ justifyContent: "space-between" }}>
+                  <Button
+                    size="small"
+                    onClick={() => history.push(`/landing/lesson/`, lesson)}
+                  >
+                      Otwórz
+                  </Button>
+                  <Box>
+                    <IconButton onClick={() => setEdited(lesson.id)}>
+                      <EditIcon/>
+                    </IconButton>
+                    <DeleteConfirmButton onlyIcon action={ () => deleteLesson(groupId, lesson.id)}/>
+                  </Box>
+                </CardActions>
+              </>
+            }
           </Card>
         ))}
          <Card
@@ -189,7 +204,7 @@ export default function Group(props) {
             style={{ marginBottom: 30 }}
           >
             <CardContent>
-              <CreateLessonForm groupId={groupId} getGroup={getGroupById}/>
+              <LessonForm groupId={groupId} getGroup={getGroupById} type="create"/>
             </CardContent>
           </Card>
       </TabPanel>
