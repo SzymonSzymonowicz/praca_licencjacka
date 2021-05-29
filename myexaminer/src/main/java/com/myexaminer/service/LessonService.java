@@ -38,6 +38,16 @@ public class LessonService {
         teachingGroupService.saveTeachingGroup(group);
     }
 
+    public void deleteLesson(Long lessonId) {
+        Lesson lesson = getLessonById(lessonId);
+        TeachingGroup group = lesson.getTeachingGroup();
+
+        group.removeLesson(lesson);
+        teachingGroupService.saveTeachingGroup(group);
+
+        lessonRepository.delete(lesson);
+    }
+
     public void deleteLesson(Long groupId, Long lessonId) {
         TeachingGroup group = teachingGroupService.getTeachingGroupById(groupId);
         Lesson lesson = getLessonById(lessonId);

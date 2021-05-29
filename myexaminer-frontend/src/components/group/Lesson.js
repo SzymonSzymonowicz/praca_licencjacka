@@ -7,12 +7,17 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { useLocation } from "react-router-dom";
 import ChapterForm from "./ChapterForm";
-import { lessonIdUrl } from "router/urls";
+import { chapterIdUrl, lessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
-import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+// import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+import { isLecturer } from "services/auth-service";
+import { IconButton } from "@material-ui/core";
+import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
+import EditIcon from '@material-ui/icons/Edit';
+
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, view, index, ...other } = props;
 
   return (
     <div
@@ -24,7 +29,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={1}>
-          <Typography style={{height: "100%"}} component="div" className="sun-editor-editable">{children}</Typography>
+          <Typography style={{ height: "100%" }} component="div" {...(view && {className: "sun-editor-editable"})}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -84,6 +89,23 @@ export default function Lesson() {
       })
   }
 
+  const deleteChapter = (lessonId, chapterId) => {
+    fetch(chapterIdUrl(lessonId, chapterId), {
+      method: "DELETE",
+      headers: authHeader()
+    })
+      .then(res => {
+        if (res.status === 200) {
+          getLesson(lessonId);
+        }
+        return res.text();
+      })
+    .catch(err => {
+      console.log("Failed to fetch lesson [id: " + lessonId + "]");
+      console.error(err);
+    })
+  }
+
   useEffect(() => {
     getLesson(lessonId)
   }, [])
@@ -109,20 +131,30 @@ export default function Lesson() {
             {...a11yProps(index)}
           />
         ))}
+        {isLecturer() &&
           <Tab
             label="Dodaj rozdział"
             {...a11yProps(chapters?.length || 0)}
             style={{backgroundColor: "lightgray"}}
-          />
+          />}
       </Tabs>
       {chapters && chapters.map((chapter, index) => (
-        <TabPanel value={value} index={index} key={`tab_panel${index}`} className={classes.tabPanel}>
+        <TabPanel view value={value} index={index} key={`tab_panel${index}`} className={classes.tabPanel}>
+          {isLecturer() && 
+            <Box textAlign="right">
+              <IconButton onClick={() => console.log(chapter?.id)}>
+                <EditIcon/>
+              </IconButton>
+              <DeleteConfirmButton onlyIcon action={ () => deleteChapter(lessonId, chapter?.id)}/>
+            </Box>
+          }
           <div dangerouslySetInnerHTML={{ __html: chapter.content }}></div>
         </TabPanel>
       ))}
-      <TabPanel value={value} index={chapters?.length || 0} style={{ flexGrow: 2 }}>
-        <ChapterForm lesson={lesson} type="create" getLesson={ getLesson }/>
-      </TabPanel>
+      {isLecturer() &&
+        <TabPanel value={value} index={chapters?.length || 0} style={{ flexGrow: 2 }}>
+          <ChapterForm lesson={lesson} type="create" getLesson={getLesson} />
+        </TabPanel>}
     </div>
   );
 }

@@ -10,7 +10,14 @@ WHERE id = 1;
 SELECT id, name, available_from, state FROM myexaminer.exam;
 
 UPDATE exam 
-SET available_from = CURRENT_TIME() + INTERVAL 30 SECOND,
+SET available_from = CURRENT_TIME() + INTERVAL 1 minute,
 state = 'HIDDEN'
-WHERE id = 1;
+WHERE id = 2;
 SELECT id, name, available_from, state FROM myexaminer.exam;
+
+UPDATE exam 
+SET available_from = CURRENT_TIME() + INTERVAL 30 SECOND,
+state = 'CLOSED'
+WHERE id = 2;
+SELECT id, name, available_from, state FROM myexaminer.exam;
+
