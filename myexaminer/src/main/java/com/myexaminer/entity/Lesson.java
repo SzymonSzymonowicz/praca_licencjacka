@@ -33,4 +33,13 @@ public class Lesson {
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     private List<Chapter> chapters;
+
+    public void addChapter(Chapter chapter) {
+        chapters.add(chapter);
+        chapter.setLesson(this);
+    }
+
+    public void removeChapter(Chapter chapter) {
+        chapters.remove(chapter);
+    }
 }

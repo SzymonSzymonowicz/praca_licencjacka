@@ -24,6 +24,10 @@ public class LessonService {
                 .orElseThrow(() -> new EntityNotFoundException("Lesson of id: " + lessonId + " was not found."));
     }
 
+    public Lesson saveLesson(Lesson lesson) {
+        return lessonRepository.save(lesson);
+    }
+
     public void createLessonForGivenGroup(Long groupId, Lesson lesson) {
         TeachingGroup group = teachingGroupService.getTeachingGroupById(groupId);
         lesson.setTeachingGroup(group);

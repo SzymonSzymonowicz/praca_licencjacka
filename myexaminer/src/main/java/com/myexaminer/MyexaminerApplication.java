@@ -27,6 +27,7 @@ public class MyexaminerApplication {
                 registry.addMapping("/account/role").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/archive/check").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/archive/exercises").allowedMethods("*").allowedOrigins(LOCALHOST);
+                registry.addMapping("/chapters/**").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exam/{idGroup}").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exam/status").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exercises/{id}").allowedOrigins(LOCALHOST);
