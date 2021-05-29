@@ -190,7 +190,7 @@ export default function Group(props) {
                 <CardActions style={{ justifyContent: "space-between" }}>
                   <Button
                     size="small"
-                    onClick={() => history.push(`/landing/lesson/`, lesson)}
+                    onClick={() => history.push(`/landing/lesson/`, {lessonId: lesson.id})}
                   >
                       Otwórz
                   </Button>

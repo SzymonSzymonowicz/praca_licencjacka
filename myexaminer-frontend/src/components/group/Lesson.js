@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -6,6 +6,10 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { useLocation } from "react-router-dom";
+import ChapterForm from "./ChapterForm";
+import { lessonIdUrl } from "router/urls";
+import authHeader from "services/auth-header";
+import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -20,7 +24,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={1}>
-          <Typography component="div">{children}</Typography>
+          <Typography style={{height: "100%"}} component="div" className="sun-editor-editable">{children}</Typography>
         </Box>
       )}
     </div>
@@ -51,15 +55,38 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
     minWidth: "20%",
   },
+  tabPanel: {
+    flexGrow: 2
+  }
 }));
 
 export default function Lesson() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [lesson, setLesson] = useState();
 
   const location = useLocation();
-  const lesson = location.state;
+  const { lessonId } = location.state;
   const chapters = lesson?.chapters;
+
+  const getLesson = (lessonId) => {
+    fetch(lessonIdUrl(lessonId), {
+      method: "GET",
+      headers: authHeader()
+    })
+      .then(res => res.json())
+      .then(lesson => {
+        setLesson(lesson);
+      })
+      .catch(err => {
+        console.log("Failed to fetch lesson [id: " + lessonId + "]");
+        console.error(err);
+      })
+  }
+
+  useEffect(() => {
+    getLesson(lessonId)
+  }, [])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -75,19 +102,27 @@ export default function Lesson() {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        {chapters.map((chapter, index) => (
+        {chapters && chapters.map((chapter, index) => (
           <Tab
             key={`tab${index}`}
             label={chapter.title}
             {...a11yProps(index)}
           />
         ))}
+          <Tab
+            label="Dodaj rozdział"
+            {...a11yProps(chapters?.length || 0)}
+            style={{backgroundColor: "lightgray"}}
+          />
       </Tabs>
-      {chapters.map((chapter, index) => (
-        <TabPanel value={value} index={index} key={`tab_panel${index}`}>
+      {chapters && chapters.map((chapter, index) => (
+        <TabPanel value={value} index={index} key={`tab_panel${index}`} className={classes.tabPanel}>
           <div dangerouslySetInnerHTML={{ __html: chapter.content }}></div>
         </TabPanel>
       ))}
+      <TabPanel value={value} index={chapters?.length || 0} style={{ flexGrow: 2 }}>
+        <ChapterForm lesson={lesson} type="create" getLesson={ getLesson }/>
+      </TabPanel>
     </div>
   );
 }
