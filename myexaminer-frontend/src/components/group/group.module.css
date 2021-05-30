@@ -48,3 +48,17 @@
 .lessonInputBox > *{
   margin-bottom: 20px !important;
 }
+
+.chapterForm{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2 !important;
+}
+
+/* .chapter figure{
+  position: relative;
+}
+
+.chapter figure iframe {
+  position: absolute;
+} */

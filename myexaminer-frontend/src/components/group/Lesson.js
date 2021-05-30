@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -6,9 +6,18 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { useLocation } from "react-router-dom";
+import ChapterForm from "./ChapterForm";
+import { chapterIdUrl, lessonIdUrl } from "router/urls";
+import authHeader from "services/auth-header";
+// import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+import { isLecturer } from "services/auth-service";
+import { IconButton } from "@material-ui/core";
+import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
+import EditIcon from '@material-ui/icons/Edit';
+
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, view, index, ...other } = props;
 
   return (
     <div
@@ -20,7 +29,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={1}>
-          <Typography component="div">{children}</Typography>
+          <Typography style={{ height: "100%" }} component="div" {...(view && {className: "sun-editor-editable"})}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -51,15 +60,58 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
     minWidth: "20%",
   },
+  tabPanel: {
+    flexGrow: 2
+  }
 }));
 
 export default function Lesson() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [lesson, setLesson] = useState();
+  const [editedChapter, setEditedChapter] = useState(null);
 
   const location = useLocation();
-  const lesson = location.state;
+  const { lessonId } = location.state;
   const chapters = lesson?.chapters;
+
+  const resetEdited = () => setEditedChapter(null);
+
+  const getLesson = (lessonId) => {
+    fetch(lessonIdUrl(lessonId), {
+      method: "GET",
+      headers: authHeader()
+    })
+      .then(res => res.json())
+      .then(lesson => {
+        setLesson(lesson);
+      })
+      .catch(err => {
+        console.log("Failed to fetch lesson [id: " + lessonId + "]");
+        console.error(err);
+      })
+  }
+
+  const deleteChapter = (lessonId, chapterId) => {
+    fetch(chapterIdUrl(lessonId, chapterId), {
+      method: "DELETE",
+      headers: authHeader()
+    })
+      .then(res => {
+        if (res.status === 200) {
+          getLesson(lessonId);
+        }
+        return res.text();
+      })
+    .catch(err => {
+      console.log("Failed to fetch lesson [id: " + lessonId + "]");
+      console.error(err);
+    })
+  }
+
+  useEffect(() => {
+    getLesson(lessonId)
+  }, [lessonId])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -75,19 +127,44 @@ export default function Lesson() {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        {chapters.map((chapter, index) => (
+        {chapters && chapters.map((chapter, index) => (
           <Tab
             key={`tab${index}`}
             label={chapter.title}
             {...a11yProps(index)}
           />
         ))}
+        {isLecturer() &&
+          <Tab
+            label="Dodaj rozdział"
+            {...a11yProps(chapters?.length || 0)}
+            style={{backgroundColor: "lightgray"}}
+          />}
       </Tabs>
-      {chapters.map((chapter, index) => (
-        <TabPanel value={value} index={index} key={`tab_panel${index}`}>
-          <div dangerouslySetInnerHTML={{ __html: chapter.content }}></div>
+      {chapters && chapters.map((chapter, index) => (
+        editedChapter === chapter?.id
+        ?
+        <TabPanel value={value} index={index} key={`tab_panel${index}`} style={{ flexGrow: 2 }}>
+            <ChapterForm chapter={chapter} lesson={lesson} type="edit" getLesson={getLesson} resetEdited={resetEdited}/>
         </TabPanel>
-      ))}
+        :
+        <TabPanel view value={value} index={index} key={`tab_panel${index}`} className={classes.tabPanel}>
+          {isLecturer() && 
+            <Box textAlign="right">
+              <IconButton onClick={() => setEditedChapter(chapter?.id)}>
+                <EditIcon/>
+              </IconButton>
+              <DeleteConfirmButton onlyIcon action={ () => deleteChapter(lessonId, chapter?.id)}/>
+            </Box>
+          }
+          <div dangerouslySetInnerHTML={{ __html: chapter.content }}/>
+        </TabPanel>
+      )
+    )}
+      {isLecturer() &&
+        <TabPanel value={value} index={chapters?.length || 0} style={{ flexGrow: 2 }}>
+          <ChapterForm lesson={lesson} type="create" getLesson={getLesson} />
+        </TabPanel>}
     </div>
   );
 }
