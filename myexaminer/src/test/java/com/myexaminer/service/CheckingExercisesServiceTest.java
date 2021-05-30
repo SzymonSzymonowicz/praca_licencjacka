@@ -97,6 +97,9 @@ public class CheckingExercisesServiceTest {
         when(exerciseService.getExerciseType(1L)).thenReturn("Z");
         when(exerciseService.getExerciseType(2L)).thenReturn("O");
         when(exerciseService.returnExerciseById(1L)).thenReturn(exercise1_Z);
+        when(archiveExerciseService.toJSONString((String) receivedExercise1.getAnswer())).thenReturn("{\"answerJSON\":\"" + receivedExercise1.getAnswer() + "\"}");
+        when(archiveExerciseService.toJSONString((String) receivedExercise2.getAnswer())).thenReturn("{\"answerJSON\":\"" + receivedExercise2.getAnswer() + "\"}");
+
 
         //when
         checkingExercisesService.checkExercises(receivedExerciseList, 1L, null, authentication);
@@ -104,8 +107,8 @@ public class CheckingExercisesServiceTest {
         //then
         assertThat(archiveExercise2.getGainedPoints()).isEqualTo(2);
         assertThat(archiveExercise1.getGainedPoints()).isEqualTo(1);
-        assertThat(archiveExercise2.getAnswer()).isEqualTo("answer2");
-        assertThat(archiveExercise1.getAnswer()).isEqualTo("a hot potato,T");
+        assertThat(archiveExercise2.getAnswer()).isEqualTo("{\"answerJSON\":\"" + receivedExercise2.getAnswer() + "\"}");
+        assertThat(archiveExercise1.getAnswer()).isEqualTo("{\"answerJSON\":\"" + receivedExercise1.getAnswer() + "\"}");
         assertThat(archiveExercise2.getLecturerComment()).isEqualTo("comment2");
         assertThat(archiveExercise1.getLecturerComment()).isEqualTo("comment1");
     }
