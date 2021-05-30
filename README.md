@@ -18,16 +18,20 @@ Our web application's purpose is to be a way of support for lecturers in learnin
 - checked exam results with students answers and lecturer's comments (for student)
 - every student and lecturer got their own notepad
 - token based login
+- creating / editing / deleting groups
+- joining to groups by access code
+- lessons with CRUD
+- chapters in lessons with CRUD and WYSIWYG [editor](https://github.com/mkhstar/suneditor-react)
 
 ## Ideas for new features:
 - creating exams
 - changing exam status
 - checking grades by student and lecturer aswell
-- creating groups, adding to groups
 - lecture creator
 - grades charts
 - exams time restriction
 - google translator (?)
+- announcments from lecturer in the group
 
 
 # Technologies
@@ -42,7 +46,7 @@ Our web application's purpose is to be a way of support for lecturers in learnin
 ## Frontend
 - Javascript
 - React 17.0.1
-- Components from [material-ui](https://material-ui.com/) 
+- Components from [material-ui](https://material-ui.com/)
 
 # Screenshots
 
