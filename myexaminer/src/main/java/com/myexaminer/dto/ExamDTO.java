@@ -3,6 +3,7 @@ package com.myexaminer.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myexaminer.entity.Exam;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import static com.myexaminer.component.DateUtils.parseDateToString;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 public class ExamDTO {
 
     private Long id;
