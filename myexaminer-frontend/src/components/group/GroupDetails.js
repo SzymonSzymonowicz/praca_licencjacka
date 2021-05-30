@@ -8,7 +8,6 @@ import { isLecturer } from "services/auth-service";
 import authHeader from "services/auth-header";
 import { groupByIdUrl } from "router/urls";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
 import Modal from "components/reusable/modal/Modal";
 import EditGroupForm from "./EditGroupForm";

@@ -34,5 +34,8 @@ export const removeStudentFromGroupUrl = (groupId, studentId) => apiDomain + "/g
 export const lessonIdUrl = (lessonId) => apiDomain + "/lessons/" + lessonId;
 export const createLessonUrl = (groupId) => apiDomain + "/groups/" + groupId + "/lessons";
 export const groupIdLessonIdUrl = (groupId, lessonId) => apiDomain + "/groups/" + groupId + "/lessons/" + lessonId;
+
+// ChapterController
+export const editChapterUrl = (chapterId) => apiDomain + "/chapters/" + chapterId;
 export const createChapterUrl = (lessonId) => apiDomain + "/lessons/" + lessonId + "/chapters";
 export const chapterIdUrl = (lessonId, chapterId) => apiDomain + "/lessons/" + lessonId + "/chapters/" + chapterId;

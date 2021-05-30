@@ -2,7 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
-import { createChapterUrl, chapterIdUrl } from "router/urls";
+import { createChapterUrl, editChapterUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -19,7 +19,7 @@ const buttons = [
   ['outdent', 'indent'],
   ['align', 'horizontalRule', 'list', 'lineHeight'],
   ['table', 'blockquote', 'link', 'image', 'video'],
-  ['fullScreen', 'showBlocks', 'preview', 'save'] //, 'codeView'
+  ['fullScreen', 'showBlocks', 'preview'] //, 'codeView'
 ];
 
 const fonts = [
@@ -72,8 +72,8 @@ export default function ChapterForm(props) {
     .catch(err => { console.error(err) })
   }
 
-  const editChapter = (lessonId, chapter) => {
-    fetch(chapterIdUrl(lessonId), {
+  const editChapter = (chapterId, chapter) => {
+    fetch(editChapterUrl(chapterId), {
       method: "PATCH",
       headers: {
         ...authHeader(),
@@ -106,7 +106,7 @@ export default function ChapterForm(props) {
       submitText = "Utwórz Rozdział";
       break;
     case 'edit':
-      action = (chapter) => editChapter(lessonId, chapter);
+      action = (chapter) => editChapter(chapter?.id, chapter);
       submitText = "Edytuj Rozdział";
       break;
     default:
@@ -141,25 +141,35 @@ export default function ChapterForm(props) {
         <Controller
           control={control}
           name="content"
-          render={({ field }) =>
-            //   error={errors.description}
-            //   helperText={ errors.description ? errors.description?.message : null }
-            <SunEditor
-              setOptions={{
-                buttonList: buttons,
-                font: fonts,
-                imageFileInput: false
-              }}
-              lang="pl"
-              placeholder="Uzupełnij treść rozdziału"
-              setDefaultStyle="font-family: roboto; font-size: 16px;"
-              {...field}
-            />
-          }
+          render={({
+            field: { value, ref, ...rest },
+            // field: { onChange, onBlur, value, name, ref },
+            fieldState: { invalid, isTouched, isDirty, error },
+            formState
+          }) => {
+            return (
+            <>
+                <SunEditor
+                setOptions={{
+                  buttonList: buttons,
+                  font: fonts,
+                  imageFileInput: false
+                }}
+                lang="pl"
+                placeholder="Uzupełnij treść rozdziału"
+                setDefaultStyle="font-family: roboto; font-size: 16px;"
+                defaultValue={value}
+                // getSunEditorInstance={se => ref(se)}
+                {...rest}
+              />
+            </>)
+          }}
           rules={{
-            required: "Wypełnij to pole",
+            required: "Uzupełnij treść rozdziału",
+            validate: value => value !== null || "Treść rozdziału nie może być pusta"
           }}
         />
+        { errors.content && <span style={{color: "#f44336", marginLeft: "14px", top: "-20px", position: "relative"}} className="MuiFormHelperText-root">{errors.content.message}</span> }
       </Box>
       <Box display="flex" justifyContent="flex-end">
         <Button color="primary" type="submit" variant="contained" startIcon={<CheckIcon />}>
@@ -170,10 +180,6 @@ export default function ChapterForm(props) {
             Anuluj
           </Button >}
       </Box>
-      <Box>
-        
-      </Box>
-
     </form>
   );
 }

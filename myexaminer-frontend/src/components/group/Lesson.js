@@ -69,10 +69,13 @@ export default function Lesson() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [lesson, setLesson] = useState();
+  const [editedChapter, setEditedChapter] = useState(null);
 
   const location = useLocation();
   const { lessonId } = location.state;
   const chapters = lesson?.chapters;
+
+  const resetEdited = () => setEditedChapter(null);
 
   const getLesson = (lessonId) => {
     fetch(lessonIdUrl(lessonId), {
@@ -108,7 +111,7 @@ export default function Lesson() {
 
   useEffect(() => {
     getLesson(lessonId)
-  }, [])
+  }, [lessonId])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -139,18 +142,25 @@ export default function Lesson() {
           />}
       </Tabs>
       {chapters && chapters.map((chapter, index) => (
+        editedChapter === chapter?.id
+        ?
+        <TabPanel value={value} index={index} key={`tab_panel${index}`} style={{ flexGrow: 2 }}>
+            <ChapterForm chapter={chapter} lesson={lesson} type="edit" getLesson={getLesson} resetEdited={resetEdited}/>
+        </TabPanel>
+        :
         <TabPanel view value={value} index={index} key={`tab_panel${index}`} className={classes.tabPanel}>
           {isLecturer() && 
             <Box textAlign="right">
-              <IconButton onClick={() => console.log(chapter?.id)}>
+              <IconButton onClick={() => setEditedChapter(chapter?.id)}>
                 <EditIcon/>
               </IconButton>
               <DeleteConfirmButton onlyIcon action={ () => deleteChapter(lessonId, chapter?.id)}/>
             </Box>
           }
-          <div dangerouslySetInnerHTML={{ __html: chapter.content }}></div>
+          <div dangerouslySetInnerHTML={{ __html: chapter.content }}/>
         </TabPanel>
-      ))}
+      )
+    )}
       {isLecturer() &&
         <TabPanel value={value} index={chapters?.length || 0} style={{ flexGrow: 2 }}>
           <ChapterForm lesson={lesson} type="create" getLesson={getLesson} />
