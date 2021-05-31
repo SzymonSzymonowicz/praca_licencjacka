@@ -2,6 +2,7 @@ package com.myexaminer.service;
 
 import com.myexaminer.entity.Lecturer;
 import com.myexaminer.repository.LecturerRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +11,11 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class LecturerService {
-    private final LecturerRepository lecturerRepository;
-    private AccountService accountService;
 
-    public LecturerService(LecturerRepository lecturerRepository, AccountService accountService) {
-        this.lecturerRepository = lecturerRepository;
-        this.accountService = accountService;
-    }
+    private final LecturerRepository lecturerRepository;
+    private final AccountService accountService;
 
     public void lecturerSave(Lecturer lecturer) {
         lecturerRepository.save(lecturer);
