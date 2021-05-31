@@ -3,6 +3,7 @@ package com.myexaminer.controller;
 import com.myexaminer.dto.GenericOneValue;
 import com.myexaminer.service.NotebookService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ public class NotebookController {
     }
 
     @PutMapping
-    public void editNotebookContent(HttpServletRequest request, @RequestBody GenericOneValue content) {
-        notebookService.updateNotebookContentForLoggedInUser(request, content);
+    public void editNotebookContent(Authentication authentication, @RequestBody GenericOneValue content) {
+        notebookService.updateNotebookContentForLoggedInUser(authentication, content);
     }
 }
