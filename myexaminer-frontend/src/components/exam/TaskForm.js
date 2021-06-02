@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { Box, Button, TextField } from "@material-ui/core";
+import { useForm, Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { Box, Button, FormControlLabel, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
 import { createLessonUrl, lessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
@@ -10,16 +10,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
 
 const isNumeric = (num) => {
   return !isNaN(num);
 }
 
 const isWholeNumber = (num) => {
+  num = parseInt(num);
   return Number.isInteger(num);
 }
 
@@ -36,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 export default function TaskForm(props) {
   const { groupId, type, task, taskType, resetEdited } = props;
 
-  const { control, formState: { errors }, reset, handleSubmit } = useForm({
+  const { control, formState: { errors }, reset, handleSubmit, setValue, getValues } = useForm({
     defaultValues: task || {
       type: taskType,
       instruction: "",
@@ -119,31 +117,24 @@ export default function TaskForm(props) {
   }
 
 // ==================================================
-const classes = useStyles();
-  const [value, setValue] = useState('');
+  const [value2, setValue2] = useState('');
+  const [radioValue, setRadioValue] = useState(0);
   const [error, setError] = useState(false);
-  const [helperText, setHelperText] = useState('Choose wisely');
 
   const handleRadioChange = (event) => {
-    setValue(event.target.value);
-    setHelperText(' ');
+    setValue2(event.target.value);
     setError(false);
   };
 
-  const handleSubmit2 = (event) => {
-    event.preventDefault();
+  const handleRadio = (selected) => {
+    getValues()["answers"].forEach((_value, index) => {
+      var field = `answers.${index}.value`;
+      var newValue = selected === index ? "T" : "F";
 
-    if (value === 'best') {
-      setHelperText('You got it!');
-      setError(false);
-    } else if (value === 'worst') {
-      setHelperText('Sorry, wrong answer!');
-      setError(true);
-    } else {
-      setHelperText('Please select an option.');
-      setError(true);
-    }
-  };
+      setValue(field, newValue);
+    })
+  }
+
 // ==================================================
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -151,6 +142,7 @@ const classes = useStyles();
       name: "answers"
     }
   );
+
   // ==================================================
 
   return (
@@ -177,15 +169,20 @@ const classes = useStyles();
         <Controller
           control={control}
           name="points"
-          render={({ field }) =>
+          render={({ field: { onChange, ...rest } }) =>
             <TextField
               variant="outlined"
               label="Punkty"
               error={errors.points}
               fullWidth
               type="number"
-              helperText={ errors.points ? errors.points?.message : null }
-              {...field}
+              helperText={errors.points ? errors.points?.message : null}
+              onChange={(event) => {
+                var num = event.target.value;
+                onChange(num);
+                setValue("points", parseInt(num), {shouldValidate: true})
+              }}
+              {...rest}
             />
           }
           rules={{
@@ -204,26 +201,32 @@ const classes = useStyles();
 
         
         {/* ======= */}
-        <ul>
-        <FormControl component="fieldset" error={error} className={classes.formControl}>
-            <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
+        {/* <RadioGroup aria-label="answers" name="answers" value={radioValue} > */}
+          {/* onChange={(e) => { setRadioValue(e.target.value); handleRadio(e.target.value); }}> */}
         {fields.map((item, index) => {
           return (
-            <li key={item.id}>
-              {/* <FormControlLabel name={`answers.${index}.value`} value="T" control={<Radio />} label={ */}
+            <Box key={item.id} display="flex" style={{paddingBottom: "20px", width: "50%"}}>
+              
               <Controller
                 control={control}
                 name={`answers.${index}.value`}
-                render={({ field }) =>
+                render={({ field: { onChange, onBlur, value, ...rest } }) =>
                   <Radio
-                    {...field}
-                    value="T"
+                    value={index}
                     name={`answers.${index}.value`}
+                    // name="answers"
+                    // defaultChecked={index === radioValue}
+                    checked={index == radioValue}
+                    onChange={(event) => {
+                      // onChange(event.target.value);
+                      setRadioValue(event.target.value);
+                      console.log(event.target.value)
+                      handleRadio(index);
+                    }}
+                    {...rest}
                   />
               }
               />
-              
-              
               
               <Controller
                   control={control}
@@ -245,29 +248,10 @@ const classes = useStyles();
                 // />
               // } />
               />
-
-              {/* <input
-                defaultValue={`${item.firstName}`} // make sure to set up defaultValue
-                {...register(`test.${index}.firstName`)}
-              />
-
-              <Controller
-                render={({ field }) => <input {...field} />}
-                name={`answer.${index}.text`}
-                control={control}
-                defaultValue={item.text} // make sure to set up defaultValue
-              /> */}
-            </li>
+              </Box>
           );
         })}
-            </RadioGroup>
-            <FormHelperText>{helperText}</FormHelperText>
-            <Button type="submit" variant="outlined" color="primary" className={classes.button}>
-              Check Answer
-            </Button>
-            </FormControl>
-      </ul>
-        
+        {/* </RadioGroup> */}
         
       </Box>
       <Box display="flex" justifyContent="flex-end">

@@ -37,7 +37,7 @@ public class ExamController {
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/{idGroup}")
-    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) throws ParseException {
+    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) {
         examService.createExam(examDTO, idGroup);
     }
 
