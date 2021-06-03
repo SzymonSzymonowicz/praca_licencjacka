@@ -6,18 +6,8 @@ import { createLessonUrl, lessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import { isWholeNumber, isNumeric } from "utils/validationUtils";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(3),
-  },
-  button: {
-    margin: theme.spacing(1, 1, 0, 0),
-  },
-}));
 
 
 export default function TaskForm(props) {
@@ -133,7 +123,7 @@ export default function TaskForm(props) {
             <TextField
               variant="outlined"
               label="Polecenie"
-              error={errors.instruction}
+              error={errors.instruction ? true : false}
               fullWidth
               helperText={ errors.instruction ? errors.instruction?.message : null }
               {...field}
@@ -151,7 +141,7 @@ export default function TaskForm(props) {
             <TextField
               variant="outlined"
               label="Punkty"
-              error={errors.points}
+              error={errors.points ? true : false}
               fullWidth
               type="number"
               helperText={errors.points ? errors.points?.message : null}
@@ -186,9 +176,9 @@ export default function TaskForm(props) {
                   <Radio
                     value={index}
                     name={`answers.${index}.value`}
-                    checked={index == radioValue}
+                    checked={index === radioValue}
                     onChange={(event) => {
-                      setRadioValue(event.target.value);
+                      setRadioValue(parseInt(event.target.value));
                       handleRadio(index);
                     }}
                     {...rest}
@@ -205,9 +195,8 @@ export default function TaskForm(props) {
                     variant="outlined"
                     label={`Odpowiedź nr ${index + 1}`}
                     fullWidth
-                    error={errors?.answers?.[index]?.text}
+                    error={errors?.answers?.[index]?.text ? true : false}
                     helperText={ errors?.answers?.[index]?.text ? errors?.answers[index]?.text?.message : null }
-                    
                     {...field}
                   />
                 }

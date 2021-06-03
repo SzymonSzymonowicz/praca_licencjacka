@@ -22,7 +22,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -63,7 +63,7 @@ export default function CreateExam(props) {
         <Grid item xs={12}>
           <Paper elevation={4} style={{ padding: 20 }}>
             <div className={classes.root}>
-              <AppBar position="static" color="default" fullWidth>
+              <AppBar position="static" color="default">
                 <Tabs
                   value={value}
                   onChange={handleChange}
