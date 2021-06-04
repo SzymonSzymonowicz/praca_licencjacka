@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { Box, Button, TextField } from "@material-ui/core";
+import { Box, Button, TextField, Typography } from "@material-ui/core";
 import styles from "components/group/group.module.css";
 import { createLessonUrl, lessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
@@ -113,6 +113,70 @@ export default function TaskForm(props) {
     })
   }
 
+  const mockFill = "<blank> witam test <blank> kolejna, a tutaj fail <blank końcowa <blank>"
+
+  const FillPart = () => {
+    const [fill, setFill] = useState("");
+    const [caretPos, setCaretPos] = useState(0);
+    const input = createRef();
+
+    const splitted = fill.split(/(<blank>)/g);
+
+    const splitAt = index => x => [x.slice(0, index), x.slice(index)];
+
+    const preview = splitted?.map((str, index) =>
+      str === "<blank>"
+        ? <TextField style={{ minWidth: "60px", margin: '0px 10px' }} key={`blank ${index}`} disabled contentEditable={false}/>
+        : <Typography key={`text ${index}`}>{str}</Typography>
+    );
+
+    const addBlank = () => {
+      var [head, tail] = splitAt(caretPos)(fill)
+      const blank = "<blank>"
+
+      const modified = head + blank + tail;
+
+      input.current.focus();
+      setFill(modified);
+    }
+    
+    const setCaret = () => {
+      const curr = input?.current;
+      const newPos = curr === null ? null : curr?.selectionStart;
+      
+      if (newPos && newPos !== caretPos) {
+
+        setCaretPos(newPos);
+      }
+    }
+
+    return (
+      <div style={{width: "100%"}}>
+        <Button color="primary" variant="contained" style={{width:"60px"}} onClick={() => addBlank()}>Dodaj lukę</Button>
+        <TextField
+          inputProps={{id: "blanksInput"}}
+          inputRef={input}
+          value={fill}
+          style={{ marginTop: "20px", maxWidth: "100%" }}
+          // inputProps={{ style: { } }}
+          variant="outlined"
+          onChange={e => {
+            setCaretPos(e.target.selectionStart);
+            setFill(e.target.value);
+          }}
+          onKeyDown={setCaret}
+          onClick={setCaret}
+
+
+          fullWidth
+          multiline
+          rows={3}
+        />
+      <div style={{marginTop:"20px", minHeight:"100px", display:"flex", flexDirection:"row", padding: "2px", border: "solid 2px black"}} >{preview}</div>
+    </div>)
+  }
+
+
   return (
     <form onSubmit={handleSubmit(action)} className={styles.lessonForm}>
       <Box style={{ minHeight: "80px" }} className={styles.lessonInputBox}>
@@ -218,6 +282,7 @@ export default function TaskForm(props) {
             Anuluj
           </Button >}
       </Box>
+      <FillPart/>
     </form>
   );
 }
