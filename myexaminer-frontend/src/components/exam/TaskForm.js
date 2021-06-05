@@ -18,7 +18,7 @@ export default function TaskForm(props) {
       type: taskType,
       instruction: "",
       points: 1,
-      // ??? fill: "hello <blank>!", answers:["1,F", "2,T", ...]
+      fill: "",
       answers: [
         { text: "", value: "T" },
         { text: "", value: "F" },
@@ -113,8 +113,6 @@ export default function TaskForm(props) {
     })
   }
 
-  const mockFill = "<blank> witam test <blank> kolejna, a tutaj fail <blank końcowa <blank>"
-
   const FillPart = () => {
     const [fill, setFill] = useState("");
     const [caretPos, setCaretPos] = useState(0);
@@ -153,26 +151,41 @@ export default function TaskForm(props) {
     return (
       <div style={{width: "100%"}}>
         <Button color="primary" variant="contained" style={{width:"60px"}} onClick={() => addBlank()}>Dodaj lukę</Button>
-        <TextField
-          inputProps={{id: "blanksInput"}}
-          inputRef={input}
-          value={fill}
-          style={{ marginTop: "20px", maxWidth: "100%" }}
-          // inputProps={{ style: { } }}
-          variant="outlined"
-          onChange={e => {
-            setCaretPos(e.target.selectionStart);
-            setFill(e.target.value);
+        <Controller
+          control={control}
+          name="fill"
+          rules={{
+            required: "Wypełnij to pole"
           }}
-          onKeyDown={setCaret}
-          onClick={setCaret}
-
-
-          fullWidth
-          multiline
-          rows={3}
+        
+          render={({ field: { onChange, ref, value, onBlur, name} }) => 
+            <TextField
+              style={{ marginTop: "20px", maxWidth: "100%" }}
+              label="Wypełnij treść zadania z lukami"
+              variant="outlined"
+              inputRef={input}
+              value={fill}
+              onChange={e => {
+                onChange(e.target.value);
+                setCaretPos(e.target.selectionStart);
+                setFill(e.target.value);
+              }}
+              onKeyDown={setCaret}
+              onClick={setCaret}
+              error={errors.fill ? true : false}
+              fullWidth
+              helperText={errors.fill ? errors.fill?.message : null}
+              multiline
+              rows={3}
+              name={name}
+            />
+           }
         />
-      <div style={{marginTop:"20px", minHeight:"100px", display:"flex", flexDirection:"row", padding: "2px", border: "solid 2px black"}} >{preview}</div>
+      
+        <div style={{
+          marginTop: "20px", minHeight: "100px", display: "flex", flexDirection: "row", flexWrap: "wrap",
+          alignItems: "baseline", border: "solid 2px black", borderRadius: "4px", padding: "18.5px 14px"
+        }} >{preview}</div>
     </div>)
   }
 
