@@ -7,7 +7,7 @@ const previewStyles = {
   flexDirection: "row",
   flexWrap: "wrap",
   alignItems: "baseline",
-  marginTop: "20px",
+  margin: "20px 0px",
   minHeight: "100px",
   padding: "18.5px 14px",
   border: "solid 2px black",
@@ -59,7 +59,6 @@ export default function BlanksTaskFormModule({ control, errors }) {
       <Button
         color="primary"
         variant="contained"
-        style={{ width: "60px" }}
         onClick={() => addBlank()}
       >
         Dodaj lukę

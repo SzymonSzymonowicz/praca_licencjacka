@@ -8,6 +8,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import TaskForm from "./task-form/TaskForm";
+import TaskTypeEnum from "./task-form/TaskTypeEnum";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -78,13 +79,13 @@ export default function CreateExam(props) {
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0}>
-                <TaskForm/>
+                <TaskForm mode="create"/>
               </TabPanel>
               <TabPanel value={value} index={1}>
-                Formularz Zakmniete
+                <TaskForm mode="create" type={TaskTypeEnum.CLOSED}/>
               </TabPanel>
               <TabPanel value={value} index={2}>
-                Formularz Luki
+                <TaskForm mode="create" type={TaskTypeEnum.BLANKS}/>
               </TabPanel>
             </div>
           </Paper>
