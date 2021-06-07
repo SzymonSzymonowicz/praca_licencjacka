@@ -1,5 +1,6 @@
 package com.myexaminer.service;
 
+import com.myexaminer.dto.GroupNameAndId;
 import com.myexaminer.entity.Account;
 import com.myexaminer.entity.Lecturer;
 import com.myexaminer.entity.Student;
@@ -170,5 +171,21 @@ public class TeachingGroupService {
         dbGroup.setStartingDate(teachingGroup.getStartingDate());
 
         teachingGroupRepository.save(dbGroup);
+    }
+
+    public List<GroupNameAndId> getTeachingGroupNameAndIdByAccountId(Long accountId) {
+        Account account = accountService.getAccountById(accountId);
+
+        if (account.hasRole(RoleEnum.ROLE_STUDENT)) {
+            Student student = studentService.getStudentByAccountId(account.getId());
+
+            return teachingGroupRepository.getAllGroupsNameAndIdByStudent(student);
+        } else if (account.hasRole(RoleEnum.ROLE_LECTURER)) {
+            Lecturer lecturer = lecturerService.getLecturerByAccountId(account.getId());
+
+            return teachingGroupRepository.getAllGroupsNameAndIdByLecturer(lecturer);
+        }
+        //TODO find better exception for this
+        throw new IllegalArgumentException("Your account doesn't posses required roles. Contact administrators of the application.");
     }
 }

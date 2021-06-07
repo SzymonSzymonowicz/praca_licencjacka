@@ -37,8 +37,8 @@ public class ExamController {
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/{idGroup}")
-    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) {
-        examService.createExam(examDTO, idGroup);
+    public Long addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) {
+        return examService.createExam(examDTO, idGroup);
     }
 
     @GetMapping("/{idGroup}")

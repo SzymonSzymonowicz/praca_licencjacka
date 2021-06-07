@@ -26,8 +26,8 @@ public class ExamService {
     private final ExamRepository examRepository;
     private final TeachingGroupService teachingGroupService;
 
-    public void examSave(Exam exam) {
-        examRepository.save(exam);
+    public Long examSave(Exam exam) {
+        return examRepository.save(exam).getId();
     }
 
     public boolean examExistsById(Long id) {
@@ -60,15 +60,17 @@ public class ExamService {
         return returnedExam;
     }
 
-    public void createExam(ExamDTO examDTO, Long id) {
+    public Long createExam(ExamDTO examDTO, Long id) {
         Exam exam = Exam.mapExamDTOToExam(examDTO);
         exam.setStateToDraft();
 
         TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(id);
         exam.setTeachingGroup(teachingGroup);
 
-        examSave(exam);
+        final Long persistedExamId = examSave(exam);
         log.info("Exam with ID -> {} <- has been ADDED", exam.getId());
+
+        return persistedExamId;
     }
 
     public List<ExamDTO> getExamDTOSByIdGroup(Long idGroup) {

@@ -1,16 +1,18 @@
-import React from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography, makeStyles, AccordionActions, Button } from '@material-ui/core';
-import { useState, useEffect } from 'react'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import React, { useState, useEffect } from 'react';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from '@material-ui/icons/Add';
 import TimerIcon from '@material-ui/icons/Timer';
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
 import { archiveExcercisesUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
-import { getCurrentAccount } from 'services/auth-service';
+import { getCurrentAccount, isLecturer } from 'services/auth-service';
 import { examUrl } from 'router/urls';
 import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
+import Modal from "components/reusable/modal/Modal";
+import ExamForm from 'components/exam/ExamForm';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -148,7 +150,16 @@ export default function Exams(props) {
 
         return "";
       })}
-      <button onClick={ () => { history.push("/landing/new-exam") } }>Nowy egzamin</button>
+      {/* <Button variant="filled" onClick={() => { history.push("/landing/new-exam") }}>Nowy egzamin</Button> */}
+      {isLecturer() &&
+        <Modal input={
+          <Button color="primary" type="submit" variant="contained" startIcon={<AddIcon />} style={{ marginTop: "20px" }}>
+            Nowy egzamin
+          </Button >
+        }>
+          <ExamForm mode="create" />
+          {/* <EditGroupForm group={group} getGroup={ getGroup }/> */}
+      </Modal>}
     </>
   )
 }
