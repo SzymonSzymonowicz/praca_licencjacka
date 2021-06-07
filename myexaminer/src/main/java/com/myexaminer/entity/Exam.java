@@ -20,8 +20,6 @@ import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.myexaminer.component.DateUtils.parseStringToDate;
-
 @Getter
 @Setter
 @NoArgsConstructor

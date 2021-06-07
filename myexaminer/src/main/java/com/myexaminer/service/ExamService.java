@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -76,7 +77,8 @@ public class ExamService {
     public List<ExamDTO> getExamDTOSByIdGroup(Long idGroup) {
         return StreamSupport.stream(returnAllExams().spliterator(), false).
                 filter(exam -> exam.getTeachingGroup().getId() == idGroup).
-                map(ExamDTO::new).collect(Collectors.toList());
+                map(ExamDTO::new)
+                .collect(Collectors.toList());
     }
 
     public State getState(GenericOneValue id) {
@@ -91,5 +93,15 @@ public class ExamService {
         exam.setState(state);
 
         examSave(exam);
+    }
+
+    public Iterable<ExamDTO> getExamDTOSByMyGroups(Long accountId) {
+        List<TeachingGroup> groups = teachingGroupService.getTeachingGroupByAccountId(accountId);
+
+        return groups.stream()
+                .flatMap(group -> group.getExams().stream())
+                .map(ExamDTO::new)
+                .sorted(Comparator.comparing(dto -> dto.getAvailableFrom()))
+                .collect(Collectors.toList());
     }
 }

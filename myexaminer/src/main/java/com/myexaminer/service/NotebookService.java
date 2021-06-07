@@ -9,8 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Log4j2
 @Service
 @RequiredArgsConstructor

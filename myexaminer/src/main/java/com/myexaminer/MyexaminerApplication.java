@@ -30,6 +30,7 @@ public class MyexaminerApplication {
                 registry.addMapping("/chapters/**").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exam").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exam/{groupId}").allowedOrigins(LOCALHOST);
+                registry.addMapping("/exam//my-groups/{accountId}").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exam/status").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/exercises/{id}").allowedOrigins(LOCALHOST);
                 registry.addMapping("/groups/account/{accountId}").allowedMethods("*").allowedOrigins(LOCALHOST);

@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { archiveExcercisesUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
 import { getCurrentAccount, isLecturer } from 'services/auth-service';
-import { examIdUrl } from 'router/urls';
+import { allExamsFromMyGroupsUrl } from 'router/urls';
 import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
 import Modal from "components/reusable/modal/Modal";
 import ExamForm from 'components/exam/ExamForm';
@@ -32,11 +32,9 @@ export default function Exams(props) {
   const [exams, setExams] = useState([]);
 
   const history = useHistory();
-  const studentId = getCurrentAccount()?.id;
+  const accountId = getCurrentAccount()?.id;
 
-  // TODO UNHARDCODE THIS !!!!
-  const groupId = 1;
-  const loadExams = () => fetch(examIdUrl(groupId), {
+  const loadExams = () => fetch(allExamsFromMyGroupsUrl(accountId), {
     method: 'GET',
     headers: authHeader()
   }).then(function (response) {
@@ -115,9 +113,9 @@ export default function Exams(props) {
                 aria-controls="panel2bh-content"
                 id="panel2bh-header"
               >
-                <Typography className={classes.heading}>Egzamin {index+1}</Typography>
+                <Typography className={classes.heading}>Egzamin {index + 1}</Typography>
                 <Typography className={classes.secondaryHeading}>
-                  {exam.name}
+                  {exam.name} : { exam.groupName }
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -131,7 +129,7 @@ export default function Exams(props) {
                 <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]}</Typography>
                 <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration} min.</Typography>
                 <Button size="small" onClick={() => {
-                    createAnswersForExam(studentId, exam.id);
+                    createAnswersForExam(accountId, exam.id);
                     history.push(`/landing/exam/${exam.id}`);
                   }}
                   {...(exam.state !== "OPEN" && {disabled: true})}    

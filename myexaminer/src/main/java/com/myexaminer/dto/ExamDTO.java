@@ -1,6 +1,5 @@
 package com.myexaminer.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myexaminer.entity.Exam;
 import com.myexaminer.entity.TeachingGroup;
 import lombok.AllArgsConstructor;
@@ -11,8 +10,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.myexaminer.component.DateUtils.parseDateToString;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,18 +18,16 @@ public class ExamDTO {
 
     private Long id;
 
-    @JsonProperty
     private String name;
 
-    @JsonProperty
     private String description;
 
-    @JsonProperty
     private LocalDateTime availableFrom;
 
     private Long groupId;
 
-    @JsonProperty
+    private String groupName;
+
     private Long duration;
 
     private String state;
@@ -46,6 +41,9 @@ public class ExamDTO {
         this.state = exam.getState().name();
         this.groupId = Optional.of(exam.getTeachingGroup())
                 .map(TeachingGroup::getId)
+                .orElse(null);
+        this.groupName = Optional.of(exam.getTeachingGroup())
+                .map(TeachingGroup::getName)
                 .orElse(null);
     }
 
