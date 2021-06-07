@@ -79,13 +79,13 @@ export default function CreateExam(props) {
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0}>
-                <TaskForm mode="create"/>
+                <TaskForm mode="create" type={TaskTypeEnum.OPEN} />
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <TaskForm mode="create" type={TaskTypeEnum.CLOSED}/>
+                <TaskForm mode="create" type={TaskTypeEnum.CLOSED} />
               </TabPanel>
               <TabPanel value={value} index={2}>
-                <TaskForm mode="create" type={TaskTypeEnum.BLANKS}/>
+                <TaskForm mode="create" type={TaskTypeEnum.BLANKS} />
               </TabPanel>
             </div>
           </Paper>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import { Box, Button } from "@material-ui/core";
 import styles from "components/group/group.module.css";
-import { createLessonUrl, lessonIdUrl } from "router/urls";
+import { addExerciseToExamUrl, lessonIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -10,9 +10,11 @@ import BlanksTaskFormModule from './BlanksTaskFormModule';
 import ClosedTaskFormModule from './ClosedTaskFormModule';
 import TaskTypeEnum from './TaskTypeEnum';
 import BaseTaskFormModule from "./BaseTaskFormModule";
+import { useParams } from 'react-router';
 
 export default function TaskForm(props) {
-  const { groupId, mode, task, type, resetEdited } = props;
+  const { mode, task, type, resetEdited } = props;
+  let { examId } = useParams();
 
   const { control, formState: { errors }, reset, handleSubmit, setValue, getValues } = useForm({
     defaultValues: task || {
@@ -43,22 +45,23 @@ export default function TaskForm(props) {
       <></>
   }
 
-  const addTaskToExam = (groupId, lesson) => {
-    fetch(createLessonUrl(groupId), {
+  const addTaskToExam = (examId, exercise) => {
+    console.log(exercise);
+    fetch(addExerciseToExamUrl(examId), {
       method: "POST",
       headers: {
         ...authHeader(),
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(lesson)
+      body: JSON.stringify(exercise)
     })
       .then(res => {
         if (res.status === 200) {
           reset();
-          props?.getGroup(groupId);
+          //callback to refresh parent props?.getGroup(examId);
         }
         else {
-          console.log("Adding lesson failed");
+          console.log("Adding exercise failed");
           console.log(res.text())
         }
     })
@@ -76,7 +79,7 @@ export default function TaskForm(props) {
     })
       .then(res => {
         if (res.status === 200) {
-          props?.getGroup(groupId);
+          props?.getGroup(examId);
           
           if (typeof resetEdited === "function") {
             resetEdited();
@@ -95,7 +98,7 @@ export default function TaskForm(props) {
   
   switch (mode) {
     case 'create':
-      action = (task) => console.log(task);
+      action = (task) => addTaskToExam(examId, task);
       submitText = "Dodaj Zadanie";
       break;
     case 'edit':

@@ -91,7 +91,7 @@ public class ExamServiceTest {
         ExamDTO examDTO = ExamDTO.builder()
                 .name("exam1")
                 .description("description1")
-                .availableFrom("2021-05-09 00:05:00")
+                .availableFrom(parseStringToDate("2021-05-09 00:05:00"))
                 .duration(60L).build();
 
         ArgumentCaptor<Exam> argumentCaptor = ArgumentCaptor.forClass(Exam.class);
