@@ -21,6 +21,7 @@ import ExamResults from 'components/exam/ExamResults';
 import ExamsToCheck from 'components/lecturer/ExamsToCheck';
 import CheckExam from 'components/lecturer/CheckExam';
 import { logout, getCurrentAccount, hasRole } from "services/auth-service";
+import CreateExam from 'components/exam/CreateExam';
 
 
 const drawerWidth = 240;
@@ -322,6 +323,9 @@ export default function Landing() {
             </Route>}
             <Route path={`${match.path}/lesson/`}>
               <Lesson/>
+            </Route>
+            <Route path={`${match.path}/new-exam`}>
+              <CreateExam/>
             </Route>
           </Switch>
       </main>

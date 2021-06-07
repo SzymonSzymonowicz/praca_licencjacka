@@ -142,12 +142,13 @@ export default function Exams(props) {
                   Wyniki
                 </Button>
               </AccordionActions>
-            </Accordion>
+              </Accordion>
           )
         }
 
         return "";
-    })}
+      })}
+      <button onClick={ () => { history.push("/landing/new-exam") } }>Nowy egzamin</button>
     </>
   )
 }

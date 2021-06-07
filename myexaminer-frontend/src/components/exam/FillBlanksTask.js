@@ -2,6 +2,8 @@ import { Grid, Paper, TextField, Typography } from '@material-ui/core'
 import React from 'react'
 
 export default function FillBlanksTask(props) {
+  // probably needs refactoring .split(/(<blank>)/g)
+
   const fill = props.fill.split("<blank>")
 
   const [blanksFilled, setBlanksFilled] = React.useState(new Array(fill.length-1).fill(""))
@@ -47,7 +49,7 @@ export default function FillBlanksTask(props) {
         <Typography key={str}>{str}</Typography>
         {index !== length - 1 && 
           <TextField 
-            onChange={event => handleChange(event, index)} key={`t${props.id}b${index}`} 
+            onInput={event => handleChange(event, index)} key={`t${props.id}b${index}`} 
             style={{margin: '0px 10px', minWidth: '60px'}} 
             inputProps={{ style: { textAlign: "center" } }}
             {...(props.loadValue === true  && {
