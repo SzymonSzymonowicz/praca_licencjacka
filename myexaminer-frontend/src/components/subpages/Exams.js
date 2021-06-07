@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { archiveExcercisesUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
 import { getCurrentAccount, isLecturer } from 'services/auth-service';
-import { examUrl } from 'router/urls';
+import { examIdUrl } from 'router/urls';
 import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
 import Modal from "components/reusable/modal/Modal";
 import ExamForm from 'components/exam/ExamForm';
@@ -34,8 +34,9 @@ export default function Exams(props) {
   const history = useHistory();
   const studentId = getCurrentAccount()?.id;
 
+  // TODO UNHARDCODE THIS !!!!
   const groupId = 1;
-  const loadExams = () => fetch(examUrl + groupId, {
+  const loadExams = () => fetch(examIdUrl(groupId), {
     method: 'GET',
     headers: authHeader()
   }).then(function (response) {

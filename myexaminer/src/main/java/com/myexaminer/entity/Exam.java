@@ -103,7 +103,7 @@ public class Exam {
     public static Exam mapExamDTOToExam(ExamDTO examDTO) {
         return Exam.builder()
                 .name(examDTO.getName())
-                .availableFrom(parseStringToDate(examDTO.getAvailableFrom()))
+                .availableFrom(examDTO.getAvailableFrom())
                 .description(examDTO.getDescription())
                 .duration(examDTO.getDuration())
                 .build();

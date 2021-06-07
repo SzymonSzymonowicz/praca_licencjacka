@@ -5,7 +5,8 @@ export const loginUrl = apiDomain + "/account/login";
 export const registerUrl = apiDomain + "/account";
 
 // ExamController
-export const examUrl = apiDomain + "/exam/";
+export const examUrl = apiDomain + "/exam";
+export const examIdUrl = (groupId) => apiDomain + "/exam/" + groupId;
 
 // ArchiveController
 export const archiveExcercisesUrl = apiDomain + "/archive/exercises";

@@ -36,14 +36,14 @@ public class ExamController {
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @PostMapping("/{idGroup}")
-    public Long addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) {
-        return examService.createExam(examDTO, idGroup);
+    @PostMapping
+    public Long addExam(@RequestBody ExamDTO examDTO) {
+        return examService.createExam(examDTO);
     }
 
-    @GetMapping("/{idGroup}")
-    public Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable Long idGroup) {
-        return examService.getExamDTOSByIdGroup(idGroup);
+    @GetMapping("/{groupId}")
+    public Iterable<ExamDTO> getAllExamsByGroupId(@PathVariable Long groupId) {
+        return examService.getExamDTOSByIdGroup(groupId);
     }
 
     @GetMapping("/status")

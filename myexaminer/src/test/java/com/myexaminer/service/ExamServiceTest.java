@@ -99,7 +99,7 @@ public class ExamServiceTest {
         when(teachingGroupService.getTeachingGroupById(1L)).thenReturn(teachingGroup);
 
         //when
-        examService.createExam(examDTO, 1L);
+        examService.createExam(examDTO);
 
         //then
         verify(examRepository, times(1)).save(argumentCaptor.capture());

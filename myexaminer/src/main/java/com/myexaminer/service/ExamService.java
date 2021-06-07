@@ -60,11 +60,11 @@ public class ExamService {
         return returnedExam;
     }
 
-    public Long createExam(ExamDTO examDTO, Long id) {
+    public Long createExam(ExamDTO examDTO) {
         Exam exam = Exam.mapExamDTOToExam(examDTO);
         exam.setStateToDraft();
 
-        TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(id);
+        TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(examDTO.getGroupId());
         exam.setTeachingGroup(teachingGroup);
 
         final Long persistedExamId = examSave(exam);

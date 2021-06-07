@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
-import { createChapterUrl, editChapterUrl, groupsNameIdForAccountUrl } from "router/urls";
+import { examUrl, editChapterUrl, groupsNameIdForAccountUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -10,6 +10,7 @@ import SunEditor from "suneditor-react";
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import { isNumeric, isWholeNumber } from "utils/validationUtils";
 import { getCurrentAccount } from "services/auth-service";
+import { useHistory } from "react-router";
 
 const buttons = [
   ['undo', 'redo'],
@@ -57,6 +58,8 @@ export default function ExamForm(props) {
     }
   });
 
+  const history = useHistory();
+
   const getGroups = async () => {
     const account = getCurrentAccount();
 
@@ -74,29 +77,32 @@ export default function ExamForm(props) {
     getGroups();
   },[])
 
-  const createDraftExam = (lessonId, chapter) => {
-    fetch(createChapterUrl(lessonId), {
+  const createDraftExam = (exam) => {
+    fetch(examUrl, {
       method: "POST",
       headers: {
         ...authHeader(),
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(chapter)
+      body: JSON.stringify(exam)
     })
-      .then(res => {
+    .then(async res => {
         if (res.status === 200) {
           reset();
-          props?.getLesson(lessonId);
+          return res.json();
         }
         else {
-          console.log("Adding lesson failed");
-          console.log(res.text())
+          console.log("Adding exam failed");
+          var msg = await res.text();
+          console.log(msg);
+          throw new Error("Adding exam failed: " + msg);
         }
     })
+    .then(examId => history.push(`/landing/new-exam/${examId}`))
     .catch(err => { console.error(err) })
   }
 
-  const editChapter = (chapterId, chapter) => {
+  const editExamProperties = (chapterId, chapter) => {
     fetch(editChapterUrl(chapterId), {
       method: "PATCH",
       headers: {
@@ -126,17 +132,17 @@ export default function ExamForm(props) {
   
   switch (mode) {
     case 'create':
-      action = (chapter) => createDraftExam(lessonId, chapter);
+      action = (exam) => createDraftExam(exam);
       submitText = "Utwórz Egzamin";
       break;
     case 'edit':
-      action = (chapter) => editChapter(chapter?.id, chapter);
+      action = (exam) => editExamProperties(exam);
       submitText = "Edytuj Opis Egzaminu";
       break;
     default:
-      action = (chapter) => {
+      action = (exam) => {
         console.log("Form type not provided, performing default action:");
-        console.log(chapter);
+        console.log(exam);
       }
       submitText = "Zatwierdź";
   }
@@ -174,7 +180,7 @@ export default function ExamForm(props) {
                 labelId="select-exam-group-label"
                 label="Grupa"
                 value={value || ''}
-                renderValue={(value) => `⚠️  - ${value}`}
+                renderValue={value => lecturerGroups?.find(dto => dto.id === value)?.name}
                 {...rest}
               >
                 {lecturerGroups && lecturerGroups.map(group => {
@@ -217,14 +223,15 @@ export default function ExamForm(props) {
             <TextField
               variant="outlined"
               label="Czas (min.)"
-              error={errors.points ? true : false}
               fullWidth
               type="number"
-              helperText={errors.points ? errors.points?.message : null}
+              inputProps={{ step: 5 }}
+              error={errors.duration ? true : false}
+              helperText={errors.duration ? errors.duration?.message : null}
               onChange={(event) => {
                 var num = event.target.value;
                 onChange(num);
-                setValue("duration", parseInt(num), { shouldValidate: true });
+                setValue("duration", num, { shouldValidate: true });
               } }
               {...rest}
             />}
@@ -268,7 +275,7 @@ export default function ExamForm(props) {
             validate: value => value !== null || "Opis egzaminu nie może być pusty"
           }}
         />
-        { errors.content && <span style={{color: "#f44336", marginLeft: "14px", top: "-20px", position: "relative"}} className="MuiFormHelperText-root">{errors.description.message}</span> }
+        { errors.description && <span style={{color: "#f44336", marginLeft: "14px", top: "-20px", position: "relative"}} className="MuiFormHelperText-root">{errors.description.message}</span> }
       </Box>
       <Box display="flex" justifyContent="flex-end">
         <Button color="primary" type="submit" variant="contained" startIcon={<CheckIcon />}>
