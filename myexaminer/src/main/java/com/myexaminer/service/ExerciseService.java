@@ -113,7 +113,7 @@ public class ExerciseService {
         }
     }
 
-    public void createExerciseTypeO(OpenExercise openExercise, Long examId) throws JsonProcessingException {
+/*    public void createExerciseTypeO(OpenExercise openExercise, Long examId) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openExercise);
 
@@ -139,5 +139,19 @@ public class ExerciseService {
         exerciseRepository.save(exercise);
 
         log.info("Closed exercise with ID -> {} <- has been ADDED", exercise.getId());
+    }*/
+
+    public void createExercise(OpenExercise exerciseDTO, Long examId) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(exerciseDTO);
+
+        Exercise exercise = Exercise.builder()
+                .exam(examService.getExamById(examId))
+                .content(content)
+                .build();
+
+        Exercise persisted = exerciseRepository.save(exercise);
+
+        log.info("Exercise of type: {} with ID -> {} <- has been ADDED", exerciseDTO.getType(), persisted.getId());
     }
 }

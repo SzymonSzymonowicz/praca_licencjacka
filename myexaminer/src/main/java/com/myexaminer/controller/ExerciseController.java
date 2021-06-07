@@ -51,7 +51,14 @@ public class ExerciseController {
         exerciseService.saveExercises(receivedExerciseList);
     }
 
-    @PostMapping("/create/open/{id}")
+    @PostMapping("/exam/{id}")
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    public void createExercise(@RequestBody OpenExercise openExercise,
+                                   @PathVariable Long id) throws JsonProcessingException {
+        exerciseService.createExercise(openExercise, id);
+    }
+
+/*    @PostMapping("/create/open/{id}")
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     public void createOpenExercise(@RequestBody OpenExercise openExercise,
                                    @PathVariable Long id) throws JsonProcessingException {
@@ -63,5 +70,5 @@ public class ExerciseController {
     public void createClosedExercise(@RequestBody ClosedExercise closedExercise,
                                      @PathVariable Long id) throws JsonProcessingException {
         exerciseService.createExerciseTypeZ(closedExercise, id);
-    }
+    }*/
 }

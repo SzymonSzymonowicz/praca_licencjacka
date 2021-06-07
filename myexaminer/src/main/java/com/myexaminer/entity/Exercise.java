@@ -1,5 +1,6 @@
 package com.myexaminer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "fk_exam_id", nullable = false)
+    @JsonIgnore
     private Exam exam;
 
     @OneToMany(mappedBy = "exercise")

@@ -3,22 +3,20 @@ package com.myexaminer.exerciseTypes;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class ClosedExercise extends OpenExercise {
-    private List<String> answers;
+public class BlanksExercise extends OpenExercise{
+    private String fill;
 
-    public ClosedExercise(String type, String instruction, Long points, List<String> answers) {
+    public BlanksExercise(String type, String instruction, Long points, String fill) {
         super(type, instruction, points);
-        this.answers = answers;
+        this.fill = fill;
     }
 
     @Override
     public String toString() {
-        return "ClosedExercise{" +
-                "answers=" + answers +
+        return "BlanksExercise{" +
+                "fill='" + fill + '\'' +
                 ", type='" + type + '\'' +
                 ", instruction='" + instruction + '\'' +
                 ", points=" + points +
