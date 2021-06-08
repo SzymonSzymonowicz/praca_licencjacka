@@ -13,7 +13,7 @@ import OpenTask from "./OpenTask";
 import ClosedTask from "./ClosedTask";
 import FillBlanksTask from "./FillBlanksTask";
 import { useParams } from "react-router";
-import { examIdUrl } from "router/urls";
+import { examIdUrl, exercisesIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
 import EditButton from "components/reusable/button/EditButton";
@@ -102,7 +102,7 @@ export default function CreateExam(props) {
     <>
       <Grid container direction="column" justify="center" spacing={3}>
         <Grid item xs={12}>
-          {tasks && <PreviewTasksModule tasks={tasks}/>}
+          {tasks && <PreviewTasksModule tasks={tasks} getExam={getExam}/>}
           <Paper elevation={4} style={{ padding: 20, marginTop: 60}}>
             <div className={classes.root}>
               <AppBar position="static" color="default">
@@ -136,7 +136,7 @@ export default function CreateExam(props) {
   );
 }
 
-const PreviewTasksModule = ({ tasks }) => (
+const PreviewTasksModule = ({ tasks, getExam }) => (
   <Grid
     container
     direction="column"
@@ -158,7 +158,7 @@ const PreviewTasksModule = ({ tasks }) => (
               instruction={instruction}
               points={points}
               index={index}
-              actions={<TaskActions />}
+              actions={<TaskActions taskId={id} getExam={getExam} />}
             />
           </Grid>
         )
@@ -173,7 +173,7 @@ const PreviewTasksModule = ({ tasks }) => (
               points={points}
               answers={task.content.answers}
               index={index}
-              actions={<TaskActions />}
+              actions={<TaskActions taskId={id} getExam={getExam}  />}
             />
           </Grid>
         )
@@ -187,7 +187,7 @@ const PreviewTasksModule = ({ tasks }) => (
               points={points}
               fill={task.content.fill}
               index={index}
-              actions={<TaskActions />}
+              actions={<TaskActions taskId={id} getExam={getExam}  />}
             />
           </Grid>
         )
@@ -197,11 +197,31 @@ const PreviewTasksModule = ({ tasks }) => (
   </Grid>
 )
 
-const TaskActions = () => {
+const TaskActions = (props) => {
+  const { getExam, taskId } = props;
+
+  const deleteTask = (taskId) => {
+    fetch(exercisesIdUrl(taskId), {
+      method: 'DELETE',
+      headers: authHeader()
+    }).then((response) => {
+      if (response.status === 200) {
+        getExam();
+      } else {
+        console.log(`Error during deleting exercise of id ${taskId}!`);
+        return response.text();
+      }
+    })
+    .catch((error) => {
+      console.log("Error deleting exercise")
+      console.log(error)
+    })
+  }
+
   return (
     <Box>
       <EditButton onlyIcon onClick={() => console.log("edytowanko")}/>
-      <DeleteConfirmButton onlyIcon action={ () => console.log("usuwanko")}/>
+      <DeleteConfirmButton onlyIcon action={ () => deleteTask(taskId)}/>
     </Box>
   )
 }

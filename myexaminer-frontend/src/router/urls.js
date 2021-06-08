@@ -17,6 +17,7 @@ export const individualExamExercisesUrl = apiDomain + "/archive/exercises?indivi
 
 // ExercisesController
 export const exercisesUrl = apiDomain + "/exercises/";
+export const exercisesIdUrl = (exerciseId) => apiDomain + "/exercises/" + exerciseId;
 export const addExerciseToExamUrl = (examId) => apiDomain + "/exercises/exam/" + examId;
 
 // NotebookController
