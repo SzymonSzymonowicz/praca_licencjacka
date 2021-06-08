@@ -5,7 +5,9 @@ export const loginUrl = apiDomain + "/account/login";
 export const registerUrl = apiDomain + "/account";
 
 // ExamController
-export const examUrl = apiDomain + "/exam/";
+export const examUrl = apiDomain + "/exam";
+export const examIdUrl = (id) => apiDomain + "/exam/" + id;
+export const allExamsFromMyGroupsUrl = (groupId) => apiDomain + "/exam/my-groups/" + groupId;
 
 // ArchiveController
 export const archiveExcercisesUrl = apiDomain + "/archive/exercises";
@@ -15,6 +17,7 @@ export const individualExamExercisesUrl = apiDomain + "/archive/exercises?indivi
 
 // ExercisesController
 export const exercisesUrl = apiDomain + "/exercises/";
+export const addExerciseToExamUrl = (examId) => apiDomain + "/exercises/exam/" + examId;
 
 // NotebookController
 export const notebookUrl = apiDomain + "/notebook";
@@ -24,6 +27,7 @@ export const individualExamsForLecturerGroupsUrl = apiDomain + "/individual-exam
 
 // TeachingGroupController
 export const groupsForAccountUrl = (id) => apiDomain + "/groups/account/" + id;
+export const groupsNameIdForAccountUrl = (id) => apiDomain + "/groups/name-id/account/" + id;
 export const groupsStudentsUrl = apiDomain + "/groups/students";
 export const groupByIdUrl = (id) => apiDomain + "/groups/" + id;
 export const groupIsUniqueNameUrl = (name) => apiDomain + "/groups/unique?groupName=" + name;

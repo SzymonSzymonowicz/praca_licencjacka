@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.Map;
 
 @Log4j2
@@ -30,20 +29,20 @@ public class ExamController {
         this.examService = examService;
     }
 
-    @GetMapping
-    public Exam getExam(@RequestBody Map<String, Long> map_id) {
-        return examService.getExam(map_id);
+    @GetMapping("/{examId}")
+    public Exam getExam(@PathVariable Long examId) {
+        return examService.getExamById(examId);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @PostMapping("/{idGroup}")
-    public void addExam(@RequestBody ExamDTO examDTO, @PathVariable Long idGroup) {
-        examService.createExam(examDTO, idGroup);
+    @PostMapping
+    public Long addExam(@RequestBody ExamDTO examDTO) {
+        return examService.createExam(examDTO);
     }
 
-    @GetMapping("/{idGroup}")
-    public Iterable<ExamDTO> getAllExamsByIdGroup(@PathVariable Long idGroup) {
-        return examService.getExamDTOSByIdGroup(idGroup);
+    @GetMapping("/my-groups/{accountId}")
+    public Iterable<ExamDTO> getAllExamsFromMyGroups(@PathVariable Long accountId) {
+        return examService.getExamDTOSByMyGroups(accountId);
     }
 
     @GetMapping("/status")

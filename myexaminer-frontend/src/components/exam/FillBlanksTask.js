@@ -56,6 +56,9 @@ export default function FillBlanksTask(props) {
               value: props.answered.find(item => item['id'] === props.id)['answer'][index],
               disabled: true,
             })}
+            {...(props.disabled && {
+              disabled: true,
+            })}
           />}
         </React.Fragment>
       })}

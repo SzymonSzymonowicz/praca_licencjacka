@@ -1,5 +1,6 @@
 package com.myexaminer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.myexaminer.dto.ExamDTO;
 import com.myexaminer.enums.State;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.myexaminer.component.DateUtils.parseStringToDate;
 
 @Getter
 @Setter
@@ -45,6 +44,7 @@ public class Exam {
     @Enumerated(EnumType.STRING)
     private State state;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "fk_teaching_group_id", nullable = false)
     private TeachingGroup teachingGroup;
@@ -52,6 +52,7 @@ public class Exam {
     @OneToMany(mappedBy = "exam")
     private List<Exercise> exercises;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "mainExam")
     private List<IndividualExam> individualExams;
 
@@ -103,7 +104,7 @@ public class Exam {
     public static Exam mapExamDTOToExam(ExamDTO examDTO) {
         return Exam.builder()
                 .name(examDTO.getName())
-                .availableFrom(parseStringToDate(examDTO.getAvailableFrom()))
+                .availableFrom(examDTO.getAvailableFrom())
                 .description(examDTO.getDescription())
                 .duration(examDTO.getDuration())
                 .build();

@@ -324,7 +324,7 @@ export default function Landing() {
             <Route path={`${match.path}/lesson/`}>
               <Lesson/>
             </Route>
-            <Route path={`${match.path}/new-exam`}>
+            <Route path={`${match.path}/new-exam/:examId`}>
               <CreateExam/>
             </Route>
           </Switch>

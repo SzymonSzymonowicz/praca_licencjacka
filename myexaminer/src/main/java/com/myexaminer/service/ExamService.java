@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,8 +27,8 @@ public class ExamService {
     private final ExamRepository examRepository;
     private final TeachingGroupService teachingGroupService;
 
-    public void examSave(Exam exam) {
-        examRepository.save(exam);
+    public Long examSave(Exam exam) {
+        return examRepository.save(exam).getId();
     }
 
     public boolean examExistsById(Long id) {
@@ -46,35 +47,24 @@ public class ExamService {
         return examRepository.findAll();
     }
 
-    public Exam getExam(Map<String, Long> map_id) {
-        Long id = map_id.get("id");
-        if (!examExistsById(id)) {
-            log.info("Exam with given ID -> {} <- DOES NOT EXIST", id);
-            return null;
-        }
-
-        Exam returnedExam = getExamById(id);
-
-        log.info("Exam with ID -> {} <- HAS BEEN RETURNED", returnedExam.getId());
-
-        return returnedExam;
-    }
-
-    public void createExam(ExamDTO examDTO, Long id) {
+    public Long createExam(ExamDTO examDTO) {
         Exam exam = Exam.mapExamDTOToExam(examDTO);
         exam.setStateToDraft();
 
-        TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(id);
+        TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(examDTO.getGroupId());
         exam.setTeachingGroup(teachingGroup);
 
-        examSave(exam);
+        final Long persistedExamId = examSave(exam);
         log.info("Exam with ID -> {} <- has been ADDED", exam.getId());
+
+        return persistedExamId;
     }
 
     public List<ExamDTO> getExamDTOSByIdGroup(Long idGroup) {
         return StreamSupport.stream(returnAllExams().spliterator(), false).
                 filter(exam -> exam.getTeachingGroup().getId() == idGroup).
-                map(ExamDTO::new).collect(Collectors.toList());
+                map(ExamDTO::new)
+                .collect(Collectors.toList());
     }
 
     public State getState(GenericOneValue id) {
@@ -89,5 +79,15 @@ public class ExamService {
         exam.setState(state);
 
         examSave(exam);
+    }
+
+    public Iterable<ExamDTO> getExamDTOSByMyGroups(Long accountId) {
+        List<TeachingGroup> groups = teachingGroupService.getTeachingGroupByAccountId(accountId);
+
+        return groups.stream()
+                .flatMap(group -> group.getExams().stream())
+                .map(ExamDTO::new)
+                .sorted(Comparator.comparing(dto -> dto.getAvailableFrom()))
+                .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.myexaminer.controller;
 
+import com.myexaminer.dto.GroupNameAndId;
 import com.myexaminer.entity.TeachingGroup;
 import com.myexaminer.service.TeachingGroupService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,13 @@ public class TeachingGroupController {
     private final TeachingGroupService teachingGroupService;
 
     @GetMapping("/account/{accountId}")
-    public List<TeachingGroup> getAllGroupsOfGiveAccount(@PathVariable Long accountId) {
+    public List<TeachingGroup> getAllGroupsOfGivenAccount(@PathVariable Long accountId) {
         return teachingGroupService.getTeachingGroupByAccountId(accountId);
+    }
+
+    @GetMapping(value = "/name-id/account/{accountId}")
+    public List<GroupNameAndId> getAllGroupsNameAndIdOfGivenAccount(@PathVariable Long accountId) {
+        return teachingGroupService.getTeachingGroupNameAndIdByAccountId(accountId);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")

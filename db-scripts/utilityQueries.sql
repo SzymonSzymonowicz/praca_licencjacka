@@ -22,3 +22,9 @@ state = 'CLOSED'
 WHERE id = 2;
 SELECT id, name, available_from, state FROM myexaminer.exam;
 
+-- change exam state
+UPDATE exam 
+SET state = 'OPEN',
+duration = 30
+WHERE id = 1;
+SELECT id, name, available_from, state FROM myexaminer.exam;

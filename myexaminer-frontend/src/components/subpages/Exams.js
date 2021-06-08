@@ -1,16 +1,18 @@
-import React from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography, makeStyles, AccordionActions, Button } from '@material-ui/core';
-import { useState, useEffect } from 'react'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import React, { useState, useEffect } from 'react';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from '@material-ui/icons/Add';
 import TimerIcon from '@material-ui/icons/Timer';
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import { useHistory } from 'react-router-dom';
 import { archiveExcercisesUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
-import { getCurrentAccount } from 'services/auth-service';
-import { examUrl } from 'router/urls';
+import { getCurrentAccount, isLecturer } from 'services/auth-service';
+import { allExamsFromMyGroupsUrl } from 'router/urls';
 import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
+import Modal from "components/reusable/modal/Modal";
+import ExamForm from 'components/exam/ExamForm';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -30,10 +32,9 @@ export default function Exams(props) {
   const [exams, setExams] = useState([]);
 
   const history = useHistory();
-  const studentId = getCurrentAccount()?.id;
+  const accountId = getCurrentAccount()?.id;
 
-  const groupId = 1;
-  const loadExams = () => fetch(examUrl + groupId, {
+  const loadExams = () => fetch(allExamsFromMyGroupsUrl(accountId), {
     method: 'GET',
     headers: authHeader()
   }).then(function (response) {
@@ -112,9 +113,9 @@ export default function Exams(props) {
                 aria-controls="panel2bh-content"
                 id="panel2bh-header"
               >
-                <Typography className={classes.heading}>Egzamin {index+1}</Typography>
+                <Typography className={classes.heading}>Egzamin {index + 1}</Typography>
                 <Typography className={classes.secondaryHeading}>
-                  {exam.name}
+                  {exam.name} : { exam.groupName }
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -128,7 +129,7 @@ export default function Exams(props) {
                 <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]}</Typography>
                 <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration} min.</Typography>
                 <Button size="small" onClick={() => {
-                    createAnswersForExam(studentId, exam.id);
+                    createAnswersForExam(accountId, exam.id);
                     history.push(`/landing/exam/${exam.id}`);
                   }}
                   {...(exam.state !== "OPEN" && {disabled: true})}    
@@ -148,7 +149,16 @@ export default function Exams(props) {
 
         return "";
       })}
-      <button onClick={ () => { history.push("/landing/new-exam") } }>Nowy egzamin</button>
+      {/* <Button variant="filled" onClick={() => { history.push("/landing/new-exam") }}>Nowy egzamin</Button> */}
+      {isLecturer() &&
+        <Modal input={
+          <Button color="primary" type="submit" variant="contained" startIcon={<AddIcon />} style={{ marginTop: "20px" }}>
+            Nowy egzamin
+          </Button >
+        }>
+          <ExamForm mode="create" />
+          {/* <EditGroupForm group={group} getGroup={ getGroup }/> */}
+      </Modal>}
     </>
   )
 }

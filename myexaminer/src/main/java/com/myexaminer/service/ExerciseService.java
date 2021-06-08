@@ -113,31 +113,17 @@ public class ExerciseService {
         }
     }
 
-    public void createExerciseTypeO(OpenExercise openExercise, Long examId) throws JsonProcessingException {
+    public void createExercise(OpenExercise exerciseDTO, Long examId) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openExercise);
+        String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(exerciseDTO);
 
         Exercise exercise = Exercise.builder()
                 .exam(examService.getExamById(examId))
                 .content(content)
                 .build();
 
-        exerciseRepository.save(exercise);
+        Exercise persisted = exerciseRepository.save(exercise);
 
-        log.info("Open exercise with ID -> {} <- has been ADDED", exercise.getId());
-    }
-
-    public void createExerciseTypeZ(ClosedExercise closedExercise, Long examId) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(closedExercise);
-
-        Exercise exercise = Exercise.builder()
-                .exam(examService.getExamById(examId))
-                .content(content)
-                .build();
-
-        exerciseRepository.save(exercise);
-
-        log.info("Closed exercise with ID -> {} <- has been ADDED", exercise.getId());
+        log.info("Exercise of type: {} with ID -> {} <- has been ADDED", exerciseDTO.getType(), persisted.getId());
     }
 }
