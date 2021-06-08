@@ -47,20 +47,6 @@ public class ExamService {
         return examRepository.findAll();
     }
 
-    public Exam getExam(Map<String, Long> map_id) {
-        Long id = map_id.get("id");
-        if (!examExistsById(id)) {
-            log.info("Exam with given ID -> {} <- DOES NOT EXIST", id);
-            return null;
-        }
-
-        Exam returnedExam = getExamById(id);
-
-        log.info("Exam with ID -> {} <- HAS BEEN RETURNED", returnedExam.getId());
-
-        return returnedExam;
-    }
-
     public Long createExam(ExamDTO examDTO) {
         Exam exam = Exam.mapExamDTOToExam(examDTO);
         exam.setStateToDraft();

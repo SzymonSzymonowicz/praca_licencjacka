@@ -29,20 +29,15 @@ public class ExamController {
         this.examService = examService;
     }
 
-    @GetMapping
-    public Exam getExam(@RequestBody Map<String, Long> map_id) {
-        return examService.getExam(map_id);
+    @GetMapping("/{examId}")
+    public Exam getExam(@PathVariable Long examId) {
+        return examService.getExamById(examId);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping
     public Long addExam(@RequestBody ExamDTO examDTO) {
         return examService.createExam(examDTO);
-    }
-
-    @GetMapping("/{groupId}")
-    public Iterable<ExamDTO> getAllExamsByGroupId(@PathVariable Long groupId) {
-        return examService.getExamDTOSByIdGroup(groupId);
     }
 
     @GetMapping("/my-groups/{accountId}")

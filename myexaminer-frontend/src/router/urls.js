@@ -6,7 +6,7 @@ export const registerUrl = apiDomain + "/account";
 
 // ExamController
 export const examUrl = apiDomain + "/exam";
-export const examIdUrl = (groupId) => apiDomain + "/exam/" + groupId;
+export const examIdUrl = (id) => apiDomain + "/exam/" + id;
 export const allExamsFromMyGroupsUrl = (groupId) => apiDomain + "/exam/my-groups/" + groupId;
 
 // ArchiveController

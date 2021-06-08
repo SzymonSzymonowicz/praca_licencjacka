@@ -13,7 +13,7 @@ import BaseTaskFormModule from "./BaseTaskFormModule";
 import { useParams } from 'react-router';
 
 export default function TaskForm(props) {
-  const { mode, task, type, resetEdited } = props;
+  const { getExam, mode, task, type, resetEdited } = props;
   let { examId } = useParams();
 
   const { control, formState: { errors }, reset, handleSubmit, setValue, getValues } = useForm({
@@ -57,8 +57,9 @@ export default function TaskForm(props) {
     })
       .then(res => {
         if (res.status === 200) {
+          //callback to refresh parent
+          getExam();
           reset();
-          //callback to refresh parent props?.getGroup(examId);
         }
         else {
           console.log("Adding exercise failed");
@@ -116,7 +117,7 @@ export default function TaskForm(props) {
 
   return (
     <form onSubmit={handleSubmit(action)} className={styles.lessonForm}>
-      {BaseTaskFormModule(control, errors, setValue)}
+      <BaseTaskFormModule control={control} errors={errors} setValue={setValue} />
       
       {module}
 

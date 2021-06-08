@@ -1,5 +1,6 @@
 package com.myexaminer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.myexaminer.dto.ExamDTO;
 import com.myexaminer.enums.State;
 import lombok.AllArgsConstructor;
@@ -43,6 +44,7 @@ public class Exam {
     @Enumerated(EnumType.STRING)
     private State state;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "fk_teaching_group_id", nullable = false)
     private TeachingGroup teachingGroup;
@@ -50,6 +52,7 @@ public class Exam {
     @OneToMany(mappedBy = "exam")
     private List<Exercise> exercises;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "mainExam")
     private List<IndividualExam> individualExams;
 

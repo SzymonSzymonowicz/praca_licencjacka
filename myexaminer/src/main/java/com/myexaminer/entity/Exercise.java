@@ -38,5 +38,7 @@ public class Exercise {
     private Exam exam;
 
     @OneToMany(mappedBy = "exercise")
+    // TODO check if ignoring this field didn't broke anything in frontend, if so then ignore excercise in archive
+    @JsonIgnore
     private List<ArchiveExercise> archiveExercises;
 }
