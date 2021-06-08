@@ -156,7 +156,7 @@ const PreviewTasksModule = ({ tasks }) => (
       else if (type === TaskTypeEnum.CLOSED)
         return (
           <Grid item xs={12} key={`task${type}${index}`}>
-            <ClosedTask id={id} disabled instruction={instruction} points={points} answers={task.content.answers} index={index} />
+            <ClosedTask id={id} disabled displayCorrect instruction={instruction} points={points} answers={task.content.answers} index={index} />
           </Grid>
         )
       else if (type === TaskTypeEnum.BLANKS)

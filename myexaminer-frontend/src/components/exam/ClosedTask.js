@@ -29,6 +29,8 @@ export default function ClosedTask(props) {
 
   const markValue = props.loadValue === true ? props.answered.find(item => item['id'] === props.id)['answer'] : value
 
+  const showCorrect = (value) => props?.displayCorrect && value?.split(",")?.[1] === "T";
+
   return (
     <Paper elevation={4} style={{padding: 20}}>
       <Typography component={"div"}>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
@@ -36,7 +38,7 @@ export default function ClosedTask(props) {
       <FormControl disabled={props.loadValue} component="fieldset" fullWidth {...(props.disabled && { disabled: true})}>
         <RadioGroup row name={`task${props.id}`} value={markValue} onChange={handleChange} style={{justifyContent: "space-evenly"}}>
           {props.answers.map(ans =>(
-            <FormControlLabel key={ans} value={ans} control={<Radio />} label={String(ans).split(',')[0]} />
+            <FormControlLabel key={ans} value={ans} control={<Radio {...(showCorrect(ans) && { style: { color: "lawngreen" }})}/>} label={String(ans).split(',')[0]} />
           ))}
         </RadioGroup>
      </FormControl>
