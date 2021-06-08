@@ -1,10 +1,12 @@
-import { Grid, Paper, TextField, Typography } from '@material-ui/core'
+import { Box, Grid, Paper, TextField, Typography } from '@material-ui/core'
 import React from 'react'
 
 export default function FillBlanksTask(props) {
   // probably needs refactoring .split(/(<blank>)/g)
 
   const fill = props.fill.split("<blank>")
+
+  const { actions } = props;
 
   const [blanksFilled, setBlanksFilled] = React.useState(new Array(fill.length-1).fill(""))
   const [assignedPoints, setAssignedPoints] = React.useState(props.modify ? props.answered[props.index]['gainedPoints'] : null);
@@ -34,8 +36,13 @@ export default function FillBlanksTask(props) {
   </>
 
   return (
-    <Paper elevation={4} style={{padding: 20}}>
-      <Typography component={"div"}>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
+    <Paper elevation={4} style={{ padding: 20 }}>
+      <Box display="flex">
+        <Typography component="div" style={{ flexGrow: 1 }}>
+          {`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}
+        </Typography>
+        {actions}
+      </Box>
       <Typography>{props.instruction}</Typography>
       <Grid
         container

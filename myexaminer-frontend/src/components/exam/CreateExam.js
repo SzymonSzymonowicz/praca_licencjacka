@@ -15,6 +15,8 @@ import FillBlanksTask from "./FillBlanksTask";
 import { useParams } from "react-router";
 import { examIdUrl } from "router/urls";
 import authHeader from "services/auth-header";
+import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
+import EditButton from "components/reusable/button/EditButton";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -150,19 +152,43 @@ const PreviewTasksModule = ({ tasks }) => (
       if (type === TaskTypeEnum.OPEN)
         return (
           <Grid item xs={12} key={`task${type}${index}`}>
-            <OpenTask id={id} disabled instruction={instruction} points={points} index={index} />
+            <OpenTask
+              id={id}
+              disabled
+              instruction={instruction}
+              points={points}
+              index={index}
+              actions={<TaskActions />}
+            />
           </Grid>
         )
       else if (type === TaskTypeEnum.CLOSED)
         return (
           <Grid item xs={12} key={`task${type}${index}`}>
-            <ClosedTask id={id} disabled displayCorrect instruction={instruction} points={points} answers={task.content.answers} index={index} />
+            <ClosedTask
+              id={id}
+              disabled
+              displayCorrect
+              instruction={instruction}
+              points={points}
+              answers={task.content.answers}
+              index={index}
+              actions={<TaskActions />}
+            />
           </Grid>
         )
       else if (type === TaskTypeEnum.BLANKS)
         return (
           <Grid item xs={12} key={`task${type}${index}`}>
-            <FillBlanksTask id={id} disabled instruction={instruction} points={points} fill={task.content.fill} index={index} />
+            <FillBlanksTask
+              id={id}
+              disabled
+              instruction={instruction}
+              points={points}
+              fill={task.content.fill}
+              index={index}
+              actions={<TaskActions />}
+            />
           </Grid>
         )
       else
@@ -170,3 +196,12 @@ const PreviewTasksModule = ({ tasks }) => (
     })}
   </Grid>
 )
+
+const TaskActions = () => {
+  return (
+    <Box>
+      <EditButton onlyIcon onClick={() => console.log("edytowanko")}/>
+      <DeleteConfirmButton onlyIcon action={ () => console.log("usuwanko")}/>
+    </Box>
+  )
+}
