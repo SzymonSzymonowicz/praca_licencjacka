@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -27,7 +26,7 @@ public class ExamService {
     private final ExamRepository examRepository;
     private final TeachingGroupService teachingGroupService;
 
-    public Long examSave(Exam exam) {
+    public Long saveExam(Exam exam) {
         return examRepository.save(exam).getId();
     }
 
@@ -54,7 +53,7 @@ public class ExamService {
         TeachingGroup teachingGroup = teachingGroupService.getTeachingGroupById(examDTO.getGroupId());
         exam.setTeachingGroup(teachingGroup);
 
-        final Long persistedExamId = examSave(exam);
+        final Long persistedExamId = saveExam(exam);
         log.info("Exam with ID -> {} <- has been ADDED", exam.getId());
 
         return persistedExamId;
@@ -78,7 +77,7 @@ public class ExamService {
         Exam exam = getExamById(id);
         exam.setState(state);
 
-        examSave(exam);
+        saveExam(exam);
     }
 
     public Iterable<ExamDTO> getExamDTOSByMyGroups(Long accountId) {

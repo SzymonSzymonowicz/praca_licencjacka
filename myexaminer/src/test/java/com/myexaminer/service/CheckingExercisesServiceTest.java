@@ -96,7 +96,7 @@ public class CheckingExercisesServiceTest {
         when(archiveExerciseService.getArchiveExerciseByExerciseAndIndividualExam(2L,1L)).thenReturn(archiveExercise2);
         when(exerciseService.getExerciseType(1L)).thenReturn("Z");
         when(exerciseService.getExerciseType(2L)).thenReturn("O");
-        when(exerciseService.returnExerciseById(1L)).thenReturn(exercise1_Z);
+        when(exerciseService.getExerciseById(1L)).thenReturn(exercise1_Z);
         when(archiveExerciseService.toJSONString((String) receivedExercise1.getAnswer())).thenReturn("{\"answerJSON\":\"" + receivedExercise1.getAnswer() + "\"}");
         when(archiveExerciseService.toJSONString((String) receivedExercise2.getAnswer())).thenReturn("{\"answerJSON\":\"" + receivedExercise2.getAnswer() + "\"}");
 

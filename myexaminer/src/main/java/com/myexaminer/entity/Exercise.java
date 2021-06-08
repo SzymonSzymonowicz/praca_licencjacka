@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class Exercise {
     @JsonIgnore
     private Exam exam;
 
-    @OneToMany(mappedBy = "exercise")
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     // TODO check if ignoring this field didn't broke anything in frontend, if so then ignore excercise in archive
     @JsonIgnore
     private List<ArchiveExercise> archiveExercises;

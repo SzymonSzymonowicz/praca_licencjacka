@@ -3,8 +3,8 @@ package com.myexaminer.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myexaminer.dto.ExerciseDTO;
+import com.myexaminer.entity.Exam;
 import com.myexaminer.entity.Exercise;
-import com.myexaminer.exerciseTypes.ClosedExercise;
 import com.myexaminer.exerciseTypes.OpenExercise;
 import com.myexaminer.exerciseTypes.ReceivedExercise;
 import com.myexaminer.repository.ExerciseRepository;
@@ -30,7 +30,7 @@ public class ExerciseService {
     private final IndividualExamService individualExamService;
     private final ExamService examService;
 
-    public void exerciseSave(Exercise exercise) {
+    public void saveExercise(Exercise exercise) {
         exerciseRepository.save(exercise);
     }
 
@@ -40,7 +40,7 @@ public class ExerciseService {
         return exerciseById.isPresent();
     }
 
-    public Exercise returnExerciseById(Long id) {
+    public Exercise getExerciseById(Long id) {
         Optional<Exercise> exerciseById = exerciseRepository.findById(id);
 
         return exerciseById.orElseThrow(() -> new EntityNotFoundException("There is no Exercise in database that you were looking for."));
@@ -52,22 +52,8 @@ public class ExerciseService {
 
     public String getExerciseType(Long id) {
         JSONObject obj = new JSONObject(
-                returnExerciseById(id).getContent());
+                getExerciseById(id).getContent());
         return obj.getString("type");
-    }
-
-    public Exercise getExercise(Map<String, Long> map_id) {
-        Long id = map_id.get("id");
-        if (!exerciseExistsById(id)) {
-            log.info("Exercise with given ID -> {} <- DOES NOT EXIST", id);
-            return null;
-        }
-
-        Exercise returnedExercise = returnExerciseById(id);
-
-        log.info("Exercise with ID -> {} <- HAS BEEN RETURNED", returnedExercise.getId());
-
-        return returnedExercise;
     }
 
     public void createExercise(Exercise exercise) {
@@ -76,7 +62,7 @@ public class ExerciseService {
             return;
         }
 
-        exerciseSave(exercise);
+        saveExercise(exercise);
         log.info("Exercise with ID -> {} <- has been ADDED", exercise.getId());
     }
 
@@ -125,5 +111,16 @@ public class ExerciseService {
         Exercise persisted = exerciseRepository.save(exercise);
 
         log.info("Exercise of type: {} with ID -> {} <- has been ADDED", exerciseDTO.getType(), persisted.getId());
+    }
+
+    public void deleteExercise(Long exerciseId) {
+        Exercise exercise = getExerciseById(exerciseId);
+
+        Exam exam = exercise.getExam();
+        exam.removeExercise(exercise);
+
+        exerciseRepository.delete(exercise);
+        examService.saveExam(exam);
+        log.info("Exercise with ID -> {} <- has been DELETED", exercise.getId());
     }
 }
