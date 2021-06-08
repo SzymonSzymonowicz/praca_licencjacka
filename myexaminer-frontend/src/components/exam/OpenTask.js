@@ -37,8 +37,11 @@ export default function OpenTask(props) {
           onChange={handleChange}
           {...(props.loadValue === true && {
             value: props.answered.find(item => item['id'] === props.id)['answer'],
-            disabled: true,
             label: null,
+            disabled: true,
+          })}
+          {...(props.disabled && {
+            disabled: true,
           })}
       />
     </Paper>

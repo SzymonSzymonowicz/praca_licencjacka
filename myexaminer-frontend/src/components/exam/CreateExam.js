@@ -150,19 +150,19 @@ const PreviewTasksModule = ({ tasks }) => (
       if (type === TaskTypeEnum.OPEN)
         return (
           <Grid item xs={12} key={`task${type}${index}`}>
-            <OpenTask id={id} instruction={instruction} points={points} index={index} />
+            <OpenTask id={id} disabled instruction={instruction} points={points} index={index} />
           </Grid>
         )
       else if (type === TaskTypeEnum.CLOSED)
         return (
           <Grid item xs={12} key={`task${type}${index}`}>
-            <ClosedTask id={id} instruction={instruction} points={points} answers={task.content.answers} index={index} />
+            <ClosedTask id={id} disabled instruction={instruction} points={points} answers={task.content.answers} index={index} />
           </Grid>
         )
       else if (type === TaskTypeEnum.BLANKS)
         return (
           <Grid item xs={12} key={`task${type}${index}`}>
-            <FillBlanksTask id={id} instruction={instruction} points={points} fill={task.content.fill} index={index} />
+            <FillBlanksTask id={id} disabled instruction={instruction} points={points} fill={task.content.fill} index={index} />
           </Grid>
         )
       else
