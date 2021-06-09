@@ -44,7 +44,7 @@ public class CheckingExercisesService {
                     } else {
                         String answer = (String) receivedAnswer;
                         String userAnswer = answer.split(",")[1];
-                        JSONObject obj = new JSONObject(exerciseService.returnExerciseById(id).getContent());
+                        JSONObject obj = new JSONObject(exerciseService.getExerciseById(id).getContent());
                         int maxPointsFromExercise = obj.getInt("points");
                         archiveExercise.setGainedPoints((userAnswer.equals("T") ? maxPointsFromExercise : 0));
                         archiveExercise.setAnswer(archiveExerciseService.toJSONString((String) receivedExercise.getAnswer()));

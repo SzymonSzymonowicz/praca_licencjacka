@@ -96,7 +96,7 @@ export default function ExamResults(props) {
         else if (type === "Z")
           return (
             <Grid item xs={12} key={index}>
-              <ClosedTask loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.content.answers} index={index}/>
+              <ClosedTask displayCorrect loadValue={true} answered={answered} setAnswered={setAnswered} id={id} instruction={instruction} points={points} answers={task.content.answers} index={index}/>
               {lecturerComment && <Comment lecturerComment={lecturerComment} disable={true}/>}
             </Grid>
           )

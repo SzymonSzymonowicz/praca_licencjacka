@@ -100,6 +100,9 @@ public class Exam {
         return getState().equals(State.HIDDEN);
     }
 
+    public void removeExercise(Exercise exercise) {
+        exercises.remove(exercise);
+    }
 
     public static Exam mapExamDTOToExam(ExamDTO examDTO) {
         return Exam.builder()

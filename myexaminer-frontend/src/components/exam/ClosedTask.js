@@ -1,11 +1,11 @@
-import { FormControl, FormControlLabel, Paper, Radio, RadioGroup, TextField, Typography } from '@material-ui/core'
-import React from 'react'
+import { Box, FormControl, FormControlLabel, Paper, Radio, RadioGroup, TextField, Typography } from '@material-ui/core'
+import React, { useState } from 'react'
 
 
 export default function ClosedTask(props) {
-  const [value, setValue] = React.useState(null);
-
-  const [assignedPoints, setAssignedPoints] = React.useState(props.modify ? props.answered[props.index]['gainedPoints'] : null);
+  const [value, setValue] = useState(null);
+  const [assignedPoints, setAssignedPoints] = useState(props.modify ? props.answered[props.index]['gainedPoints'] : null);
+  const { actions } = props;
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -29,14 +29,21 @@ export default function ClosedTask(props) {
 
   const markValue = props.loadValue === true ? props.answered.find(item => item['id'] === props.id)['answer'] : value
 
+  const showCorrect = (value) => props?.displayCorrect && value?.split(",")?.[1] === "T";
+
   return (
-    <Paper elevation={4} style={{padding: 20}}>
-      <Typography component={"div"}>{`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}</Typography>
+    <Paper elevation={4} style={{ padding: 20 }}>
+      <Box display="flex">
+        <Typography component="div" style={{ flexGrow: 1 }}>
+          {`Zadanie. ${props.index + 1}   `}{props.modify ? pointsInput : pointsString}
+        </Typography>
+        {actions}
+      </Box>
       <Typography>{props.instruction}</Typography>
       <FormControl disabled={props.loadValue} component="fieldset" fullWidth {...(props.disabled && { disabled: true})}>
         <RadioGroup row name={`task${props.id}`} value={markValue} onChange={handleChange} style={{justifyContent: "space-evenly"}}>
           {props.answers.map(ans =>(
-            <FormControlLabel key={ans} value={ans} control={<Radio />} label={String(ans).split(',')[0]} />
+            <FormControlLabel key={ans} value={ans} control={<Radio {...(showCorrect(ans) && { style: { color: "lawngreen" }})}/>} label={String(ans).split(',')[0]} />
           ))}
         </RadioGroup>
      </FormControl>
