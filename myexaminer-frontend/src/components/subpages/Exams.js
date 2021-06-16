@@ -134,20 +134,37 @@ export default function Exams(props) {
                 <EventIcon/><Typography>{date.toLocaleString().split(',')[0]}</Typography>
                 <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]}</Typography>
                 <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration} min.</Typography>
-                <Button size="small" onClick={() => {
-                    createAnswersForExam(accountId, exam.id);
-                    history.push(`/landing/exam/${exam.id}`);
-                  }}
-                  {...(exam.state !== "OPEN" && {disabled: true})}    
-                >
-                Rozpocznij
-                </Button>
-                <Button size="small" color="primary"
-                  onClick={() => history.push(`/landing/examresults/${exam.id}`)}
-                  {...(exam.state !== "CHECKED" && {disabled: true})}
-                >
-                  Wyniki
-                </Button>
+                
+                {isLecturer()
+                  ?
+                  <div>
+                    {stateEnum === ExamStateEnum.DRAFT &&
+                      <Button size="small" onClick={() => {
+                        history.push(`/landing/new-exam/${exam.id}`);
+                      }}
+                      >
+                        Kontynuuj tworzenie egzaminu
+                      </Button>
+                    }
+                  </div>
+                  :
+                  <div>
+                    <Button size="small" onClick={() => {
+                        createAnswersForExam(accountId, exam.id);
+                        history.push(`/landing/exam/${exam.id}`);
+                      }}
+                      {...(exam.state !== "OPEN" && {disabled: true})}    
+                    >
+                    Rozpocznij
+                    </Button>
+                    <Button size="small" color="primary"
+                      onClick={() => history.push(`/landing/examresults/${exam.id}`)}
+                      {...(exam.state !== "CHECKED" && {disabled: true})}
+                    >
+                      Wyniki
+                    </Button>
+                  </div>
+                }
               </AccordionActions>
               </Accordion>
           )
