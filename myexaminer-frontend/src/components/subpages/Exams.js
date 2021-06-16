@@ -14,6 +14,7 @@ import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
 import Modal from "components/reusable/modal/Modal";
 import ExamForm from 'components/exam/ExamForm';
 import ExamStateEnum from 'components/exam/ExamStateEnum';
+import EditButton from 'components/reusable/button/EditButton';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -137,7 +138,14 @@ export default function Exams(props) {
                 
                 {isLecturer()
                   ?
-                  <div>
+                  <div style={{textAlign: "right"}}>
+                    {stateEnum !== ExamStateEnum.CHECKED &&
+                      <Modal input={
+                        <EditButton onlyIcon style={{ marginTop: "20px" }}/>
+                      }>
+                        <ExamForm mode="edit" examDetails={exam}/>
+                      </Modal>
+                    }
                     {stateEnum === ExamStateEnum.DRAFT &&
                       <Button size="small" onClick={() => {
                         history.push(`/landing/new-exam/${exam.id}`);

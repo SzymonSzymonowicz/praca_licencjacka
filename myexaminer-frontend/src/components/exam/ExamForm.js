@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@material-ui/core";
 import styles from "components/group/group.module.css";
-import { examUrl, editChapterUrl, groupsNameIdForAccountUrl } from "router/urls";
+import { examUrl, examIdUrl, groupsNameIdForAccountUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -11,6 +11,7 @@ import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import { isNumeric, isWholeNumber } from "utils/validationUtils";
 import { getCurrentAccount } from "services/auth-service";
 import { useHistory } from "react-router";
+import ExamStateEnum from "./ExamStateEnum";
 
 const buttons = [
   ['undo', 'redo'],
@@ -43,8 +44,8 @@ const fonts = [
 ];
 
 export default function ExamForm(props) {
-  const { examDetails, lesson, mode, resetEdited } = props;
-  const lessonId = lesson?.id;
+  const { examDetails, mode, loadExams, closeModal } = props;
+  const examId = examDetails?.id;
 
   const [lecturerGroups, setLecturerGroups] = useState([]);
 
@@ -54,7 +55,8 @@ export default function ExamForm(props) {
       availableFrom: null,
       duration: 5,
       description: "",
-      groupId: null
+      groupId: null,
+      state: null
     }
   });
 
@@ -102,26 +104,26 @@ export default function ExamForm(props) {
     .catch(err => { console.error(err) })
   }
 
-  const editExamProperties = (chapterId, chapter) => {
-    fetch(editChapterUrl(chapterId), {
+  const editExamProperties = (exam) => {
+    fetch(examIdUrl(examId), {
       method: "PATCH",
       headers: {
         ...authHeader(),
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(chapter)
+      body: JSON.stringify(exam)
     })
-      .then(res => {
+    .then(async res => {
         if (res.status === 200) {
-          props?.getLesson(lessonId);
-          
-          if (typeof resetEdited === "function") {
-            resetEdited();
-          }
+          closeModal();
+          loadExams();
+          return res.json();
         }
         else {
-          console.log("Editing chapter failed");
-          console.log(res.text())
+          console.log("Editing exam failed");
+          var msg = await res.text();
+          console.log(msg);
+          throw new Error("Editing exam failed: " + msg);
         }
     })
     .catch(err => { console.error(err) })
@@ -137,7 +139,7 @@ export default function ExamForm(props) {
       break;
     case 'edit':
       action = (exam) => editExamProperties(exam);
-      submitText = "Edytuj Opis Egzaminu";
+      submitText = "Edytuj Egzamin";
       break;
     default:
       action = (exam) => {
@@ -194,6 +196,37 @@ export default function ExamForm(props) {
             required: "Wypełnij to pole",
           }}
         />
+
+        {mode === "edit" &&
+          <Controller
+            control={control}
+            name="state"
+            render={({ field: { value, ...rest } }) =>
+              <FormControl error={errors.groupId ? true : false} fullWidth>
+                <InputLabel id="select-exam-state-label" variant="outlined">Stan egzaminu</InputLabel>
+                <Select
+                  variant="outlined"
+                  id="state-select"
+                  labelId="select-exam-state-label"
+                  label="Stan Egzaminu"
+                  value={value || ''}
+                  style={{ fontWeight: "bold", color: ExamStateEnum[value]?.color }}
+                  {...rest}
+                >
+                  {Object.values(ExamStateEnum).map(state => (
+                    <MenuItem key={`state#${state.name}`} value={state.name} style={{ fontWeight: "bold", color: state?.color }}>
+                      {state.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.groupId ? errors.groupId?.message : null}</FormHelperText>
+              </FormControl>
+            }
+            rules={{
+              required: "Wypełnij to pole",
+            }}
+          />
+        }
 
         <Controller 
           control={control}
@@ -282,9 +315,10 @@ export default function ExamForm(props) {
           {submitText}
         </Button >
         {mode === "edit" &&
-          <Button onClick={() => resetEdited()} color="secondary" variant="contained" startIcon={<CloseIcon />} style={{marginLeft: "30px"}}>
+          <Button color="secondary" variant="contained" startIcon={<CloseIcon />} onClick={ closeModal } style={{marginLeft: "30px"}}>
             Anuluj
-          </Button >}
+          </Button >
+        }
       </Box>
     </form>
   );

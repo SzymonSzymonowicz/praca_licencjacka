@@ -17,7 +17,7 @@ const ExamStateEnum = Object.freeze({
   },
   CHECKED: {
     name: "CHECKED",
-    color: "grassgreen"
+    color: "lawngreen"
   }
 });
 
