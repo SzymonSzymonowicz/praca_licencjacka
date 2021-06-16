@@ -159,7 +159,7 @@ export default function Exams(props) {
                   <div>
                     <Button size="small" onClick={() => {
                         createAnswersForExam(accountId, exam.id);
-                        history.push(`/landing/exam/${exam.id}`);
+                        history.push(`/landing/exam/${exam.id}`, {exam: exam});
                       }}
                       {...(exam.state !== "OPEN" && {disabled: true})}    
                     >

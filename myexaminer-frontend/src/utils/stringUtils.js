@@ -16,3 +16,8 @@ export const generateHexColor = (str) => {
 
   return "#" + "00000".substring(0, 6 - c.length) + c;
 };
+
+export const getColorFromRedToGreenByPercentage = (value) => {
+  const hue = Math.round(value);
+  return ["hsl("+hue+", 50%, 50%)"].join("");
+}
