@@ -104,9 +104,14 @@ public class ExamService {
 
         exam.setAvailableFrom(updatedExamDTO.getAvailableFrom());
         exam.setDuration(updatedExamDTO.getDuration());
+        exam.setDescription(updatedExamDTO.getDescription());
         exam.setName(updatedExamDTO.getName());
         exam.setState(State.valueOf(updatedExamDTO.getState()));
         exam.setTeachingGroup(newGroup);
+
+        System.out.println(updatedExamDTO);
+
+        log.info("Exam with ID -> {} <- has been updated to new state: {}", examId, updatedExamDTO.getState());
 
         saveExam(exam);
     }

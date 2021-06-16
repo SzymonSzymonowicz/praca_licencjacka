@@ -111,7 +111,7 @@ export default function Exams(props) {
         let stateEnum = ExamStateEnum[state];
         if(exam.state !== "HIDDEN" || isLecturer()) {
           return (
-            <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
+            <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index} {...(stateEnum === ExamStateEnum.OPEN && {style: {backgroundColor: "lavender"}})}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2bh-content"
@@ -133,7 +133,7 @@ export default function Exams(props) {
               
               <AccordionActions>
                 <EventIcon/><Typography>{date.toLocaleString().split(',')[0]}</Typography>
-                <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]}</Typography>
+                <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]?.substring(0, 6)}</Typography>
                 <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration} min.</Typography>
                 
                 {isLecturer()

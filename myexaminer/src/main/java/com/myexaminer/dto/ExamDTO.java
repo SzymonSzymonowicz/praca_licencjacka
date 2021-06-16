@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Setter
 @AllArgsConstructor
 @Builder
+@ToString
 public class ExamDTO {
 
     private Long id;
