@@ -7,14 +7,17 @@ import Fade from '@material-ui/core/Fade';
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'scroll'
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(3, 4),
+    height: "fit-content !important",
+    margin: "1% 0"
   },
 }));
 

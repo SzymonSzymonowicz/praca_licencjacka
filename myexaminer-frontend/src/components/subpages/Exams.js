@@ -143,7 +143,7 @@ export default function Exams(props) {
                       <Modal input={
                         <EditButton onlyIcon style={{ marginTop: "20px" }}/>
                       }>
-                        <ExamForm mode="edit" examDetails={exam}/>
+                        <ExamForm mode="edit" examDetails={exam} loadExams={loadExams}/>
                       </Modal>
                     }
                     {stateEnum === ExamStateEnum.DRAFT &&

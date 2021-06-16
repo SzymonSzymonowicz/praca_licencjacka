@@ -97,4 +97,17 @@ public class ExamService {
                 .sorted(Comparator.comparing(dto -> dto.getAvailableFrom()))
                 .collect(Collectors.toList());
     }
+
+    public void updateExam(Long examId, ExamDTO updatedExamDTO) {
+        Exam exam = getExamById(examId);
+        TeachingGroup newGroup = teachingGroupService.getTeachingGroupById(updatedExamDTO.getGroupId());
+
+        exam.setAvailableFrom(updatedExamDTO.getAvailableFrom());
+        exam.setDuration(updatedExamDTO.getDuration());
+        exam.setName(updatedExamDTO.getName());
+        exam.setState(State.valueOf(updatedExamDTO.getState()));
+        exam.setTeachingGroup(newGroup);
+
+        saveExam(exam);
+    }
 }

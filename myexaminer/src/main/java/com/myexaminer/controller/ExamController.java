@@ -30,15 +30,21 @@ public class ExamController {
         this.examService = examService;
     }
 
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PostMapping
+    public Long addExam(@RequestBody ExamDTO examDTO) {
+        return examService.createExam(examDTO);
+    }
+
     @GetMapping("/{examId}")
     public Exam getExam(@PathVariable Long examId) {
         return examService.getExamById(examId);
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @PostMapping
-    public Long addExam(@RequestBody ExamDTO examDTO) {
-        return examService.createExam(examDTO);
+    @PatchMapping("/{examId}")
+    public void updateExam(@PathVariable Long examId, @RequestBody ExamDTO updatedExamDTO) {
+        examService.updateExam(examId, updatedExamDTO);
     }
 
     @GetMapping("/my-groups/{accountId}")

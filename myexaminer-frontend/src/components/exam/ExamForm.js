@@ -117,7 +117,6 @@ export default function ExamForm(props) {
         if (res.status === 200) {
           closeModal();
           loadExams();
-          return res.json();
         }
         else {
           console.log("Editing exam failed");
