@@ -80,6 +80,14 @@ public class ExamService {
         saveExam(exam);
     }
 
+    public void updateExamStatus(Long examId, String newState) {
+        State state = State.valueOf(newState);
+        Exam exam = getExamById(examId);
+        exam.setState(state);
+        log.info("Change status of exam with id:{} to {}", examId, state);
+        saveExam(exam);
+    }
+
     public Iterable<ExamDTO> getExamDTOSByMyGroups(Long accountId) {
         List<TeachingGroup> groups = teachingGroupService.getTeachingGroupByAccountId(accountId);
 

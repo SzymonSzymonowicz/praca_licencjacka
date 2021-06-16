@@ -108,7 +108,7 @@ export default function Exams(props) {
         let date = new Date(exam.availableFrom);
         let state = exam?.state;
         let stateEnum = ExamStateEnum[state];
-        if(exam.state !== "HIDDEN") {
+        if(exam.state !== "HIDDEN" || isLecturer()) {
           return (
             <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
               <AccordionSummary
@@ -155,7 +155,6 @@ export default function Exams(props) {
 
         return "";
       })}
-      {/* <Button variant="filled" onClick={() => { history.push("/landing/new-exam") }}>Nowy egzamin</Button> */}
       {isLecturer() &&
         <Modal input={
           <Button color="primary" type="submit" variant="contained" startIcon={<AddIcon />} style={{ marginTop: "20px" }}>
@@ -163,7 +162,6 @@ export default function Exams(props) {
           </Button >
         }>
           <ExamForm mode="create" />
-          {/* <EditGroupForm group={group} getGroup={ getGroup }/> */}
       </Modal>}
     </>
   )
