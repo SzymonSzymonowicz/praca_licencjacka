@@ -62,6 +62,7 @@ export default function CreateExam(props) {
   const { examId } = useParams();
   
   const [value, setValue] = useState(0);
+  const [edited, setEdited] = useState();
   const [draftExam, setDraftExam] = useState(null);
 
   const tasks = draftExam?.exercises || [];

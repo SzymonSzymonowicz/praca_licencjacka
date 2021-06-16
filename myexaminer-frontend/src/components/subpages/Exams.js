@@ -13,6 +13,7 @@ import { allExamsFromMyGroupsUrl } from 'router/urls';
 import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
 import Modal from "components/reusable/modal/Modal";
 import ExamForm from 'components/exam/ExamForm';
+import ExamStateEnum from 'components/exam/ExamStateEnum';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -105,6 +106,8 @@ export default function Exams(props) {
     <>
       {exams.map((exam,index) => {
         let date = new Date(exam.availableFrom);
+        let state = exam?.state;
+        let stateEnum = ExamStateEnum[state];
         if(exam.state !== "HIDDEN") {
           return (
             <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
@@ -114,6 +117,9 @@ export default function Exams(props) {
                 id="panel2bh-header"
               >
                 <Typography className={classes.heading}>Egzamin {index + 1}</Typography>
+                {isLecturer() && 
+                  <Typography className={classes.secondaryHeading} style={{color: stateEnum?.color || "gray", flexGrow: 1, fontWeight: "bold"}}>{stateEnum?.name}</Typography>
+                }
                 <Typography className={classes.secondaryHeading}>
                   {exam.name} : { exam.groupName }
                 </Typography>

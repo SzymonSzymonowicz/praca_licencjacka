@@ -192,7 +192,7 @@ export default function Group(props) {
                     size="small"
                     onClick={() => history.push(`/landing/lesson/`, {lessonId: lesson.id})}
                   >
-                      Otwórz
+                    Otwórz
                   </Button>
                   <Box>
                     <IconButton onClick={() => setEdited(lesson.id)}>

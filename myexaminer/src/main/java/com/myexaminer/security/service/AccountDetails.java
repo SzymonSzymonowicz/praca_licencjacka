@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class AccountDetails implements UserDetails {
-    // TODO think about other fields that may come useful on frontend
     private final Account account;
 
     private final Long id;

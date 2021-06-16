@@ -6,7 +6,7 @@ import { Popover, TextField } from '@material-ui/core';
 import { notebookUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
 
-export default function Notepad({classes}, props) {
+export default function Notepad({classes, ...props}) {
   const [notes, setNotes] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [disabled, setDisabled] = useState(false);
