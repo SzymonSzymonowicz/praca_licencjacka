@@ -2,8 +2,6 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -11,42 +9,28 @@ import Container from "@material-ui/core/Container";
 import Copyright from "components/login-page/Copyright";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
-import { register } from "services/auth-service";
+import { checkIsEmailUnique, checkIsIndexUnique, register } from "services/auth-service";
+import { Controller, useForm } from "react-hook-form";
+import { isValidEmail, isValidPassword } from "utils/validationUtils";
 
 
 export default function SignUp(props) {
   const classes = props.className;
   const history = useHistory();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let form = event.target;
-
-    register(
-      form.email.value,
-      form.password.value,
-      form.recoveryQuestion.value,
-      form.recoveryAnswer.value,
-      form.firstName.value,
-      form.lastName.value,
-      form.index.value,
-      form.faculty.value,
-      form.fieldOfStudy.value
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("User REGISTERED SUCCESSFULLY!");
-        history.push("/");
-      } else if (response.status === 422) {
-        console.log("Given email ALREADY EXISTS!");
-      } else {
-        console.log("Something went wrong!");
-      }
-    })
-    .catch((error) => {
-      console.log("error: " + error);
-    });
-  };
+  const { control, formState: { errors }, reset, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      recoveryQuestion: "",
+      recoveryAnswer: "",
+      index: "",
+      faculty: "",
+      fieldOfStudy: ""
+    }
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -55,108 +39,212 @@ export default function SignUp(props) {
         <Typography component="h1" variant="h5">
           Rejestracja
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <form className={classes.form} noValidate onSubmit={handleSubmit(account => {
+          register(account);
+          history.push("/");
+        })}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="Imię"
+              <Controller
+                control={control}
                 name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="Imię"
-                autoFocus
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Imię"
+                    variant="outlined"
+                    label="Imię"
+                    autoFocus
+                    required
+                    fullWidth
+                    error={errors.firstName ? true : false}
+                    helperText={ errors.firstName ? errors.firstName?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Nazwisko"
+              <Controller
+                control={control}
                 name="lastName"
-                autoComplete="Nazwisko"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Nazwisko"
+                    variant="outlined"
+                    label="Nazwisko"
+                    autoFocus
+                    required
+                    fullWidth
+                    error={errors.lastName ? true : false}
+                    helperText={ errors.lastName ? errors.lastName?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email"
+              <Controller
+                control={control}
                 name="email"
-                autoComplete="Email"
-                autoFocus
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Email"
+                    variant="outlined"
+                    label="Email"
+                    autoFocus
+                    required
+                    fullWidth
+                    error={errors.email ? true : false}
+                    helperText={ errors.email ? errors.email?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                  validate: checkIsEmailUnique && isValidEmail
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              <Controller
+                control={control}
                 name="password"
-                label="Hasło"
-                type="password"
-                id="password"
-                autoComplete="Hasło"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Hasło"
+                    type="password"
+                    variant="outlined"
+                    label="Hasło"
+                    autoFocus
+                    required
+                    fullWidth
+                    error={errors.password ? true : false}
+                    helperText={errors.password ? errors.password?.message : null}
+                    style={{ whiteSpace: "pre" }}
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                  validate: isValidPassword
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="Wydział"
+              <Controller
+                control={control}
                 name="faculty"
-                variant="outlined"
-                required
-                fullWidth
-                id="faculty"
-                label="Wydział"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Wydział"
+                    variant="outlined"
+                    label="Wydział"
+                    required
+                    fullWidth
+                    error={errors.faculty ? true : false}
+                    helperText={ errors.faculty ? errors.faculty?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="Kierunek"
+              <Controller
+                control={control}
                 name="fieldOfStudy"
-                variant="outlined"
-                required
-                fullWidth
-                id="fieldOfStudy"
-                label="Kierunek"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Kierunek"
+                    variant="outlined"
+                    label="Kierunek"
+                    required
+                    fullWidth
+                    error={errors.fieldOfStudy ? true : false}
+                    helperText={ errors.fieldOfStudy ? errors.fieldOfStudy?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                autoComplete="Indeks"
+              <Controller
+                control={control}
                 name="index"
-                variant="outlined"
-                required
-                fullWidth
-                label="Indeks"
-                id="index"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Indeks"
+                    variant="outlined"
+                    label="Indeks"
+                    required
+                    fullWidth
+                    error={errors.index ? true : false}
+                    helperText={ errors.index ? errors.index?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                  validate: checkIsIndexUnique,
+                  pattern: {
+                    value: /^\d{6}$/,
+                    message: "Indeks powinien składać się z 6 cyfr"
+                  }
+                }}
               />
+              {console.log(errors)}
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              <Controller
+                control={control}
                 name="recoveryQuestion"
-                label="Pytanie pomocniczne"
-                id="recoveryQuestion"
-                autoComplete="Pytanie pomocniczne"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Pytanie pomocniczne"
+                    variant="outlined"
+                    label="Pytanie pomocniczne"
+                    required
+                    fullWidth
+                    error={errors.recoveryQuestion ? true : false}
+                    helperText={ errors.recoveryQuestion ? errors.recoveryQuestion?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              <Controller
+                control={control}
                 name="recoveryAnswer"
-                label="Odpowiedź"
-                id="recoveryAnswer"
-                autoComplete="Odpowiedź"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Odpowiedź"
+                    variant="outlined"
+                    label="Odpowiedź"
+                    required
+                    fullWidth
+                    error={errors.recoveryAnswer ? true : false}
+                    helperText={ errors.recoveryAnswer ? errors.recoveryAnswer?.message : null }
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: "Wypełnij to pole",
+                }}
               />
             </Grid>
           </Grid>

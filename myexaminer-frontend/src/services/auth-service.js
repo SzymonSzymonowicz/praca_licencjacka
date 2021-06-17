@@ -1,4 +1,4 @@
-import { loginUrl, registerUrl } from "router/urls";
+import { isEmailUniqueUrl, isIndexUniqueUrl, loginUrl, registerUrl } from "router/urls";
 
 const login = (email, password) => {
   return fetch(loginUrl, {
@@ -37,12 +37,12 @@ const hasRole = (role) => {
 
 const isLecturer = () => hasRole("ROLE_LECTURER");
 
-const register = (
+const register = ({
   email, password,
   recoveryQuestion, recoveryAnswer,
   firstName, lastName, index,
   faculty, fieldOfStudy
-) => {
+}) => {
   return fetch(registerUrl, {
     method: "POST",
     headers: {
@@ -62,4 +62,24 @@ const register = (
   })
 };
 
-export { login, logout, getCurrentAccount, hasRole, register, isLecturer };
+const checkIsEmailUnique = async (email) => {
+  const isUnique = await fetch(isEmailUniqueUrl(email), {
+    method: "GET"
+  })
+  .then(res => res.json())
+  .catch(err => { console.error(err) })
+  
+  return isUnique || "Podany email jest już zajęty";
+};
+
+const checkIsIndexUnique = async (index) => {
+  const isUnique = await fetch(isIndexUniqueUrl(index), {
+    method: "GET"
+  })
+  .then(res => res.json())
+  .catch(err => { console.error(err) })
+  
+  return isUnique || "Podany indeks jest zajęty, jeśli to twój skontaktuj się z Administratorem";
+};
+
+export { login, logout, getCurrentAccount, hasRole, register, isLecturer, checkIsEmailUnique, checkIsIndexUnique };

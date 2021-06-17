@@ -12,6 +12,11 @@ const isValidEmail = (email) => {
   return re.test(email) || "Podana wartość nie jest adresem email";
 };
 
+const isValidIndex = (index) => {
+  var re = /^\d{6}$/;
+  return re.test(index) || "Indeks powinien składać się z 6 cyfr";
+};
+
 const isValidPassword = (password) => {
   /*
     This regex will enforce these rules:
@@ -25,4 +30,4 @@ const isValidPassword = (password) => {
   return re.test(password) || "Hasło musi mieć minimum:\n- jedną mała i wielką literę\n- jeden znak specjalny\n- jedną cyfrę\n- osiem znaków";
 }
 
-export { isNumeric, isWholeNumber, isValidEmail, isValidPassword };
+export { isNumeric, isWholeNumber, isValidEmail, isValidPassword, isValidIndex };
