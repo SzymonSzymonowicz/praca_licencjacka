@@ -54,7 +54,6 @@ public class Account {
             joinColumns = @JoinColumn(name = "fk_account_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_role_id")
     )
-    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
     public Account(String email, String password, String recoveryQuestion, String recoveryAnswer) {
@@ -68,6 +67,7 @@ public class Account {
 
     public void addToRoles(Role role) {
         roles.add(role);
+        role.addAccount(this);
     }
 
     public boolean hasRole(RoleEnum roleEnum) {

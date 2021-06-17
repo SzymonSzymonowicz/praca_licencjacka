@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,6 +25,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Builder
+@ToString(exclude = {"accounts"})
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,8 @@ export const apiDomain = "http://localhost:8080";
 // AccountController
 export const loginUrl = apiDomain + "/account/login";
 export const registerUrl = apiDomain + "/account";
+export const isEmailUniqueUrl = (email) => apiDomain + "/account/unique?email=" + email;
+export const isIndexUniqueUrl = (index) => apiDomain + "/account/unique?index=" + index;
 
 // ExamController
 export const examUrl = apiDomain + "/exam";

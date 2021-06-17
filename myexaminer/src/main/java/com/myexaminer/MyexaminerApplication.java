@@ -25,6 +25,7 @@ public class MyexaminerApplication {
                 registry.addMapping("/account").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/account/login").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/account/role").allowedMethods("*").allowedOrigins(LOCALHOST);
+                registry.addMapping("/account/unique").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/archive/check").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/archive/exercises").allowedMethods("*").allowedOrigins(LOCALHOST);
                 registry.addMapping("/chapters/**").allowedMethods("*").allowedOrigins(LOCALHOST);

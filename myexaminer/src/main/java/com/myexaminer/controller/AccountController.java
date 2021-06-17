@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -87,28 +87,13 @@ public class AccountController {
         return accountService.getAccountByEmail(request.getUserPrincipal().getName()).getRoles();
     }
 
-    @GetMapping("/test")
-    public Object test(Authentication authentication) {
-        return Map.of("details", authentication.getDetails() == null ? "nima" : authentication.getDetails(),
-                "principal", authentication.getPrincipal() == null ? "nima" : authentication.getPrincipal(),
-                "authorithies", authentication.getAuthorities() == null ? "nima" : authentication.getAuthorities(),
-                "credentials ", authentication.getCredentials() == null ? "nima" : authentication.getCredentials(),
-                "name", authentication.getName());
+    @GetMapping(value = "/unique", params = "index")
+    public boolean checkIfIndexIsUnique(@RequestParam String index) {
+        return !studentService.studentExistsByIndex(index);
     }
 
-    @GetMapping("/test/principal")
-    public Object test(AccountDetails accountDetails) {
-        return Map.of(
-                "ID", accountDetails.getId() == null ? "pusto" : accountDetails.getId(),
-                "USERNAME", accountDetails.getUsername() == null ? "pusto" : accountDetails.getUsername(),
-//                "PASSWORD", accountDetails.getPassword() == null ? "pusto" : accountDetails.getPassword(),
-                "AUTHORITIES", accountDetails.getAuthorities() == null ? "pusto" : accountDetails.getAuthorities()
-        );
-    }
-
-    @GetMapping("/test/account")
-    public Account test123(Authentication authentication) {
-        AccountDetails details = (AccountDetails) authentication.getPrincipal();
-        return details.getAccount();
+    @GetMapping(value = "/unique", params = "email")
+    public boolean checkIfEmailIsUnique(@RequestParam String email) {
+        return !accountService.accountExistsByEmail(email);
     }
 }

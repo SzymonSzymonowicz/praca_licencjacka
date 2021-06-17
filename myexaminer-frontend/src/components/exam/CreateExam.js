@@ -255,7 +255,7 @@ const TaskActions = (props) => {
 
   return (
     <Box>
-      <EditButton onlyIcon onClick={() => console.log("Edycja")}/>
+      {/* <EditButton onlyIcon onClick={() => console.log("Edycja")}/> */}
       <DeleteConfirmButton onlyIcon action={ () => deleteTask(taskId)}/>
     </Box>
   )

@@ -3,6 +3,7 @@ package com.myexaminer.service;
 import com.myexaminer.dto.RegisterDTO;
 import com.myexaminer.entity.Account;
 import com.myexaminer.entity.Notebook;
+import com.myexaminer.entity.Role;
 import com.myexaminer.entity.Student;
 import com.myexaminer.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,8 @@ public class RegistrationService {
                 registerDTO.getRecoveryQuestion(),
                 registerDTO.getRecoveryAnswer()
         );
-        newAccount.addToRoles(roleService.getRoleByName(RoleEnum.ROLE_STUDENT));
+        Role studentRole = roleService.getRoleByName(RoleEnum.ROLE_STUDENT);
+        newAccount.addToRoles(studentRole);
         accountService.accountSave(newAccount);
         log.info("Account with ID -> {} <- has been CREATED and SAVED to database", newAccount.getId());
 
