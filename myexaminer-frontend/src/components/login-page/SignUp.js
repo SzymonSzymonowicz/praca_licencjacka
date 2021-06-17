@@ -169,7 +169,7 @@ export default function SignUp(props) {
           >
             Zarejestruj się
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container justify="center">
             <Grid item>
               <Link to="/">Już posiadasz konto? Zaloguj się</Link>
             </Grid>
