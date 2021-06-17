@@ -87,8 +87,13 @@ public class AccountController {
         return accountService.getAccountByEmail(request.getUserPrincipal().getName()).getRoles();
     }
 
-    @GetMapping("/unique")
+    @GetMapping(value = "/unique", params = "index")
     public boolean checkIfIndexIsUnique(@RequestParam String index) {
         return !studentService.studentExistsByIndex(index);
+    }
+
+    @GetMapping(value = "/unique", params = "email")
+    public boolean checkIfEmailIsUnique(@RequestParam String email) {
+        return !accountService.accountExistsByEmail(email);
     }
 }
