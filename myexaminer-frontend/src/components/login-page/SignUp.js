@@ -18,12 +18,13 @@ export default function SignUp(props) {
   const classes = props.className;
   const history = useHistory();
 
-  const { control, formState: { errors }, handleSubmit } = useForm({
+  const { control, formState: { errors }, handleSubmit, watch, trigger } = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
       recoveryQuestion: "",
       recoveryAnswer: "",
       index: "",
@@ -128,11 +129,43 @@ export default function SignUp(props) {
                     helperText={errors.password ? errors.password?.message : null}
                     style={{ whiteSpace: "pre" }}
                     {...field}
+                    onChange={(e) => {
+                      var val = e.target.value;
+                      field.onChange(val);
+                      trigger("confirmPassword");
+                    }}
                   />
                 }
                 rules={{
                   required: requiredMessage,
                   validate: isValidPassword
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="confirmPassword"
+                render={({ field }) =>
+                  <TextField
+                    autoComplete="Powtórz hasło"
+                    type="password"
+                    variant="outlined"
+                    label="Powtórz hasło"
+                    autoFocus
+                    required
+                    fullWidth
+                    error={errors.confirmPassword ? true : false}
+                    helperText={errors.confirmPassword ? errors.confirmPassword?.message : null}
+                    style={{ whiteSpace: "pre" }}
+                    {...field}
+                  />
+                }
+                rules={{
+                  required: requiredMessage,
+                  validate: {
+                    matchingPassword: value => value === watch("password") || "Podane hasła się nie zgadzają!",
+                  }
                 }}
               />
             </Grid>
@@ -203,7 +236,6 @@ export default function SignUp(props) {
                   }
                 }}
               />
-              {console.log(errors)}
             </Grid>
             <Grid item xs={12}>
               <Controller
