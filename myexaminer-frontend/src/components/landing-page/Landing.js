@@ -227,7 +227,7 @@ export default function Landing() {
               open={openAccount}
               onClose={handleMenuClose}
             >
-              <MenuItem onClick={handleMenuClose}>Moje konto</MenuItem>
+              {/* <MenuItem onClick={handleMenuClose}>Moje konto</MenuItem> */}
               <MenuItem onClick={() => {
                 handleMenuClose();
                 logout();
