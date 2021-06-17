@@ -9,7 +9,20 @@ const isWholeNumber = (num) => {
 
 const isValidEmail = (email) => {
   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
+  return re.test(email) || "Podana wartość nie jest adresem email";
 };
 
-export { isNumeric, isWholeNumber, isValidEmail };
+const isValidPassword = (password) => {
+  /*
+    This regex will enforce these rules:
+    - at least one upper case English letter, (?=.*?[A-Z])
+    - at least one lower case English letter, (?=.*?[a-z])
+    - at least one digit, (?=.*?[0-9])
+    - at least one special character, (?=.*?[#?!@$%^&*-])
+    Minimum eight in length .{8,} (with the anchors)
+  */
+  var re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+  return re.test(password) || "Hasło musi mieć minimum:\n- jedną mała i wielką literę\n- jeden znak specjalny\n- jedną cyfrę\n- osiem znaków";
+}
+
+export { isNumeric, isWholeNumber, isValidEmail, isValidPassword };
