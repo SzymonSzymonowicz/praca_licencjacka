@@ -2,11 +2,9 @@ import { Box, Grid, Paper, TextField, Typography } from '@material-ui/core'
 import React from 'react'
 
 export default function FillBlanksTask(props) {
-  // probably needs refactoring .split(/(<blank>)/g)
-
-  const fill = props.fill.split("<blank>")
-
   const { actions } = props;
+
+  const fill = props.fill.split(/(<blank>)/g);
 
   const [blanksFilled, setBlanksFilled] = React.useState(new Array(fill.length-1).fill(""))
   const [assignedPoints, setAssignedPoints] = React.useState(props.modify ? props.answered[props.index]['gainedPoints'] : null);
@@ -50,25 +48,27 @@ export default function FillBlanksTask(props) {
         justify="center"
         alignItems="center"
       >
-      {fill.map( (str, index, {length}) => {
-
-        return <React.Fragment key={`${props.id}seg${index}`}>
-        <Typography key={str}>{str}</Typography>
-        {index !== length - 1 && 
-          <TextField 
-            onInput={event => handleChange(event, index)} key={`t${props.id}b${index}`} 
-            style={{margin: '0px 10px', minWidth: '60px'}} 
-            inputProps={{ style: { textAlign: "center" } }}
-            {...(props.loadValue === true  && {
-              value: props.answered.find(item => item['id'] === props.id)['answer'][index],
-              disabled: true,
-            })}
-            {...(props.disabled && {
-              disabled: true,
-            })}
-          />}
-        </React.Fragment>
-      })}
+        {console.log(fill)}
+      {fill?.map((str, index) =>
+        str === "<blank>"
+        ?
+          // style={{ minWidth: "60px", margin: "0px 10px" }}
+        <TextField
+          key={`blank ${index}`}
+          onInput={event => handleChange(event, index)} key={`t${props.id}b${index}`} 
+          style={{margin: '0px 10px', minWidth: '60px'}} 
+          inputProps={{ style: { textAlign: "center" } }}
+          {...(props.loadValue === true  && {
+            value: props.answered.find(item => item['id'] === props.id)['answer'][index],
+            disabled: true,
+          })}
+          {...(props.disabled && {
+            disabled: true,
+          })}
+        />
+        :
+        <Typography key={`text ${index}`}>{str}</Typography>
+      )}
       </Grid>
     </Paper>
   )
