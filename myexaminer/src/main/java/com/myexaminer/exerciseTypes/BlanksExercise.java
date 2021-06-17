@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BlanksExercise extends OpenExercise{
+public class BlanksExercise extends OpenExercise {
     private String fill;
 
     public BlanksExercise(String type, String instruction, Long points, String fill) {
