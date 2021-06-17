@@ -86,29 +86,4 @@ public class AccountController {
     public Set<Role> role(HttpServletRequest request) {
         return accountService.getAccountByEmail(request.getUserPrincipal().getName()).getRoles();
     }
-
-    @GetMapping("/test")
-    public Object test(Authentication authentication) {
-        return Map.of("details", authentication.getDetails() == null ? "nima" : authentication.getDetails(),
-                "principal", authentication.getPrincipal() == null ? "nima" : authentication.getPrincipal(),
-                "authorithies", authentication.getAuthorities() == null ? "nima" : authentication.getAuthorities(),
-                "credentials ", authentication.getCredentials() == null ? "nima" : authentication.getCredentials(),
-                "name", authentication.getName());
-    }
-
-    @GetMapping("/test/principal")
-    public Object test(AccountDetails accountDetails) {
-        return Map.of(
-                "ID", accountDetails.getId() == null ? "pusto" : accountDetails.getId(),
-                "USERNAME", accountDetails.getUsername() == null ? "pusto" : accountDetails.getUsername(),
-//                "PASSWORD", accountDetails.getPassword() == null ? "pusto" : accountDetails.getPassword(),
-                "AUTHORITIES", accountDetails.getAuthorities() == null ? "pusto" : accountDetails.getAuthorities()
-        );
-    }
-
-    @GetMapping("/test/account")
-    public Account test123(Authentication authentication) {
-        AccountDetails details = (AccountDetails) authentication.getPrincipal();
-        return details.getAccount();
-    }
 }
