@@ -132,7 +132,9 @@ export default function SignUp(props) {
                     onChange={(e) => {
                       var val = e.target.value;
                       field.onChange(val);
-                      trigger("confirmPassword");
+                      if (val !== "") {
+                        trigger("confirmPassword");
+                      }
                     }}
                   />
                 }
@@ -159,6 +161,13 @@ export default function SignUp(props) {
                     helperText={errors.confirmPassword ? errors.confirmPassword?.message : null}
                     style={{ whiteSpace: "pre" }}
                     {...field}
+                    onChange={(e) => {
+                      var val = e.target.value;
+                      field.onChange(val);
+                      if (val !== "") {
+                        trigger("confirmPassword");
+                      }
+                    }}
                   />
                 }
                 rules={{
