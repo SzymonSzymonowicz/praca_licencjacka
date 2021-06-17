@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -17,6 +17,17 @@ import { login } from "services/auth-service";
 export default function SignIn(props) {
   const classes = props.className;
   const history = useHistory();
+  const [errorMsg, setErrorMsg] = useState();
+
+  const displayErrorMessageWithTimeout = (message, seconds) => {
+    setErrorMsg(message);
+
+    setTimeout(() => {
+      setErrorMsg(undefined);
+    }, seconds * 1000);
+  }
+
+  const loginFailedMsg = "Błędne logowanie! Niepoprawny email i/lub hasło.";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,6 +37,7 @@ export default function SignIn(props) {
       history.push("/landing");
     }  else if (response.status === 401) {
       console.log("UNAUTHORIZED!");
+      displayErrorMessageWithTimeout(loginFailedMsg, 10);
     } else {
       console.log("Something went wrong!");
     }
@@ -60,10 +72,13 @@ export default function SignIn(props) {
           id="password"
           autoComplete="current-password"
         />
-        <FormControlLabel
+        {/* <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
           label="Zapamiętaj"
-        />
+        /> */}
+        <div style={{ color: "red", textAlign: "center", visibility: errorMsg ? "visible" : "hidden", minHeight: "20px"}}>
+          {errorMsg}
+        </div>
         <Button
           type="submit"
           fullWidth
