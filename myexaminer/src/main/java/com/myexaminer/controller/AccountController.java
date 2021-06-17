@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -85,5 +85,10 @@ public class AccountController {
     @GetMapping("/role")
     public Set<Role> role(HttpServletRequest request) {
         return accountService.getAccountByEmail(request.getUserPrincipal().getName()).getRoles();
+    }
+
+    @GetMapping("/unique")
+    public boolean checkIfIndexIsUnique(@RequestParam String index) {
+        return !studentService.studentExistsByIndex(index);
     }
 }
