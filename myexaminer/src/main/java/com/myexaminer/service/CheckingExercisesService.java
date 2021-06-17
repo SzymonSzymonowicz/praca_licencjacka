@@ -62,7 +62,7 @@ public class CheckingExercisesService {
             archiveExerciseService.exerciseSave(archiveExercise);
 
             if (authentication != null && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(RoleEnum.ROLE_LECTURER.name()))) {
-                individualExamService.setIndividualExamToChecked(id);
+                individualExamService.setIndividualExamToChecked(individualExamId);
             }
         }
     }

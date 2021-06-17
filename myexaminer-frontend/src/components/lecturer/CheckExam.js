@@ -3,7 +3,7 @@ import ClosedTask from 'components/exam/ClosedTask'
 import OpenTask from 'components/exam/OpenTask'
 import FillBlanksTask from 'components/exam/FillBlanksTask'
 import Comment from 'components/exam/Comment'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { individualExamExercisesUrl, exercisesUrl, archiveCheckUrl } from 'router/urls';
 import authHeader from 'services/auth-header';
@@ -12,12 +12,12 @@ import authHeader from 'services/auth-header';
 export default function CheckExam(props) {
   let { id } = useParams();
 
-  const [tasks, setTasks] = React.useState([]);
-  const [answered, setAnswered] = React.useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [answered, setAnswered] = useState([]);
   const history = useHistory();
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchAnswers()
     fetchTasks()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,11 +36,10 @@ export default function CheckExam(props) {
       data.forEach(result => {
         var answer = JSON.parse(result["answer"])["answerJSON"]
 
-        answArr.push({ id: result["archivedId"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
+        // answArr.push({ id: result["archivedId"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
+        answArr.push({ id: result["exerciseId"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
       })
 
-      console.log("answArr")
-      console.log(answArr)
       setAnswered(answArr)
     }
     catch(error) {
@@ -63,7 +62,6 @@ export default function CheckExam(props) {
         return task
       })
 
-      // console.log(data)
       setTasks(data)
     }
     catch(error) {
@@ -86,6 +84,8 @@ export default function CheckExam(props) {
         })
       })
       
+      console.log(answered);
+
       const status = await result.status
 
       if(status === 200)
@@ -101,7 +101,6 @@ export default function CheckExam(props) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(answered);
 
     saveAnswers();
     history.goBack();
@@ -121,6 +120,7 @@ export default function CheckExam(props) {
           let points = task.content.points 
           let instruction = task.content.instruction 
           let id = task.id
+          // let id = answered[index].id
           let lecturerComment = answered[index]["lecturerComment"]
 
           if (type === "O") 

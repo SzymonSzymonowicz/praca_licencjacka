@@ -36,7 +36,7 @@ public class ArchiveExerciseService {
     public ArchiveExercise getArchiveExerciseByExerciseAndIndividualExam(Long exerciseId, Long individualExamId) {
 
         return getOptionalArchiveExerciseByExerciseAndIndividualExam(exerciseId, individualExamId)
-                .orElseThrow(() -> new EntityNotFoundException("There is no Archive Exercise in database that you were looking for."));
+                .orElseThrow(() -> new EntityNotFoundException("There is no Archive Exercise for exercise:" + exerciseId + " in individual exam:" + individualExamId));
     }
 
     public boolean doArchiveExerciseExists(Long exerciseId, Long individualExamId) {

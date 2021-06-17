@@ -80,6 +80,14 @@ public class ExamService {
         saveExam(exam);
     }
 
+    public void updateExamStatus(Long examId, String newState) {
+        State state = State.valueOf(newState);
+        Exam exam = getExamById(examId);
+        exam.setState(state);
+        log.info("Change status of exam with id:{} to {}", examId, state);
+        saveExam(exam);
+    }
+
     public Iterable<ExamDTO> getExamDTOSByMyGroups(Long accountId) {
         List<TeachingGroup> groups = teachingGroupService.getTeachingGroupByAccountId(accountId);
 
@@ -88,5 +96,23 @@ public class ExamService {
                 .map(ExamDTO::new)
                 .sorted(Comparator.comparing(dto -> dto.getAvailableFrom()))
                 .collect(Collectors.toList());
+    }
+
+    public void updateExam(Long examId, ExamDTO updatedExamDTO) {
+        Exam exam = getExamById(examId);
+        TeachingGroup newGroup = teachingGroupService.getTeachingGroupById(updatedExamDTO.getGroupId());
+
+        exam.setAvailableFrom(updatedExamDTO.getAvailableFrom());
+        exam.setDuration(updatedExamDTO.getDuration());
+        exam.setDescription(updatedExamDTO.getDescription());
+        exam.setName(updatedExamDTO.getName());
+        exam.setState(State.valueOf(updatedExamDTO.getState()));
+        exam.setTeachingGroup(newGroup);
+
+        System.out.println(updatedExamDTO);
+
+        log.info("Exam with ID -> {} <- has been updated to new state: {}", examId, updatedExamDTO.getState());
+
+        saveExam(exam);
     }
 }

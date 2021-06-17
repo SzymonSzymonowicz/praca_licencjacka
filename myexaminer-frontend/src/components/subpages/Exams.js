@@ -13,6 +13,8 @@ import { allExamsFromMyGroupsUrl } from 'router/urls';
 import { isPresentTime, timeDiffNow, compareDates } from 'utils/dateUtils';
 import Modal from "components/reusable/modal/Modal";
 import ExamForm from 'components/exam/ExamForm';
+import ExamStateEnum from 'components/exam/ExamStateEnum';
+import EditButton from 'components/reusable/button/EditButton';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -105,15 +107,20 @@ export default function Exams(props) {
     <>
       {exams.map((exam,index) => {
         let date = new Date(exam.availableFrom);
-        if(exam.state !== "HIDDEN") {
+        let state = exam?.state;
+        let stateEnum = ExamStateEnum[state];
+        if(exam.state !== "HIDDEN" || isLecturer()) {
           return (
-            <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index}>
+            <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)} key={index} {...(stateEnum === ExamStateEnum.OPEN && {style: {backgroundColor: "lavender"}})}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2bh-content"
                 id="panel2bh-header"
               >
                 <Typography className={classes.heading}>Egzamin {index + 1}</Typography>
+                {isLecturer() && 
+                  <Typography className={classes.secondaryHeading} style={{color: stateEnum?.color || "gray", flexGrow: 1, fontWeight: "bold"}}>{stateEnum?.name}</Typography>
+                }
                 <Typography className={classes.secondaryHeading}>
                   {exam.name} : { exam.groupName }
                 </Typography>
@@ -126,22 +133,46 @@ export default function Exams(props) {
               
               <AccordionActions>
                 <EventIcon/><Typography>{date.toLocaleString().split(',')[0]}</Typography>
-                <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]}</Typography>
+                <HourglassEmptyIcon/><Typography>{date.toLocaleString().split(',')[1]?.substring(0, 6)}</Typography>
                 <TimerIcon/><Typography style={{flexGrow: 1}}>{exam.duration} min.</Typography>
-                <Button size="small" onClick={() => {
-                    createAnswersForExam(accountId, exam.id);
-                    history.push(`/landing/exam/${exam.id}`);
-                  }}
-                  {...(exam.state !== "OPEN" && {disabled: true})}    
-                >
-                Rozpocznij
-                </Button>
-                <Button size="small" color="primary"
-                  onClick={() => history.push(`/landing/examresults/${exam.id}`)}
-                  {...(exam.state !== "CHECKED" && {disabled: true})}
-                >
-                  Wyniki
-                </Button>
+                
+                {isLecturer()
+                  ?
+                  <div style={{textAlign: "right"}}>
+                    {stateEnum !== ExamStateEnum.CHECKED &&
+                      <Modal input={
+                        <EditButton onlyIcon style={{ marginTop: "20px" }}/>
+                      }>
+                        <ExamForm mode="edit" examDetails={exam} loadExams={loadExams}/>
+                      </Modal>
+                    }
+                    {stateEnum === ExamStateEnum.DRAFT &&
+                      <Button size="small" onClick={() => {
+                        history.push(`/landing/new-exam/${exam.id}`);
+                      }}
+                      >
+                        Kontynuuj tworzenie egzaminu
+                      </Button>
+                    }
+                  </div>
+                  :
+                  <div>
+                    <Button size="small" onClick={() => {
+                        createAnswersForExam(accountId, exam.id);
+                        history.push(`/landing/exam/${exam.id}`, {exam: exam});
+                      }}
+                      {...(exam.state !== "OPEN" && {disabled: true})}    
+                    >
+                    Rozpocznij
+                    </Button>
+                    <Button size="small" color="primary"
+                      onClick={() => history.push(`/landing/examresults/${exam.id}`)}
+                      {...(exam.state !== "CHECKED" && {disabled: true})}
+                    >
+                      Wyniki
+                    </Button>
+                  </div>
+                }
               </AccordionActions>
               </Accordion>
           )
@@ -149,7 +180,6 @@ export default function Exams(props) {
 
         return "";
       })}
-      {/* <Button variant="filled" onClick={() => { history.push("/landing/new-exam") }}>Nowy egzamin</Button> */}
       {isLecturer() &&
         <Modal input={
           <Button color="primary" type="submit" variant="contained" startIcon={<AddIcon />} style={{ marginTop: "20px" }}>
@@ -157,7 +187,6 @@ export default function Exams(props) {
           </Button >
         }>
           <ExamForm mode="create" />
-          {/* <EditGroupForm group={group} getGroup={ getGroup }/> */}
       </Modal>}
     </>
   )

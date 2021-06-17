@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@material-ui/core";
+import { Button, Grid, Paper } from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,10 +13,12 @@ import OpenTask from "./OpenTask";
 import ClosedTask from "./ClosedTask";
 import FillBlanksTask from "./FillBlanksTask";
 import { useParams } from "react-router";
-import { examIdUrl, exercisesIdUrl } from "router/urls";
+import { examIdUrl, exercisesIdUrl, changeExamStateUrl } from "router/urls";
 import authHeader from "services/auth-header";
 import DeleteConfirmButton from "components/reusable/button/DeleteConfirmButton";
 import EditButton from "components/reusable/button/EditButton";
+import { useHistory } from "react-router-dom";
+import ExamStateEnum from "./ExamStateEnum";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,7 +64,9 @@ export default function CreateExam(props) {
   const { examId } = useParams();
   
   const [value, setValue] = useState(0);
+  const [edited, setEdited] = useState();
   const [draftExam, setDraftExam] = useState(null);
+  const history = useHistory();
 
   const tasks = draftExam?.exercises || [];
 
@@ -80,7 +84,7 @@ export default function CreateExam(props) {
       } else {
         console.log(`Error during fetching exam of id ${examId}!`);
       }
-    }).then( exam => {
+    }).then(exam => {
       exam.exercises = exam?.exercises?.map(task => {
         task.content = JSON.parse(task.content);
         return task;
@@ -88,11 +92,31 @@ export default function CreateExam(props) {
 
       setDraftExam(exam);
     })
-    .catch((error) => {
-      console.log("Error fetching exam")
-      console.log(error)
-    })
-  }, [examId])
+      .catch((error) => {
+        console.log("Error fetching exam")
+        console.log(error)
+      })
+  }, [examId]);
+
+
+  const finalizeExam = () => {
+    fetch(changeExamStateUrl(examId), {
+      method: 'PATCH',
+      headers: { ...authHeader(),         "Content-Type": "application/json"
+    },
+      body: ExamStateEnum.HIDDEN.name
+    }).then((response) => {
+      if (response.status === 200) {
+        history.goBack();
+      } else {
+        console.log(`Error during saving final form of exam with id ${examId}!`);
+      }
+    }).catch((error) => {
+        console.log("Error during change of exam state")
+        console.log(error)
+      })
+  }
+
 
   useEffect(() => {
     getExam();
@@ -130,6 +154,17 @@ export default function CreateExam(props) {
               </TabPanel>
             </div>
           </Paper>
+          <Box textAlign="right" style={{marginTop: "20px"}}>
+            <Button onClick={() => history.goBack()} color="secondary" variant="contained">Powrót</Button>
+            <Button
+              style={{ marginLeft: "20px", marginRight: "60px" }}
+              onClick={() => finalizeExam()}
+              color="primary"
+              variant="contained"
+            >
+              Zapisz końcową wersję
+            </Button>
+          </Box>
         </Grid>
       </Grid>
     </>
@@ -220,7 +255,7 @@ const TaskActions = (props) => {
 
   return (
     <Box>
-      <EditButton onlyIcon onClick={() => console.log("edytowanko")}/>
+      <EditButton onlyIcon onClick={() => console.log("Edycja")}/>
       <DeleteConfirmButton onlyIcon action={ () => deleteTask(taskId)}/>
     </Box>
   )

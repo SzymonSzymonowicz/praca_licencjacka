@@ -53,6 +53,7 @@ public class ExerciseService {
     public String getExerciseType(Long id) {
         JSONObject obj = new JSONObject(
                 getExerciseById(id).getContent());
+        System.out.println(obj);
         return obj.getString("type");
     }
 
