@@ -11,14 +11,14 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { checkIsEmailUnique, checkIsIndexUnique, register } from "services/auth-service";
 import { Controller, useForm } from "react-hook-form";
-import { isValidEmail, isValidPassword } from "utils/validationUtils";
+import { isValidEmail, isValidPassword, requiredMessage } from "utils/validationUtils";
 
 
 export default function SignUp(props) {
   const classes = props.className;
   const history = useHistory();
 
-  const { control, formState: { errors }, reset, handleSubmit, setValue } = useForm({
+  const { control, formState: { errors }, handleSubmit } = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -62,7 +62,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                 }}
               />
             </Grid>
@@ -84,7 +84,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                 }}
               />
             </Grid>
@@ -106,7 +106,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                   validate: checkIsEmailUnique && isValidEmail
                 }}
               />
@@ -131,7 +131,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                   validate: isValidPassword
                 }}
               />
@@ -153,7 +153,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                 }}
               />
             </Grid>
@@ -174,7 +174,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                 }}
               />
             </Grid>
@@ -195,7 +195,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                   validate: checkIsIndexUnique,
                   pattern: {
                     value: /^\d{6}$/,
@@ -222,7 +222,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                 }}
               />
             </Grid>
@@ -243,7 +243,7 @@ export default function SignUp(props) {
                   />
                 }
                 rules={{
-                  required: "Wypełnij to pole",
+                  required: requiredMessage,
                 }}
               />
             </Grid>

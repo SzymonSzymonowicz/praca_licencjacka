@@ -30,4 +30,6 @@ const isValidPassword = (password) => {
   return re.test(password) || "Hasło musi mieć minimum:\n- jedną mała i wielką literę\n- jeden znak specjalny\n- jedną cyfrę\n- osiem znaków";
 }
 
-export { isNumeric, isWholeNumber, isValidEmail, isValidPassword, isValidIndex };
+const requiredMessage = "Wypełnij to pole"
+
+export { isNumeric, isWholeNumber, isValidEmail, isValidPassword, isValidIndex, requiredMessage };
