@@ -159,12 +159,6 @@ export default function SignUp(props) {
                 autoComplete="Odpowiedź"
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="Chcę otrzymywać powiadomienia na email."
-              />
-            </Grid>
           </Grid>
           <Button
             type="submit"
