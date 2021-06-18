@@ -159,7 +159,6 @@ export default function ChapterForm(props) {
                 placeholder="Uzupełnij treść rozdziału"
                 setDefaultStyle="font-family: roboto; font-size: 16px;"
                 defaultValue={value}
-                // getSunEditorInstance={se => ref(se)}
                 {...rest}
               />
             </>)

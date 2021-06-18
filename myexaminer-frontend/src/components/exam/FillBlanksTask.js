@@ -52,7 +52,6 @@ export default function FillBlanksTask(props) {
       {fill?.map((str, index) =>
         str === "<blank>"
         ?
-          // style={{ minWidth: "60px", margin: "0px 10px" }}
         <TextField
           key={`blank ${index}`}
           onInput={event => handleChange(event, index)} key={`t${props.id}b${index}`} 

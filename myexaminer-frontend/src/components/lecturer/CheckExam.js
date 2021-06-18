@@ -120,7 +120,6 @@ export default function CheckExam(props) {
           let points = task.content.points 
           let instruction = task.content.instruction 
           let id = task.id
-          // let id = answered[index].id
           let lecturerComment = answered[index]["lecturerComment"]
 
           if (type === "O") 

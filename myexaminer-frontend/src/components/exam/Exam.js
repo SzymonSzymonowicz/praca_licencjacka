@@ -68,7 +68,6 @@ export default function Exam() {
     }).then(function (response) {
       if (response.status === 200) {
         console.log("Exam saved properly!")
-        //history.push("/")
       } else {
         console.log("Something went wrong!")
       }

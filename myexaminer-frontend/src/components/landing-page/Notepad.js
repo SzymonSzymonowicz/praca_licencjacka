@@ -101,7 +101,6 @@ export default function Notepad({classes, ...props}) {
         <TextField
           multiline
           rows={12}
-          //className={classes.typography}
           style={{padding: 20, width: "100%"}}
           value = {notes}
           onChange={(event) => {

@@ -39,7 +39,6 @@ export default function ExamResults(props) {
         answArr.push({ id: result["exerciseId"], answer: answer, gainedPoints: result["gainedPoints"], lecturerComment: result["lecturerComment"] })
       })
 
-      // console.log(answArr)
       setAnswered(answArr)
     }
     catch(error) {
@@ -62,7 +61,6 @@ export default function ExamResults(props) {
         return task
       })
 
-      // console.log(data)
       setTasks(data)
     }
     catch(error) {
