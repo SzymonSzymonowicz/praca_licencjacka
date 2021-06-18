@@ -86,18 +86,19 @@ export default function GroupDetails({ group, getGroup }) {
         </Table>
       </TableContainer>
 
-      <Box display="flex" justifyContent="space-between" style={{ paddingTop: "20px" }}>
-        <Modal input={
-          <Button color="primary" type="submit" variant="contained" startIcon={<EditIcon />}>
-            Edytuj grupę
-          </Button >
-        }>
-          <EditGroupForm group={group} getGroup={ getGroup }/>
-        </Modal>
+      {isLecturer() &&
+        <Box display="flex" justifyContent="space-between" style={{ paddingTop: "20px" }}>
+          <Modal input={
+            <Button color="primary" type="submit" variant="contained" startIcon={<EditIcon />}>
+              Edytuj grupę
+            </Button >
+          }>
+            <EditGroupForm group={group} getGroup={getGroup} />
+          </Modal>
 
-        <DeleteConfirmButton text={"Usuń grupę"} action={() => deleteGroup(groupId)} />
-      </Box>
-
+          <DeleteConfirmButton text={"Usuń grupę"} action={() => deleteGroup(groupId)} />
+        </Box>
+      }
 
     </>
   );

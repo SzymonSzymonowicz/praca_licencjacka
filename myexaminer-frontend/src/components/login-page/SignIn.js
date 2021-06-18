@@ -37,7 +37,7 @@ export default function SignIn(props) {
       history.push("/landing");
     }  else if (response.status === 401) {
       console.log("UNAUTHORIZED!");
-      displayErrorMessageWithTimeout(loginFailedMsg, 10);
+      displayErrorMessageWithTimeout(loginFailedMsg, 5);
     } else {
       console.log("Something went wrong!");
     }
@@ -88,10 +88,7 @@ export default function SignIn(props) {
         >
           Zaloguj się
         </Button>
-        <Grid container>
-          <Grid item xs>
-            <MuiLink variant="body2">Zapomniałeś hasła?</MuiLink>
-          </Grid>
+        <Grid container justify="center">
           <Grid item>
             <Link to="/SignUp">Nie posiadasz konta? Zarejestruj się!</Link>
           </Grid>

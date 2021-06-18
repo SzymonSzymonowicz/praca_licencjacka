@@ -25,6 +25,7 @@ import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/Event';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import { isLecturer } from "services/auth-service";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -194,25 +195,26 @@ export default function Group(props) {
                   >
                     Otwórz
                   </Button>
-                  <Box>
+                  {isLecturer() && <Box>
                     <IconButton onClick={() => setEdited(lesson.id)}>
-                      <EditIcon/>
+                      <EditIcon />
                     </IconButton>
-                    <DeleteConfirmButton onlyIcon action={ () => deleteLesson(groupId, lesson.id)}/>
-                  </Box>
+                    <DeleteConfirmButton onlyIcon action={() => deleteLesson(groupId, lesson.id)} />
+                  </Box>}
                 </CardActions>
               </>
             }
           </Card>
         ))}
-         <Card
-            className={classes.root}
-            style={{ marginBottom: 30 }}
-          >
-            <CardContent>
-              <LessonForm groupId={groupId} getGroup={getGroupById} type="create"/>
-            </CardContent>
-          </Card>
+        {isLecturer() &&
+        <Card
+          className={classes.root}
+          style={{ marginBottom: 30 }}
+        >
+          <CardContent>
+            <LessonForm groupId={groupId} getGroup={getGroupById} type="create" />
+          </CardContent>
+        </Card>}
       </TabPanel>
       <TabPanel value={value} index={2}>
         <MembersTable students={group?.students} groupId={groupId} getGroup={getGroupById}/>
